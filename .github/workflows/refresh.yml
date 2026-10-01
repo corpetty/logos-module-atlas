@@ -43,16 +43,24 @@ jobs:
 
       - name: Commit changes
         run: |
-          # generatedAt alone changing is not worth a commit.
-          if git diff --quiet -- . ':!registry.json' && \
-             [ -z "$(git diff -U0 -- registry.json | grep '^[+-] ' | grep -v generatedAt)" ] && \
-             [ -z "$(git status --porcelain --untracked-files=all | grep '^??')" ]; then
+          # A refresh that only moved timestamps (generatedAt, an index rebuilt
+          # with the same packages) is not worth a commit. README's table and
+          # llms.txt derive from registry.json, so comparing it covers them.
+          norm() { jq -S 'del(.generatedAt) | .catalogs |= map(del(.indexGeneratedAt))'; }
+          before=$(git show HEAD:registry.json | norm | sha256sum)
+          after=$(norm < registry.json | sha256sum)
+          other=$(git status --porcelain --untracked-files=all -- . ':!registry.json' ':!README.md')
+          if [ "$before" = "$after" ] && [ -z "$other" ]; then
             echo "No changes."; exit 0
           fi
+          # Installed plugins are cached per version, so bump it or nobody picks the refresh up.
+          version="0.1.$(date -u +%Y%m%d%H%M)"
+          jq --arg v "$version" '.version = $v' .claude-plugin/plugin.json > plugin.json.tmp
+          mv plugin.json.tmp .claude-plugin/plugin.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           rel=$(jq -r '.basecamp.tag' registry.json)
           idx=$(jq -r '.catalogs[0].indexGeneratedAt' registry.json)
-          git commit -m "refresh: Basecamp ${rel}, catalog index ${idx}"
+          git commit -m "refresh: Basecamp ${rel}, catalog index ${idx} (plugin ${version})"
           git push

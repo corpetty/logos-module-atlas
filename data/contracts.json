@@ -3,166 +3,198 @@
     "name": "amm_module",
     "status": "failed",
     "ref": "github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca#lidl",
-    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca' does not provide attribute 'packages.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
   },
   {
     "name": "blockchain_module",
-    "status": "cached",
-    "commit": "7952ba0cc9c519e1d5198b27de425c872d23b9fc"
+    "status": "ok",
+    "commit": "7952ba0cc9c519e1d5198b27de425c872d23b9fc",
+    "ref": "github:logos-blockchain/logos-blockchain-module/7952ba0cc9c519e1d5198b27de425c872d23b9fc#lidl"
   },
   {
     "name": "capability_module",
-    "status": "cached",
-    "commit": "1a1b8b5a1167931afbf41ebaafbe76034e6357a0"
+    "status": "ok",
+    "commit": "1a1b8b5a1167931afbf41ebaafbe76034e6357a0",
+    "ref": "github:logos-co/logos-capability-module/1a1b8b5a1167931afbf41ebaafbe76034e6357a0#lidl"
   },
   {
     "name": "chat_module",
-    "status": "cached",
-    "commit": "5053dd5062817f34a93055435781c1c448c7ce6c"
+    "status": "ok",
+    "commit": "5053dd5062817f34a93055435781c1c448c7ce6c",
+    "ref": "github:logos-co/logos-chat-module/5053dd5062817f34a93055435781c1c448c7ce6c#lidl"
   },
   {
     "name": "delivery_module",
-    "status": "cached",
-    "commit": "bec859430d963d5c0775af85456eff80d9d1c456"
+    "status": "ok",
+    "commit": "bec859430d963d5c0775af85456eff80d9d1c456",
+    "ref": "github:logos-co/logos-delivery-module/bec859430d963d5c0775af85456eff80d9d1c456#lidl"
   },
   {
     "name": "eth_rpc_module",
-    "status": "cached",
-    "commit": "42cc465e0cbd748117a0af0cf983404348683335"
+    "status": "ok",
+    "commit": "42cc465e0cbd748117a0af0cf983404348683335",
+    "ref": "github:logos-co/logos-evm-eth-rpc-module/42cc465e0cbd748117a0af0cf983404348683335#lidl"
   },
   {
     "name": "eth_wallet_backend",
-    "status": "cached",
-    "commit": "2866409f045096e7f9eb8bc01841555b42e7a167"
+    "status": "ok",
+    "commit": "2866409f045096e7f9eb8bc01841555b42e7a167",
+    "ref": "github:logos-co/logos-eth-wallet-backend/2866409f045096e7f9eb8bc01841555b42e7a167#lidl"
   },
   {
     "name": "evm_assets_module",
-    "status": "cached",
-    "commit": "3235e6bfaa63c85f5857591da290bb1631ece183"
+    "status": "ok",
+    "commit": "3235e6bfaa63c85f5857591da290bb1631ece183",
+    "ref": "github:logos-co/logos-evm-assets-module/3235e6bfaa63c85f5857591da290bb1631ece183#lidl"
   },
   {
     "name": "evm_keystore_cli",
-    "status": "cached",
-    "commit": "47554a1725fd654f0e4a19a9fa520492e28e2b2d"
+    "status": "ok",
+    "commit": "47554a1725fd654f0e4a19a9fa520492e28e2b2d",
+    "ref": "github:logos-co/logos-evm-keystore-cli/47554a1725fd654f0e4a19a9fa520492e28e2b2d#lidl"
   },
   {
     "name": "evm_signer_cli",
-    "status": "cached",
-    "commit": "861c2edafee23fd9322772d79c25a0ff5545e9e6"
+    "status": "ok",
+    "commit": "861c2edafee23fd9322772d79c25a0ff5545e9e6",
+    "ref": "github:logos-co/logos-evm-signer-cli/861c2edafee23fd9322772d79c25a0ff5545e9e6#lidl"
   },
   {
     "name": "fee_module",
-    "status": "cached",
-    "commit": "5bf49b768cf178d2e8c58267f17822060f813fbf"
+    "status": "ok",
+    "commit": "5bf49b768cf178d2e8c58267f17822060f813fbf",
+    "ref": "github:logos-co/logos-evm-fee-module/5bf49b768cf178d2e8c58267f17822060f813fbf#lidl"
   },
   {
     "name": "keystore_module",
-    "status": "cached",
-    "commit": "2318c679e2b7176967bd45052f3d64b2a8b06931"
+    "status": "ok",
+    "commit": "2318c679e2b7176967bd45052f3d64b2a8b06931",
+    "ref": "github:logos-co/logos-evm-keystore-module/2318c679e2b7176967bd45052f3d64b2a8b06931#lidl"
   },
   {
     "name": "lez_core",
-    "status": "cached",
-    "commit": "b89e5d24df5babc2490d2e5d47756fb1f33435dd"
+    "status": "ok",
+    "commit": "b89e5d24df5babc2490d2e5d47756fb1f33435dd",
+    "ref": "github:logos-blockchain/logos-execution-zone-module/b89e5d24df5babc2490d2e5d47756fb1f33435dd#lidl"
   },
   {
     "name": "lez_indexer_module",
-    "status": "cached",
-    "commit": "b27f3ee7a6fad18ddc0e022fbada81d8514e0d54"
+    "status": "ok",
+    "commit": "b27f3ee7a6fad18ddc0e022fbada81d8514e0d54",
+    "ref": "github:logos-blockchain/lez-indexer-module/b27f3ee7a6fad18ddc0e022fbada81d8514e0d54#lidl"
   },
   {
     "name": "liblogos_lez_rln_module",
-    "status": "cached",
-    "commit": "eb02da8f0cbbfc892365f32a713087f7cdb9aaa0"
+    "status": "ok",
+    "commit": "eb02da8f0cbbfc892365f32a713087f7cdb9aaa0",
+    "ref": "github:logos-co/logos-rln-modules/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0?dir=logos-lez-rln-module#lidl"
   },
   {
     "name": "liblogos_rln_module",
-    "status": "cached",
-    "commit": "eb02da8f0cbbfc892365f32a713087f7cdb9aaa0"
+    "status": "ok",
+    "commit": "eb02da8f0cbbfc892365f32a713087f7cdb9aaa0",
+    "ref": "github:logos-co/logos-rln-modules/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0?dir=logos-rln-module#lidl"
   },
   {
     "name": "libp2p_module",
-    "status": "cached",
-    "commit": "49f77430fbe6cc8dbb8eee2361670d7396565e5b"
+    "status": "ok",
+    "commit": "49f77430fbe6cc8dbb8eee2361670d7396565e5b",
+    "ref": "github:logos-co/logos-libp2p-module/49f77430fbe6cc8dbb8eee2361670d7396565e5b#lidl"
   },
   {
     "name": "logos_execution_zone",
-    "status": "cached",
-    "commit": "01ceef19af6e454469bb43c59088e76989103b3a"
+    "status": "ok",
+    "commit": "01ceef19af6e454469bb43c59088e76989103b3a",
+    "ref": "github:logos-blockchain/logos-execution-zone-module/01ceef19af6e454469bb43c59088e76989103b3a#lidl"
   },
   {
     "name": "modules_state",
-    "status": "cached",
-    "commit": "ed0f4ba534520542764775efc1d0ef705a02e616"
+    "status": "ok",
+    "commit": "ed0f4ba534520542764775efc1d0ef705a02e616",
+    "ref": "github:logos-co/logos-modules-state-module/ed0f4ba534520542764775efc1d0ef705a02e616#lidl"
   },
   {
     "name": "monero_node_module",
-    "status": "cached",
-    "commit": "ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f"
+    "status": "ok",
+    "commit": "ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f",
+    "ref": "github:logos-co/logos-monero-node-module/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f#lidl"
   },
   {
     "name": "monero_wallet_backend",
-    "status": "cached",
-    "commit": "769098441db339f7541ba8804722ae3f20614309"
+    "status": "ok",
+    "commit": "769098441db339f7541ba8804722ae3f20614309",
+    "ref": "github:logos-co/logos-monero-wallet-backend/769098441db339f7541ba8804722ae3f20614309#lidl"
   },
   {
     "name": "monero_wallet_cli",
-    "status": "cached",
-    "commit": "9f5958f7172a2f12c7fa16996da1ea3fdf1a7905"
+    "status": "ok",
+    "commit": "9f5958f7172a2f12c7fa16996da1ea3fdf1a7905",
+    "ref": "github:logos-co/logos-monero-wallet-cli/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905#lidl"
   },
   {
     "name": "monero_wallet_core_module",
-    "status": "cached",
-    "commit": "7fc923dcce9ac5d40db8dd30f658eb63849e7212"
+    "status": "ok",
+    "commit": "7fc923dcce9ac5d40db8dd30f658eb63849e7212",
+    "ref": "github:logos-co/logos-monero-wallet-core-module/7fc923dcce9ac5d40db8dd30f658eb63849e7212#lidl"
   },
   {
     "name": "monerod_module",
-    "status": "cached",
-    "commit": "9ed580d1423f3415f5934a18faddf022b616cb86"
+    "status": "ok",
+    "commit": "9ed580d1423f3415f5934a18faddf022b616cb86",
+    "ref": "github:logos-co/logos-monerod-module/9ed580d1423f3415f5934a18faddf022b616cb86#lidl"
   },
   {
     "name": "openmetrics",
-    "status": "cached",
-    "commit": "f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68"
+    "status": "ok",
+    "commit": "f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68",
+    "ref": "github:logos-co/openmetrics-module/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68#lidl"
   },
   {
     "name": "package_downloader",
-    "status": "cached",
-    "commit": "d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8"
+    "status": "ok",
+    "commit": "d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8",
+    "ref": "github:logos-co/logos-package-downloader-module/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8#lidl"
   },
   {
     "name": "package_manager",
-    "status": "cached",
-    "commit": "41df424fe04155c243db090659cef619e070a60b"
+    "status": "ok",
+    "commit": "41df424fe04155c243db090659cef619e070a60b",
+    "ref": "github:logos-co/logos-package-manager-module/41df424fe04155c243db090659cef619e070a60b#lidl"
   },
   {
     "name": "storage_module",
-    "status": "cached",
-    "commit": "a9c14b8c977da51310361b03fe4d9efd763ae926"
+    "status": "ok",
+    "commit": "a9c14b8c977da51310361b03fe4d9efd763ae926",
+    "ref": "github:logos-co/logos-storage-module/a9c14b8c977da51310361b03fe4d9efd763ae926#lidl"
   },
   {
     "name": "token_list_module",
-    "status": "cached",
-    "commit": "213e62853fe817bad02db8588b8be6ecd1e72211"
+    "status": "ok",
+    "commit": "213e62853fe817bad02db8588b8be6ecd1e72211",
+    "ref": "github:logos-co/logos-evm-token-list-module/213e62853fe817bad02db8588b8be6ecd1e72211#lidl"
   },
   {
     "name": "tx_sender_module",
-    "status": "cached",
-    "commit": "7cd2fead60a78ac9ac8a4337fd9f01e1ab5515e2"
+    "status": "ok",
+    "commit": "7cd2fead60a78ac9ac8a4337fd9f01e1ab5515e2",
+    "ref": "github:logos-co/logos-evm-tx-sender-module/7cd2fead60a78ac9ac8a4337fd9f01e1ab5515e2#lidl"
   },
   {
     "name": "uniswap_backend",
-    "status": "cached",
-    "commit": "b561baac2d32e7f9aa234c8529deb66eb344ec00"
+    "status": "ok",
+    "commit": "b561baac2d32e7f9aa234c8529deb66eb344ec00",
+    "ref": "github:logos-co/logos-uniswap-backend/b561baac2d32e7f9aa234c8529deb66eb344ec00#lidl"
   },
   {
     "name": "uniswap_module",
-    "status": "cached",
-    "commit": "cc677c301f45a00a1baac0358082df1fb271a650"
+    "status": "ok",
+    "commit": "cc677c301f45a00a1baac0358082df1fb271a650",
+    "ref": "github:logos-co/logos-evm-uniswap-module/cc677c301f45a00a1baac0358082df1fb271a650#lidl"
   },
   {
     "name": "verified_proxy_module",
-    "status": "cached",
-    "commit": "f0cf1f45def716515bca735ff04deab565c4a962"
+    "status": "ok",
+    "commit": "f0cf1f45def716515bca735ff04deab565c4a962",
+    "ref": "github:logos-co/logos-verified-proxy-module/f0cf1f45def716515bca735ff04deab565c4a962#lidl"
   }
 ]

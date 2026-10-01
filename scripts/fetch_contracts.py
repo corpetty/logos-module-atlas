@@ -43,9 +43,11 @@ def build_one(mod: dict, force: bool, timeout: int) -> dict:
     stamp = dest / ".contract-commit"
     if not src:
         return {"name": name, "status": "no-source"}
-    if not force and stamp.exists() and stamp.read_text().strip() == src["commit"] and (dest / f"{name}.lidl").exists():
-        return {"name": name, "status": "cached", "commit": src["commit"]}
     ref = f"{flake_ref(src)}#lidl"
+    # Same record whether built now or earlier, so an unchanged run leaves data/contracts.json alone.
+    ok = {"name": name, "status": "ok", "commit": src["commit"], "ref": ref}
+    if not force and stamp.exists() and stamp.read_text().strip() == src["commit"] and (dest / f"{name}.lidl").exists():
+        return {**ok, "_action": "cached"}
     try:
         p = subprocess.run(
             ["nix", "build", ref, "--no-link", "--print-out-paths"],
@@ -67,7 +69,7 @@ def build_one(mod: dict, force: bool, timeout: int) -> dict:
     shutil.copyfile(pick, target)
     target.chmod(0o644)
     stamp.write_text(src["commit"] + "\n")
-    return {"name": name, "status": "built", "commit": src["commit"], "ref": ref}
+    return {**ok, "_action": "built"}
 
 
 def main() -> None:
@@ -89,8 +91,9 @@ def main() -> None:
 
     with ThreadPoolExecutor(args.jobs) as pool:
         for r in pool.map(lambda m: build_one(m, args.force, args.timeout), mods):
+            action = r.pop("_action", r["status"])
             previous[r["name"]] = r
-            print(f"{r['status']:>8}  {r['name']}" + (f"  — {r['reason']}" if r.get("reason") else ""), file=sys.stderr, flush=True)
+            print(f"{action:>8}  {r['name']}" + (f"  — {r['reason']}" if r.get("reason") else ""), file=sys.stderr, flush=True)
 
     results_path.write_text(json.dumps(sorted(previous.values(), key=lambda r: r["name"]), indent=2) + "\n")
 
