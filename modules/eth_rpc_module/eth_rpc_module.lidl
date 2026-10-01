@@ -1,0 +1,39 @@
+module eth_rpc_module {
+  version "0.1.0"
+  depends []
+
+  method set_chain_config(chain_id: int, config_json: tstr) -> bool description "Store config for a chain. `config_json`: `{ endpoint, proxy?, proxyRequired?, timeoutSecs? }`.\nAn OMITTED `verifiedProxyMode` / `verifiedTimeoutSecs` preserves what is stored — only an\nexplicit `\"off\"` lowers the mode, so a sibling wallet cannot revoke it by silence."
+  method get_chain_config(chain_id: int) -> tstr
+  method remove_chain_config(chain_id: int) -> bool
+  method list_chains() -> tstr description "`{ ok, chains: [chainId, ...] }`."
+  method list_chain_configs() -> tstr description "The chain registry, including metadata, enabled state and device-wide scope."
+  method set_chain_enabled(chain_id: int, enabled: bool) -> tstr
+  method patch_chain_metadata(chain_id: int, metadata_json: tstr) -> tstr description "Patch name/nativeSymbol/nativeDecimals/testnet. Omitted keeps; explicit null clears."
+  method get_network_scope() -> tstr
+  method set_network_scope(scope: tstr) -> tstr
+  method verify_chain_id(chain_id: int) -> tstr description "`eth_chainId` round-trip → `{ ok, chainId }`."
+  method block_number(chain_id: int) -> tstr
+  method get_balance(chain_id: int, address: tstr) -> tstr
+  method call(chain_id: int, call_json: tstr, deadline_ms: ? int) -> tstr description "`eth_call` — `call_json` is a `{ to, data }` object (ERC20 reads).\n\n`deadline_ms` is the CALLER's own wall budget for this call, measured from when this\nmodule receives it. Absent or `0` leaves the chain's `timeoutSecs` in charge, so a\ncaller with no budget of its own is unchanged. A supplied value may only SHORTEN what\nthe chain already permits, never lengthen it: `chains.json` is shared with other\nwallets on this device, and a caller must not be able to widen its own exposure.\n\nThe rule, so the next method to take one is an instance rather than a second\nexception: a method gains a deadline when the caller has a budget this module cannot\ninfer. `call` is that method — it is the read behind a wallet's balance screen, and a\ncaller racing it against a timeout it could neither set nor read is what this fixes."
+  method get_transaction_count(chain_id: int, address: tstr) -> tstr
+  method gas_price(chain_id: int) -> tstr
+  method fee_history(chain_id: int, blocks: int, reward_percentiles_json: tstr) -> tstr
+  method estimate_gas(chain_id: int, tx_json: tstr) -> tstr
+  method send_raw_transaction(chain_id: int, raw_hex: tstr) -> tstr
+  method get_transaction_receipt(chain_id: int, hash_hex: tstr) -> tstr
+  method get_transaction_by_hash(chain_id: int, hash_hex: tstr) -> tstr
+  method raw_rpc(chain_id: int, method: tstr, params_json: tstr) -> tstr description "Escape hatch for any standard JSON-RPC method. `params_json` is a JSON array."
+  method raw_rpc_url(chain_id: int, url: tstr, method: tstr, params_json: tstr) -> tstr description "Like [`Self::raw_rpc`] but POSTs to an explicit `url` (not the chain's\nconfigured endpoint), reusing `chain_id`'s fail-closed proxied client. For\noff-chain JSON-RPC tied to a chain — e.g. an ERC-4337 bundler\n(`eth_sendUserOperation`) — so it too goes through net-proxy. `params_json`\nis a JSON array. On a chain set to `required` the proof-backed reads are REFUSED here:\nan arbitrary url cannot prove them, and answering anyway is a silent downgrade."
+  method ensure_chain_config(chain_id: int, config_json: tstr) -> tstr description "Seed a chain only where it is ABSENT, per field, returning which fields were written.\n`chains.json` is shared with other wallets on this device: a blanket overwrite silently\nretunes theirs, a blanket skip leaves a stale value we own."
+  method patch_chain_transport(chain_id: int, timeout_secs: int, verified_timeout_secs: int) -> tstr description "Overwrite only the transport timeouts this module owns. Lowering a default is useless\nwithout this — an existing chains.json already carries the old value. 0 leaves a field."
+  method patch_chain_endpoint(chain_id: int, endpoint: tstr) -> tstr description "Overwrite ONLY the endpoint, creating the chain with defaults if it is absent.\n`chains.json` is shared with other wallets on this device, so a user retyping an\nendpoint must not silently reset their verified-proxy mode or timeouts."
+  method set_verified_proxy_mode(chain_id: int, mode: tstr) -> tstr description "`\"off\"` talks to the endpoint; `\"required\"` routes through the light-client proxy and\nREFUSES rather than falling back. There is no `preferred`: answering from an unverified\nsource when verification was asked for is the failure this prevents. This module is the\nsingle owner of the mode — a consumer keeping its own copy can disagree with the truth."
+  method verified_proxy_status(chain_id: int) -> tstr description "The verified-proxy verdict for one chain: what state it is in, whether a verified call\nwould answer now, and what the user has to do about it.\n`{ ok, chainId, mode, state, usable, blocking, message, action, detail }`."
+  method config_status() -> tstr description "Whether a config has been SET, and what it is — no network I/O, no call to another\nmodule, so it is cheap enough for a consumer's startup path. `state` is the machine\ndiscriminator (`unready` / `unconfigured` / `configured`); never match on the message.\n`{ ok, state, source, chains: [{ chainId, state, source, endpoint?, verifiedProxyMode? }] }`."
+  method init_defaults() -> tstr description "Seed the built-in chains, per chain and per FIELD, only where absent. This module never\ncalls it itself; any consumer may, unconditionally and at any time. A missing default\nchain is seeded at most once per device (`registry.json` records each one offered), so\none removed with `remove_chain_config` stays removed. A second call from any consumer\nwrites nothing and answers `applied: false`, which is not an error.\n`{ ok, applied, seeded: { \"<chainId>\": [\"*\" | \"endpoint\", ...] } }`."
+
+  event chain_config_changed(chain_id: int) description "One chain's stored record was added, removed, or altered. Re-read `get_chain_config`."
+  event chain_enabled_changed(chain_id: int, enabled: bool)
+  event network_scope_changed(scope: tstr)
+  event verified_proxy_mode_changed(chain_id: int, mode: tstr) description "The verified-proxy gate for one chain moved. `mode` is the value now in force — `\"off\"`\nor `\"required\"` — and a chain whose config was removed reports `\"off\"`, which is what\n`verified_proxy_status` answers for it."
+}

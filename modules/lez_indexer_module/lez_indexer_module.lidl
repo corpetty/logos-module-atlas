@@ -1,0 +1,18 @@
+module lez_indexer_module {
+  version "1.2.0"
+  description "Logos Execution Zone Indexer Module for Logos Core"
+  category "blockchain"
+  depends []
+
+  method start_indexer(config_path: tstr) -> int description "Boot ingestion against the indexer config at `config_path` (must be an\nABSOLUTE path — the module runs in a logos_host subprocess). RocksDB state\nis stored under this module's instance persistence path (host-owned),\nindependent of the config. Idempotent: a second call while already running\nis a no-op. Returns 0 on success, else the FFI OperationStatus code.\nint64_t (not int): the universal codegen marshals int64_t/std::string/bool\nas scalar wire types; a plain `int` return is treated as a JSON payload."
+  method stop_indexer() -> int description "Stop ingestion and release the FFI handle. No-op (returns 0) when the\nindexer isn't running. Pair with start_indexer to apply a new config:\nstop, then start (start_indexer stays idempotent and won't restart on its\nown). Returns 0 on success, else the FFI OperationStatus code."
+  method reset_storage(config_path: tstr) -> int description "Stop the indexer (if running) and delete the RocksDB store for the config's\nchannel — `<storage>/rocksdb-<channel_id>`, where `<storage>` is resolved the\nsame way start_indexer resolves it (the host's instance persistence path, or\nthe process working directory when unset) — so the next start_indexer\nre-indexes from scratch. The recovery path when the store is stale against a\ndifferent/reset chain. Pass the same `config_path` given to start_indexer;\ndoes NOT restart. Returns 0 on success, else non-zero. int64_t for the same\ncodegen reason as start_indexer."
+  method getAccount(account_id: tstr) -> tstr description "Account by id, accepting Base58 (canonical) or 32-byte hex. The returned\nJSON omits the id; callers inject the queried id themselves."
+  method getBlockById(block_id: tstr) -> tstr description "Block by decimal block id."
+  method getBlockByHash(hash: tstr) -> tstr description "Block by 32-byte hex hash."
+  method getTransaction(hash: tstr) -> tstr description "Transaction by 32-byte hex hash."
+  method getBlocks(before: tstr, limit: tstr) -> tstr description "Page of blocks: `before` = \"\" for the tip, else a block id to page back\nfrom; `limit` is the decimal max count."
+  method getLastFinalizedBlockId() -> tstr description "Tip block id as a bare decimal string."
+  method getStatus() -> tstr description "Current ingestion status as the core's `IndexerStatus` JSON, passed\nthrough verbatim: { state (Starting/Syncing/CaughtUp/Error/Stalled),\nlast_error, indexed_block_id, stall_reason }. Empty string if the\nindexer isn't running."
+  method getTransactionsByAccount(account_id: tstr, offset: tstr, limit: tstr) -> tstr description "Transactions touching `account_id` (Base58 or 32-byte hex), paginated by\ndecimal `offset`/`limit`."
+}

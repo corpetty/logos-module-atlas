@@ -1,0 +1,12 @@
+{
+  "name": "logos-module-atlas",
+  "owner": { "name": "Corey Petty", "url": "https://github.com/corpetty" },
+  "description": "AI-readable registry of the official Logos modules shipped with the latest Logos Basecamp release.",
+  "plugins": [
+    {
+      "name": "logos-module-atlas",
+      "source": ".",
+      "description": "Know every official Logos module before you call one: cards, canonical LIDL contracts, annotated interfaces and stack docs, pinned to the released commits."
+    }
+  ]
+}

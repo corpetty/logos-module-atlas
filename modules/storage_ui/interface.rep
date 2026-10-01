@@ -1,0 +1,105 @@
+// Extracted by logos-module-atlas from logos-co/logos-storage-ui@63e9cb1755e4:src/StorageBackend.rep
+// https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.rep
+
+#include <QVariantList>
+#include <QUrl>
+
+class StorageBackend
+{
+    ENUM StorageStatus {
+        Stopped = 0,
+        Starting = 1,
+        Running = 2,
+        Stopping = 3,
+        Destroyed = 4
+    }
+
+    PROP(QString debugLogs READONLY)
+    PROP(StorageStatus status READONLY)
+    PROP(QString defaultConfigJson READONLY)
+    PROP(QString uiVersion READONLY)
+    PROP(QString moduleVersion READONLY)
+
+    // AutoNAT reachability reported by the node: "Reachable", "NotReachable"
+    // or "Unknown" while AutoNAT has no verdict yet.
+    PROP(QString natReachability READONLY)
+
+    // True when the running node was initialised with mix-enabled. Reflects the
+    // config the node currently runs with, not the persisted one.
+    PROP(bool mixRunning READONLY)
+
+    // Lifecycle
+    SLOT(void init(QString configJson))
+    SLOT(void start())
+    SLOT(void stop())
+    SLOT(void destroy())
+
+    // Upload / Download
+    SLOT(void uploadFile(QUrl url))
+    SLOT(void downloadFile(QString cid, QUrl url, qint64 totalBytes, bool isPrivate))
+    SLOT(void downloadManifest(QString cid, bool isPrivate))
+    SLOT(void downloadManifests())
+    SLOT(void exists(QString cid))
+    SLOT(void remove(QString cid))
+    SLOT(void fetch(QString cid))
+
+    // Space
+    SLOT(void refreshSpace())
+
+    // Config
+    SLOT(void updateUserConfig(QString configJson))
+    SLOT(QString getUserConfig())
+
+    // Onboarding
+    SLOT(void restartOnboarding())
+
+    // Widgets / Debug
+    SLOT(void fetchWidgetsData())
+
+    // Refresh peers and NAT reachability from the node debug info.
+    SLOT(void refreshNodeStatus())
+
+    SLOT(void logDebugInfo())
+    SLOT(void logDataDir())
+    SLOT(void logVersion())
+    SLOT(void logSpr())
+    SLOT(void logPeerId())
+
+    // Lifecycle signals
+    SIGNAL(initCompleted(bool success, QString error))
+    SIGNAL(startCompleted())
+    SIGNAL(startFailed(QString error))
+    SIGNAL(stopCompleted())
+
+    // Space
+    SIGNAL(spaceUpdated(qint64 total, qint64 used))
+
+    // Upload
+    SIGNAL(uploadStarted(qint64 totalBytes))
+    SIGNAL(uploadChunk(qint64 len))
+    SIGNAL(uploadCompleted(QString cid))
+
+    // Download
+    SIGNAL(downloadStarted(QString cid, QString filename, qint64 totalBytes))
+    SIGNAL(downloadChunk(qint64 len))
+    SIGNAL(downloadCompleted(QString cid))
+
+    // Manifests
+    SIGNAL(manifestsUpdated(QVariantList manifests))
+    SIGNAL(manifestFetchStarted(QString cid, bool isPrivate))
+    SIGNAL(manifestFetchFailed(QString cid, QString error))
+
+    // Remove
+    SIGNAL(removeStarted(QString cid))
+    SIGNAL(removeFailed(QString cid, QString error))
+
+    // Network / Onboarding
+    SIGNAL(onboardingRestarted())
+    SIGNAL(peersUpdated(int count))
+
+    // The whole payload of the module's debug call, as reported by the node.
+    SIGNAL(debugInfoUpdated(QVariantMap info))
+
+    // Errors
+    SIGNAL(error(QString message))
+}

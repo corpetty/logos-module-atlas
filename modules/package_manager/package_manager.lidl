@@ -1,0 +1,59 @@
+module package_manager {
+  version "1.0.0"
+  description "Plugin manager for the Logos system"
+  category "management"
+  depends []
+
+  method installPlugin(pluginPath: tstr, skipIfNotNewerVersion: bool, source: ? tstr) -> {tstr: any}
+  method inspectPackage(lgxPath: tstr) -> {tstr: any}
+  method setEmbeddedModulesDirectory(dir: tstr) -> void
+  method addEmbeddedModulesDirectory(dir: tstr) -> void
+  method setEmbeddedUiPluginsDirectory(dir: tstr) -> void
+  method addEmbeddedUiPluginsDirectory(dir: tstr) -> void
+  method setUserModulesDirectory(dir: tstr) -> void
+  method setUserUiPluginsDirectory(dir: tstr) -> void
+  method getInstalledPackages() -> [any]
+  method getInstalledModules() -> [any]
+  method getInstalledUiPlugins() -> [any]
+  method uninstallPackage(packageName: tstr) -> {tstr: any}
+  method resolveDependencies(packageName: tstr, recursive: bool) -> {tstr: any}
+  method resolveDependents(packageName: tstr, recursive: bool) -> {tstr: any}
+  method resolveFlatDependencies(packageName: tstr, recursive: bool) -> [any]
+  method resolveFlatDependents(packageName: tstr, recursive: bool) -> [any]
+  method getValidVariants() -> [tstr]
+  method setSignaturePolicy(policy: tstr) -> void
+  method setKeyringDirectory(dir: tstr) -> void
+  method verifyPackage(lgxPath: tstr) -> {tstr: any}
+  method addTrustedKey(name: tstr, did: tstr, displayName: tstr, url: tstr) -> {tstr: any}
+  method removeTrustedKey(name: tstr) -> {tstr: any}
+  method listTrustedKeys() -> [any]
+  method requestUninstall(packageName: tstr) -> {tstr: any}
+  method requestUpgrade(packageName: tstr, releaseTag: tstr, mode: int, depChanges: tstr) -> {tstr: any}
+  method requestInstall(packageName: tstr, releaseTag: tstr, repositoryUrl: tstr, depChanges: tstr) -> {tstr: any}
+  method confirmInstall(packageName: tstr) -> {tstr: any}
+  method cancelInstall(packageName: tstr) -> {tstr: any}
+  method ackPendingAction(packageName: tstr) -> {tstr: any}
+  method confirmUninstall(packageName: tstr) -> {tstr: any}
+  method cancelUninstall(packageName: tstr) -> {tstr: any}
+  method confirmUpgrade(packageName: tstr, releaseTag: tstr) -> {tstr: any}
+  method cancelUpgrade(packageName: tstr, releaseTag: tstr) -> {tstr: any}
+  method requestMultiUninstall(packageNamesIn: [tstr]) -> {tstr: any}
+  method confirmMultiUninstall(packageNamesIn: [tstr]) -> {tstr: any}
+  method cancelMultiUninstall(packageNamesIn: [tstr]) -> {tstr: any}
+  method resetPendingAction() -> {tstr: any}
+
+  event corePluginFileInstalled(path: tstr)
+  event uiPluginFileInstalled(path: tstr)
+  event corePluginUninstalled(packageName: tstr)
+  event uiPluginUninstalled(packageName: tstr)
+  event beforeUninstall(payload: tstr)
+  event beforeUpgrade(payload: tstr)
+  event beforeInstall(payload: tstr)
+  event beforeMultiUninstall(payload: tstr)
+  event uninstallCancelled(payload: tstr)
+  event upgradeCancelled(payload: tstr)
+  event installCancelled(payload: tstr)
+  event multiUninstallCancelled(payload: tstr)
+  event upgradeUninstallDone(payload: tstr)
+  event installApproved(payload: tstr)
+}

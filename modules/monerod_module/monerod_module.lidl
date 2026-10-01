@@ -1,0 +1,17 @@
+module monerod_module {
+  version "0.1.0"
+  description "Runs a Monero node in-process: per-network config, start, stop, status and log tail."
+  category "wallet"
+  depends []
+
+  method configure(network: tstr, config: {tstr: any}) -> result description "Merge `config` into the stored settings for `network` (mainnet|stagenet|testnet)."
+  method getConfig(network: tstr) -> {tstr: any} description "Stored settings for `network`, with defaults filled in."
+  method defaultConfig(network: tstr) -> {tstr: any} description "Default settings for `network`."
+  method start(network: tstr) -> result description "Start the node for `network`. Returns once its thread is running."
+  method stop() -> result description "Stop the node and wait for it to shut down."
+  method status() -> {tstr: any} description "@code{.json}\n{ \"state\": \"stopped|starting|running|stopping|failed\", \"network\": string,\n\"rpcUrl\": string, \"uptimeSecs\": number, \"dataDir\": string, \"version\": string,\n\"lastError\": string, \"height\": number, \"targetHeight\": number,\n\"synchronized\": bool, \"peersOut\": number, \"peersIn\": number,\n\"databaseSize\": string, \"chainAgeSecs\": number, \"tipAgeSecs\": number }\n@endcode\nNever waits on the node: the chain fields come from its last get_info answer,\n`chainAgeSecs` old (-1 before the first). `tipAgeSecs` is how far the top block's\nown timestamp lags the clock (-1 until one is known): `synchronized` stays true\nwith no peers, so it is the only field separating a stalled chain from a current one."
+  method rpcEndpoint(network: tstr) -> tstr description "Loopback RPC URL the node serves for `network`."
+  method logTail(lines: int) -> tstr description "The last `lines` lines of the running (or last run) node's log."
+
+  event monerodStateChanged(payloadJson: tstr) description "Emitted on every lifecycle transition, with the shape of status()."
+}

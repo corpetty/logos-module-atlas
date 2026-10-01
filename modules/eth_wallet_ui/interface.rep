@@ -1,0 +1,209 @@
+// Extracted by logos-module-atlas from logos-co/logos-eth-wallet-ui@81f86760371f:src/eth_wallet_ui.rep
+// https://github.com/logos-co/logos-eth-wallet-ui/blob/81f86760371fd038fcabbbe49d2728aa062eab59/src/eth_wallet_ui.rep
+
+// QtRO view contract for the Ethereum wallet.
+//
+// There is deliberately NO password parameter anywhere below, and there never may be. This
+// UI requests signatures and reads which accounts exist; the vault password is taken only by
+// evm_signer_ui, and key material only ever reaches evm_keystore_ui. CI asserts the absence.
+//
+// Everything crosses as a JSON string rather than a typed record, matching the backend's own
+// contract — the UI is a renderer, and inventing a second schema here would be a second place
+// for the two to disagree.
+class EthWalletUi
+{
+    PROP(QString lastError="" READONLY)
+
+    // Whether the account-and-chain-scoped values below were read under the selection also
+    // published here. False the moment either moves, and true again only once a read made
+    // under the new one lands: the view renders no scoped figure while it is false.
+    PROP(bool scopedDataFresh=false READONLY)
+    // A balances+history read is outstanding. The view spins only where a value is BOTH
+    // unknown and being read — a read that failed falls back to an em-dash, never to a
+    // spinner that never stops.
+    PROP(bool dataLoading=false READONLY)
+    // The BALANCES leg alone. `dataLoading` covers both legs of the same lane and stays up
+    // through the history call, so a spinner derived from it would keep spinning beside the
+    // error the balances read already produced. This one goes down the moment the amounts
+    // are answered, either way — a refusal is a finish.
+    PROP(bool balancesLoading=false READONLY)
+    PROP(bool quoteLoading=false READONLY)
+    // The fee tiers. Its read used to be synchronous and untimed on the GUI thread, so a slow
+    // node froze the whole view for as long as the backend's own allowance — which grew when
+    // that read started seeding eth_rpc.
+    PROP(bool feeTiersLoading=false READONLY)
+
+    // { chainId, key, name, nativeSymbol, testnet, rpcUrl, verifiedProxyMode, verifiedProxy }.
+    // `rpcUrl` is READ-ONLY here: eth_rpc owns the device-wide endpoint and the Ethereum RPC
+    // app is the only writer.
+    PROP(QString activeNetworkJson="{}" READONLY)
+    PROP(QString networksJson="[]" READONLY)
+    // Device-wide scope from eth_rpc_module: mainnets | testnets | both.
+    PROP(QString networkScope="mainnets" READONLY)
+
+    // eth_rpc's verdict for the UI-local selected chain, via the backend:
+    // { ok, chainId, mode, state, usable, blocking, message, action, detail }.
+    // `blocking` true means this view is deliberately showing no chain data.
+    PROP(QString verifiedProxyJson="{}" READONLY)
+
+    PROP(QString accountsJson="[]" READONLY)
+    PROP(QString selectedAccount="" READONLY)
+    // Account names from the keystore, { "<lowercase hex, no 0x>": "<name>" }. An account with
+    // no entry is shown by address — never by an invented "Account 2", which RENUMBERS when an
+    // account is added or removed.
+    PROP(QString accountLabelsJson="{}" READONLY)
+
+    // `{ "<address>": { wallet, index? } }` — the WALLET an account was derived under, so a
+    // picker can name an account its owner never named. Kept apart from the labels above
+    // because a wallet name is shared by every account under it; `index` is what separates
+    // them, and it is the derivation index rather than a position, so it never renumbers.
+    PROP(QString accountWalletsJson="{}" READONLY)
+
+    // The address book: `[{ address, name }]`, already ordered by the backend so a picker
+    // shows it as it comes. COUNTERPARTIES, not accounts this wallet holds keys for.
+    PROP(QString contactsJson="[]" READONLY)
+    // A refusal from the last save or forget, on its own line rather than the wallet's:
+    // a rejected nickname must not blank the error explaining a send that did not go out.
+    PROP(QString contactsError="" READONLY)
+
+    // Balances for the selected account across every enabled in-scope chain. EMPTY means
+    // "not read yet"; rows carry chainId and a blocked chain carries its own refusal.
+    PROP(QString balancesJson="" READONLY)
+    // eth_rpc's own label for the read behind those balances: "verified" (proof-backed),
+    // "proxied" / "direct" (forwarded on trust) or "unknown". Only "verified" may be badged
+    // as verified — a receipt or a fee estimate never can. Empty means the label says
+    // nothing about what is on screen: nothing was read, or the verdict moved under it.
+    PROP(QString balancesRoute="" READONLY)
+    // Offered tokens across every enabled in-scope chain. Each row carries chainId.
+    PROP(QString tokensJson="" READONLY)
+    // The persisted token order, "alpha" or "balance". Device-wide rather than scoped: it
+    // rides back on token and balance listings, so it is republished by whichever answers last.
+    PROP(QString tokenSort="alpha" READONLY)
+    // Rows carry their receipt numbers (feeWei, totalWei, blockNumber, nonce, …) only when
+    // the backend recorded them. A row written by an earlier build has none, and an absent
+    // field is an em-dash on the transaction screen — never a zero.
+    //
+    // EMPTY means "not read yet", exactly as balancesJson above: "[]" is the answer "this
+    // account has never sent anything", which a failed or unmade read may not give.
+    PROP(QString historyJson="" READONLY)
+    // Chains whose blocking verified proxy froze pending rows during the last sweep:
+    // [{ chainId, network, count, hashes, message, action, verifiedProxy }]. Includes chains
+    // this view is not showing, where a row frozen at "pending" is explained nowhere else —
+    // so empty is, like sweepingReceipts below, an answer a failed read may NOT give.
+    PROP(QString blockedChainsJson="" READONLY)
+    // True while the receipt sweep is still scheduled. False once no recorded transaction
+    // can move again — which is also the answer a failed read must NOT be allowed to give.
+    PROP(bool sweepingReceipts=false READONLY)
+    // Per chain, the nonce holding up later sends: [{ chainId, nonce, behind, why, since,
+    // hash?, label?, origin?, resend? }]. `why` is pending | stalled | unresolved | stranded.
+    // Read by the same call as the history, so empty means unknown, as there.
+    PROP(QString blockedNoncesJson="" READONLY)
+    // A resend is being checked or priced.
+    PROP(bool resendLoading=false READONLY)
+    // A priced resend for the human to review: { request, quote }. Confirm sends `request`
+    // through submitSend; empty when there is none.
+    PROP(QString resendReviewJson="" READONLY)
+
+    // Extra detail for ONE transaction, fetched on demand: { ok, hash, chainId, route,
+    // fetchedAt, gasPriceUnit, block?, transaction?, blockError?, transactionError? }.
+    //
+    // It CARRIES the hash it is about, and the screen renders it only for that hash — open one
+    // transaction, fetch, go back, open another, and the second must not show the first's
+    // mined time. Scoped like every other figure, so it is withdrawn with them.
+    PROP(QString txDetailsJson="" READONLY)
+    // A fetch is outstanding. The rows it will fill keep their em-dashes: one spinner on the
+    // control the user pressed says the same thing as four spinners spread over the card.
+    PROP(bool txDetailsLoading=false READONLY)
+    // A receipt re-read is outstanding. Its call runs the verified gate and then polls the
+    // chain, so it is asynchronous and the button that started it has to say it is running.
+    PROP(bool txStatusLoading=false READONLY)
+
+    // { baseFeePerGas, source, tiers: { slow, normal, fast } }. `source` distinguishes a real
+    // EIP-1559 suggestion from the legacy gasPrice fallback and is shown to the user, because
+    // a wallet silently pricing off gasPrice is how an overpayment goes unnoticed.
+    PROP(QString feeTiersJson="{}" READONLY)
+
+    // The last prepare_send result: the quote the Send screen renders.
+    PROP(QString quoteJson="{}" READONLY)
+    // The request those figures priced. The Send screen renders them only while this still
+    // equals the request the form describes: a quote for another request is not stale, it is
+    // about a form that is no longer on screen. Empty means nothing priced is standing.
+    PROP(QString quoteRequestJson="" READONLY)
+    // Errors from the Send path only. Separate from lastError because the Send dialog is
+    // modal: a message written to lastError renders behind the scrim, where nobody is looking.
+    PROP(QString sendError="" READONLY)
+    // True when the last automatic fee refresh failed. The previous quote stays on screen —
+    // the send is re-priced by the backend at submit time regardless — but the view says so.
+    PROP(bool quoteStale=false READONLY)
+
+    // The send awaiting a human. Empty when nothing is in flight. Deliberately NOT withdrawn
+    // by a selection change: it is a request sitting in the signer, not a figure on screen,
+    // and forgetting it here would orphan an approval the user still has to answer.
+    PROP(QString pendingRequestId="" READONLY)
+
+    // The KEYSTORE's name for the same request. Carried separately rather than sliced off
+    // `pendingRequestId`: string surgery on an opaque id would make the backend's format
+    // this view's business, and what a signer must be handed is the keystore's word, not
+    // ours. Empty exactly when `pendingRequestId` is.
+    PROP(QString pendingApprovalHandle="" READONLY)
+
+    // How the last send ended: `{ status, hash?, hashes?, reason? }`, or empty before the first
+    // one. `hashes` is every transaction of the send: a bundle another app asked for is more
+    // than one, and the app is answered with all of them.
+    // Set as `pendingRequestId` clears, because that is the instant the waiting dialog
+    // disappears — and the shell may be returning the user here at exactly that moment, so
+    // something has to be left on screen that explains the trip.
+    PROP(QString lastSendOutcomeJson="" READONLY)
+
+    // A request from ANOTHER APP to send transactions from this wallet, under review:
+    // `{ requestId, requester, chainId, from, purpose, calls, fee?, error? }`. Empty when
+    // nothing is being reviewed. The app never sees a key: it hands over calls, the human
+    // sees them here first, and the same signer approval follows as for the wallet's own send.
+    PROP(QString intentSendJson="" READONLY)
+    // The sender is pricing the request above. Down when `fee` or `error` lands.
+    PROP(bool intentSendPricing=false READONLY)
+
+    SLOT(void refresh())
+    SLOT(void selectAccount(QString address))
+
+    // UI-local cursor used only by Send. It changes no device state.
+    SLOT(void selectChain(int chainId))
+    // Price a send without side effects — safe to call on every edit.
+    SLOT(void quote(QString requestJson))
+    // Re-price the open Send dialog on a timer. Off while the dialog is closed.
+    SLOT(void setQuoteAutoRefresh(bool on))
+    // Ask a human to approve. Returns nothing signed; poll with pollSend().
+    SLOT(void submitSend(QString requestJson))
+    SLOT(void pollSend())
+    SLOT(void cancelSend())
+    SLOT(void refreshTxStatus(QString hashHex))
+    // Price the transfer at a blocked nonce again, pinned to it, at fees a node will take as
+    // its replacement, and put it up for review. Nothing happens for a chain with nothing to resend.
+    SLOT(void resendBlockedNonce(int chainId))
+    // Withdraw the resend under review without sending it.
+    SLOT(void dismissResend())
+    // Read the block and transaction fields no receipt carries, for one recorded transaction.
+    SLOT(void fetchTxDetails(QString hashHex))
+    // Re-read the verdict alone. Deliberately not a full refresh: the chip polls it.
+    SLOT(void refreshVerifiedProxy())
+    // Sweep this account's still-pending transactions for receipts.
+    SLOT(void refreshPending())
+
+    // Put another app's request on screen and price it. The JSON is
+    // `{ requestId, requester, params }` as the intent bridge delivered it.
+    SLOT(void reviewIntentSend(QString requestJson))
+    // The human said yes: the calls go to the sender, and the send is then the wallet's own
+    // pending send — same poll, same signer hand-off, same outcome dialog.
+    SLOT(void acceptIntentSend())
+    SLOT(void declineIntentSend())
+
+    // Persist the token order. Named apart from the `tokenSort` property it moves: the
+    // generated setter for a PROP already owns setTokenSort(), and a SLOT may not collide
+    // with it. Answered by a tokenSort change, not by an event.
+    SLOT(void chooseTokenSort(QString order))
+
+    // Add or rename. An empty name is allowed — saving an address before naming its owner is
+    // the common case from a send form.
+    SLOT(void saveContact(QString address, QString name))
+    SLOT(void forgetContact(QString address))
+}

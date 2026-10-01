@@ -1,0 +1,10 @@
+module evm_assets_module {
+  version "0.1.0"
+  depends []
+
+  method list_assets(chain_id: int, tokens_json: tstr) -> tstr description "Native currency followed by the given ERC-20 descriptors, as asset rows."
+  method get_balances(chain_id: int, address: tstr, tokens_json: tstr, token_sort: tstr) -> tstr description "One Multicall3 read for native and every given token balance."
+  method build_transfer(chain_id: int, request_json: tstr) -> tstr description "Build exactly one unsigned native or ERC-20 call, resolved among native and the\nrequest's `tokens`. Never signs or broadcasts."
+  method resolve_asset(chain_id: int, key: tstr, tokens_json: tstr) -> tstr description "Resolve native or one given token by exact address or unambiguous symbol."
+  method decorate_history(history_json: tstr, tokens_json: tstr) -> tstr description "Decorate sender history with `{ \"<chainId>\": [descriptors] }`, native only for a chain\nthe map omits. A chain-registry failure leaves that chain's rows intact, reported in\n`decorationErrors`; it never erases usable activity from the other chains."
+}

@@ -1,0 +1,184 @@
+// Extracted by logos-module-atlas from logos-co/logos-package-manager-ui@3174edd016f8:src/package_manager_ui.rep
+// https://github.com/logos-co/logos-package-manager-ui/blob/3174edd016f8464c6bbdb667db54d0f7b117a62c/src/package_manager_ui.rep
+
+#include <QVariantMap>
+#include <QStringList>
+#include <QUrl>
+
+class PackageManagerUi
+{
+    ENUM InstallStatus {
+        NotInstalled       = 0,
+        Installing         = 1,
+        Installed          = 2,
+        Failed             = 3,
+        UpgradeAvailable   = 4,
+        DowngradeAvailable = 5,
+        DifferentHash      = 6
+    }
+
+    ENUM ErrorType {
+        NoError                       = 0,
+        InstallationAlreadyInProgress = 2,
+        NoPackagesSelected            = 3,
+        PackageManagerNotConnected    = 4,
+        UninstallFailed               = 5,
+        PackageNotUninstallable       = 6,
+        LocalPackageInvalid           = 7
+    }
+
+    ENUM ProgressType {
+        IdleState      = 0,
+        Started        = 2,
+        InProgress     = 3,
+        Completed      = 4,
+        ProgressFailed = 5
+    }
+
+    ENUM NotAvailableReason {
+        Available           = 0,
+        NoVariantsPublished = 1,
+        BuildFlavorMismatch = 2,
+        PlatformMismatch    = 3,
+        NotOnLogosStorage   = 4,
+        NotOverHttp         = 5
+    }
+
+    // Per-row primary action — resolved against the row's currently
+    // selected dropdown version. Drives the Action column label + the
+    // pill's click target. Uninstall lives in the row's overflow menu,
+    // not here. See PackageTypes.h for the long comment.
+    ENUM RowAction {
+        Install      = 0,
+        Upgrade      = 1,
+        Downgrade    = 2,
+        Reinstall    = 3,
+        Retry        = 4,
+        NotAvailable = 5,
+        NoOp         = 6
+    }
+
+    ENUM DownloadSource {
+        NoSource = 0,
+        Builtin  = 1,
+        GitHub   = 2,
+        Storage  = 3,
+        LocalFile = 4
+    }
+
+    PROP(QStringList categories)
+    PROP(int selectedCategoryIndex)
+    PROP(QStringList availableTypes READONLY)
+    PROP(int selectedTypeIndex)
+    // Number of selected rows whose rowAction is runnable (anything
+    // other than NoOp / NotAvailable). Drives the "Run Actions (N)"
+    // header button label + enabled state.
+    PROP(int runnableActionCount READONLY)
+    // Per-action counts among the selected rows:
+    //   { install: N, upgrade: N, downgrade: N, reinstall: N, retry: N }
+    // Keys with a zero count are omitted. Feeds the confirm-summary
+    // popup's category headers before "Run Actions" actually fires.
+    PROP(QVariantMap actionSummary READONLY)
+    // Per-row detail accompanying actionSummary. One entry per
+    // selected runnable row, in model order:
+    //   { name, displayName, action, repository, fromVersion, toVersion }
+    // The popup groups by `action` (matching the keys in
+    // actionSummary) and renders one line per row underneath the
+    // category header, so the user sees exactly which package is
+    // upgrading from which version to which. fromVersion is empty
+    // on a fresh install (no prior installed copy).
+    PROP(QVariantList actionPlanItems READONLY)
+    PROP(bool isInstalling READONLY)
+    PROP(bool isLoading READONLY)
+
+    PROP(QString searchText)
+    PROP(int installStateFilter)
+    PROP(bool showUnavailable)
+    PROP(int pageSize)
+    PROP(int currentPage)
+    PROP(int totalCount READONLY)
+    PROP(int availableHereCount READONLY)
+    PROP(QString hostVariant READONLY)
+    PROP(int repositoryCount READONLY)
+    PROP(QVariantMap repositoryLabels READONLY)
+    PROP(QString sortRole)
+    PROP(int sortOrder)
+
+    // Role name → int role ID map for the `packages` model.
+    // QAbstractItemModel::roleNames() isn't Q_INVOKABLE, so JS-side callers
+    // (tests via the QML inspector, any declarative walker) can't reach it
+    // on the QAbstractItemModelReplica. Exposing the resolved map here lets
+    // callers do `packagesModel.data(m.index(row, 0), packageRoleIds.size)`.
+    // Populated once at backend construction.
+    PROP(QVariantMap packageRoleIds READONLY)
+
+    // Refresh releases + catalog from package_downloader. Top-bar Reload button.
+    SLOT(void refreshCatalog())
+    // Install a .lgx sitting on the user's disk — the local-file sibling of
+    // the catalog install path. `fileUrl` is a file:// URL straight from the
+    // QML FileDialog
+    SLOT(void installLocalPackage(QUrl fileUrl))
+    // STUB. Reports failure and does nothing. The bulk surface is off in QML,
+    // and confirmation is raised by QML now — a backend slot has no way to ask
+    // for one. Reviving bulk means building the plan in QML and raising ONE
+    // combined confirm intent for the batch.
+    SLOT(void runSelectedActions())
+    // Legacy bulk-install slot — kept for backwards compat with any
+    // out-of-tree caller. The UI now drives bulk work through
+    // `runSelectedActions()` (which subsumes installs + version
+    // changes); this slot is unwired from the header button.
+    SLOT(void installSelected())
+    // STUB, same as runSelectedActions.
+    SLOT(void uninstallSelected())
+    // Toggle a row's checkbox state.
+    SLOT(void togglePackage(int index, bool checked))
+    // Per-row plugin-runtime toggle via logoscore. Stub — not wired yet.
+    SLOT(void reloadPackage(int index))
+
+    // Pick a different version for the row at `index`. The QML version
+    // dropdown calls this on user selection; the next install picks up
+    // the row's `selectedVersionIndex` and downloads the corresponding
+    // (version, rootHash) via package_downloader.downloadPinned.
+    SLOT(void setRowVersion(int index, int versionIndex))
+
+    // Request a row's full details; reply via packageDetailsLoaded.
+    SLOT(void requestPackageDetails(int index))
+
+    // Map a backend moduleName back to its user-facing package `name` so
+    // the cascade dialog renders dependents with the same label shown in
+    // the Package column. Returns moduleName unchanged when no catalog
+    // row matches (e.g. a dependent outside the active category filter).
+    SLOT(QString displayNameForModule(QString moduleName))
+
+    // ── Confirmed actions ─────────────────────────────────────────────────
+    SLOT(void performInstall(QString name, QString version, QString repositoryUrl, QVariantList optionalPackages))
+    SLOT(void performUpgrade(QString moduleName, QString version, int mode, QString repositoryUrl, QVariantList optionalPackages))
+    SLOT(void performUninstall(QStringList names))
+
+    // Host refused, was unreachable, cancelled, or never answered. Called for
+    // EVERY non-approval including `cancelled`, because this is the only place
+    // the pending-action stashes are dropped; suppressing the toast for a
+    // user's own cancel is the backend's job, not the caller's.
+    SLOT(void reportActionFailed(QStringList names, QString error))
+
+    // User-actionable error; errorType maps to the ErrorType enum.
+    SIGNAL(errorOccurred(int errorType))
+    // Per-package install progress updates.
+    SIGNAL(installationProgressUpdated(int progressType, QString packageName, int completed, int total, bool success, QString error))
+    // Reply to requestPackageDetails.
+    SIGNAL(packageDetailsLoaded(QVariantMap details))
+    // Backend cleared model selection programmatically (e.g. release switch);
+    // QML should mirror by clearing LogosTable.selectedIndices.
+    SIGNAL(selectionsCleared())
+    // System-originated cancel of an in-flight install/uninstall/upgrade.
+    // `message` is pre-formatted for verbatim toast display.
+    SIGNAL(cancellationOccurred(QString name, QString message))
+
+    // A local .lgx the user picked, after inspectPackage read its manifest.
+    // The ONE thing QML cannot determine for itself — name, version and
+    // whether it is already installed live inside the file — so this is the
+    // only action that still needs a backend round trip before confirmation.
+    // `mode` is a valid UpgradeMode when isUpgrade, otherwise ignored.
+    SIGNAL(localPackageInspected(QString name, QString version,
+                                 int mode, bool isUpgrade))
+}

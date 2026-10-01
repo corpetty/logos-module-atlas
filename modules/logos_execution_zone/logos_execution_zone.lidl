@@ -1,0 +1,37 @@
+module logos_execution_zone {
+  version "1.0.0"
+  description "Logos Execution Zone Module for Logos Core"
+  category "blockchain"
+  depends []
+
+  method name() -> tstr
+  method version() -> tstr
+  method create_new(config_path: tstr, storage_path: tstr, password: tstr) -> int
+  method open(config_path: tstr, storage_path: tstr) -> int
+  method save() -> int
+  method create_account_public() -> tstr
+  method create_account_private() -> tstr
+  method list_accounts() -> [any]
+  method get_balance(account_id_hex: tstr, is_public: bool) -> tstr
+  method get_account_public(account_id_hex: tstr) -> tstr
+  method get_account_private(account_id_hex: tstr) -> tstr
+  method get_public_account_key(account_id_hex: tstr) -> tstr
+  method get_private_account_keys(account_id_hex: tstr) -> tstr
+  method account_id_to_base58(account_id_hex: tstr) -> tstr
+  method account_id_from_base58(base58_str: tstr) -> tstr
+  method sync_to_block(block_id: int) -> int
+  method get_last_synced_block() -> int
+  method get_current_block_height() -> int
+  method claim_pinata(pinata_account_id_hex: tstr, winner_account_id_hex: tstr, solution_le16_hex: tstr) -> tstr
+  method claim_pinata_private_owned_already_initialized(pinata_account_id_hex: tstr, winner_account_id_hex: tstr, solution_le16_hex: tstr, winner_proof_index: int, winner_proof_siblings_json: tstr) -> tstr
+  method claim_pinata_private_owned_not_initialized(pinata_account_id_hex: tstr, winner_account_id_hex: tstr, solution_le16_hex: tstr) -> tstr
+  method transfer_public(from_hex: tstr, to_hex: tstr, amount_le16_hex: tstr) -> tstr
+  method transfer_shielded(from_hex: tstr, to_keys_json: tstr, amount_le16_hex: tstr) -> tstr
+  method transfer_deshielded(from_hex: tstr, to_hex: tstr, amount_le16_hex: tstr) -> tstr
+  method transfer_private(from_hex: tstr, to_keys_json: tstr, amount_le16_hex: tstr) -> tstr
+  method transfer_shielded_owned(from_hex: tstr, to_hex: tstr, amount_le16_hex: tstr) -> tstr
+  method transfer_private_owned(from_hex: tstr, to_hex: tstr, amount_le16_hex: tstr) -> tstr
+  method register_public_account(account_id_hex: tstr) -> tstr
+  method register_private_account(account_id_hex: tstr) -> tstr
+  method get_sequencer_addr() -> tstr
+}

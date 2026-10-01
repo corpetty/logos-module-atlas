@@ -1,0 +1,43 @@
+module monero_wallet_backend {
+  version "0.1.0"
+  depends []
+
+  method configure(config_json: tstr) -> tstr description "Name who holds the two roles: `{ approvers?, custodians? }` → `{ ok, approvers, custodians }`.\nTOTAL — a role the document does not name is held by nobody — and in force at once, on a\nmodule serving the defaults (`monero_wallet_ui` holds both roles: Monero's password is a\nonce-per-session unlock, so the surface that spends is the surface that unlocks) since\nit loaded. A malformed document is refused and the roles in force stay.\n\nUNGATED, deliberately and for now — the same standing gap keystore_module documents: any\ncaller can name itself custodian. Protecting it is deferred, not refuted."
+  method caller_identity() -> tstr description "`{ ok, kind, identity, approvers, custodians }` — who this call authenticated as, and who\nholds the roles. A headless relay uses it to say exactly which `configure` would admit it."
+  method list_networks() -> tstr description "`{ ok, networks: [...], active }`."
+  method set_active_network(network: tstr) -> tstr description "CUSTODIAN. Refused while a wallet is open or a send is in flight."
+  method list_wallets() -> tstr description "`{ ok, wallets: [{ name, network, label, viewOnly, restoreHeight, address }] }` — the\nregistry merged with what the engine finds on disk; unverified files have network=\"\"."
+  method open_wallet(name: tstr, password: tstr) -> tstr description "CUSTODIAN. Open on the selected network; a verified wallet on another network is refused.\n`{ ok, jobId }`; poll job_status. The core verifies the encrypted wallet before connecting."
+  method create_wallet(name: tstr, password: tstr, label: tstr) -> tstr description "CUSTODIAN. `{ ok, jobId }`. The wallet is registered on the active network."
+  method restore_from_seed(params_json: tstr) -> tstr description "`params_json`: `{ name, password, seed, restoreHeight, seedOffset?, label? }` → `{ ok, jobId }`."
+  method restore_from_keys(params_json: tstr) -> tstr description "`params_json`: `{ name, password, address, viewKey, spendKey?, restoreHeight, label? }` → `{ ok, jobId }`."
+  method close_wallet() -> tstr description "`{ ok, jobId }`."
+  method change_password(old_password: tstr, new_password: tstr) -> tstr
+  method reveal_seed(password: tstr) -> tstr description "Pass-through to the engine, which re-checks the password. Never cached here."
+  method reveal_view_key(password: tstr) -> tstr
+  method job_status(job_id: tstr) -> tstr description "`{ ok, state: queued|running|done|failed, result?, error? }` for a backend job id."
+  method wallet_status() -> tstr description "The engine's status plus `syncPercent` and the registry's meta for the open wallet."
+  method balances(account_index: int) -> tstr description "`{ ok, balance, unlocked, balanceXmr, unlockedXmr }` — atomic units as decimal strings.\nA read the engine could not serve answers `{ ok: false, busy: true }` while it is building\nor committing: unread, not zero, and not a failure a poller should report."
+  method receive_info(account_index: int) -> tstr description "`{ ok, address, subaddresses: [{ index, address, label }] }`."
+  method create_subaddress(account_index: int, label: tstr) -> tstr
+  method set_subaddress_label(account_index: int, address_index: int, label: tstr) -> tstr description "Rename a subaddress, or clear the label with an empty string. `{ ok, index, label }`."
+  method history() -> tstr description "`{ ok, rows: [...] }`, newest first, amounts as decimal strings + XMR strings."
+  method address_valid(address: tstr) -> bool
+  method node_health() -> tstr description "The node module's health for the active network."
+  method node_config() -> tstr description "The active network's node config, with the RPC password REDACTED to `hasPassword`.\nA wallet surface needs to know a password is set, never what it is."
+  method local_node() -> tstr description "Whether monerod_module can serve the active network: `{ ok, available, rpcUrl?, status?, error? }`."
+  method set_node_config(config_json: tstr) -> tstr description "CUSTODIAN. Point the active network at a different daemon.\n`{ url, username?, password?, proxy?, proxyRequired?, trusted?, mode? }` — omitting `password`\nKEEPS the stored one; send `\"\"` to clear it. `mode` is `remote` unless it says `local`.\nRefused while a wallet is open, because wallet2 binds its daemon at init."
+  method prepare_send(send_json: tstr) -> tstr description "Build a transaction for review. `send_json`: `{ address, amountXmr | amount, priority?, accountIndex? }`.\n`{ ok, requestId }`; poll send_status for the preview. At most one send in flight."
+  method send_status(request_id: tstr) -> tstr description "`{ ok, requestId, state: preparing|previewed|committing|sent|failed|cancelled, preview?, txids?, error? }`."
+  method list_sends() -> tstr description "`{ ok, sends: [{ requestId, state }] }` — every request not yet acked away; what a headless\napprover polls to find previews awaiting a decision."
+  method confirm_send(request_id: tstr) -> tstr description "APPROVER. Broadcast a previewed transaction. This governs BROADCAST — the engine already\nsigned when it built the preview."
+  method cancel_send(request_id: tstr) -> tstr
+  method format_xmr(atomic: tstr) -> tstr
+  method parse_xmr(xmr: tstr) -> tstr
+
+  event wallet_state_changed(payload: tstr) description "The engine's state moved; payload is wallet_status()'s shape."
+  event sync_progress(payload: tstr) description "`{ walletHeight, daemonHeight, percent, synchronized }`, on every change."
+  event balance_changed(payload: tstr) description "`{ balance, unlocked }` for account 0, on every change."
+  event send_status_changed(request_id: tstr, state: tstr)
+  event job_finished(job_id: tstr, state: tstr)
+}

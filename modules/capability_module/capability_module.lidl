@@ -1,0 +1,9 @@
+module capability_module {
+  version "1.0.0"
+  description "Coordinates permissions between modules"
+  category "security"
+  depends []
+
+  method requestModule(fromModuleName: tstr, moduleName: tstr) -> tstr
+  method registerRestriction(authToken: tstr, targetModule: tstr, allowedCallers: [tstr]) -> bool
+}

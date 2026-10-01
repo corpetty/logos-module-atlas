@@ -1,0 +1,58 @@
+name: Refresh registry
+
+# Re-resolve the latest Basecamp release and its default catalog, rebuild any
+# contract whose pinned commit moved, and commit the result.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      basecamp_tag:
+        description: "Basecamp release tag (blank = latest release)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            extra-substituters = https://cache.nix.logos.co/public
+            extra-trusted-public-keys = public:l4HrXgL4nw246+LBh2SOJyhz64BoGegOYLheT/iIAPU=
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Regenerate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JOBS: "3"
+        run: |
+          args=()
+          if [ -n "${{ inputs.basecamp_tag }}" ]; then args=(--basecamp-tag "${{ inputs.basecamp_tag }}"); fi
+          scripts/refresh.sh "${args[@]}"
+
+      - name: Commit changes
+        run: |
+          # generatedAt alone changing is not worth a commit.
+          if git diff --quiet -- . ':!registry.json' && \
+             [ -z "$(git diff -U0 -- registry.json | grep '^[+-] ' | grep -v generatedAt)" ] && \
+             [ -z "$(git status --porcelain --untracked-files=all | grep '^??')" ]; then
+            echo "No changes."; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          rel=$(jq -r '.basecamp.tag' registry.json)
+          idx=$(jq -r '.catalogs[0].indexGeneratedAt' registry.json)
+          git commit -m "refresh: Basecamp ${rel}, catalog index ${idx}"
+          git push

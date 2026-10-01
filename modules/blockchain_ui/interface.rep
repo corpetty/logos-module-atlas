@@ -1,0 +1,257 @@
+// Extracted by logos-module-atlas from logos-blockchain/logos-blockchain-ui@c499bf195d07:src/BlockchainBackend.rep
+// https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/src/BlockchainBackend.rep
+
+class BlockchainBackend
+{
+    ENUM BlockchainStatus { NotStarted=0, Starting=1, Running=2, Stopping=3, Stopped=4, Error=5 }
+    // Unknown covers both "node isn't running" and "blend hasn't reported yet".
+    //
+    // Inactive is appended, never inserted: the value crosses the QtRO boundary,
+    // so renumbering Edge or Core would silently change what they mean. Nothing
+    // sets it today — blend_info only tells Core from Edge, and there is no
+    // switch that turns blend off — but the view already renders it, so when the
+    // node can say "off" this becomes one branch in refreshBlendRole().
+    ENUM BlendRole { Unknown=0, Edge=1, Core=2, Inactive=3 }
+
+    ENUM ConfigState { ConfigUnknown=0, ConfigOk=1, ConfigStale=2, ConfigUnreadable=3, ConfigUpgraded=4 }
+
+    PROP(BlockchainStatus status READONLY)
+    PROP(BlendRole blendRole READONLY)
+    PROP(QString userConfig READWRITE)
+    PROP(QString deploymentConfig READWRITE)
+    PROP(bool useGeneratedConfig READWRITE)
+    PROP(QString generatedUserConfigPath READONLY)
+    PROP(ConfigState configState READONLY)
+    PROP(QStringList configDropped READONLY)
+    PROP(QString configBackupPath READONLY)
+    PROP(QString mergeConfigReportPath READONLY)
+    PROP(QVariantMap configPowSection READONLY)
+    PROP(QString nodeDataDir READONLY)
+    PROP(QString nodeKeystorePath READONLY)
+    // Whether the keystore for the current config has been saved somewhere
+    // else. Set by a successful backupKeystore and by nothing else: the wizard's
+    // checkbox lets you past the step, it does not make a copy exist.
+    PROP(bool keysBackedUp READONLY)
+    // Bootstrap peers for the network this build targets, read from the
+    // module's own metadata.json. generate_user_config writes exactly the list
+    // it is handed and does NOT fall back to the deployment's own peers, so a
+    // config generated without these is a node that never finds the chain.
+    PROP(QStringList bootstrapPeers READONLY)
+    // The LEZ channel a deposit can be pre-filled with, read from the same
+    // metadata.json. Neither the LEZ wallet nor the indexer publishes the
+    // channel id, so a build that targets a known LEZ deployment carries it
+    // here; empty means the deposit view offers no preset at all.
+    PROP(QString lezChannelId READONLY)
+
+    // Whether the user is part-way through setup.
+    PROP(bool setupInProgress READWRITE)
+    PROP(QVariantList accountRows)
+
+    // PoW tickets waiting to be claimed, and when the nearest of them lapses.
+    PROP(int claimableTickets)
+    PROP(int soonestExpirySlots)
+    // How many tickets share that soonest deadline
+    PROP(int soonestExpiryCount)
+    PROP(bool claimableLoaded)
+    PROP(QString claimableError)
+    PROP(bool claimablePollActive READWRITE)
+    // The claimable count moved on one of the last few readings — the only proof
+    // of PoW activity the app can stand behind. `mining` cannot do this job: it
+    // is what we last asked for, not what the node is doing, and there is no
+    // pow_is_mining() to correct it.
+    //
+    // Deliberately blind to WHY it moved. A fall can be a claim being submitted,
+    // a claim landing, or the pruner discarding expired tickets, and nothing here
+    // can tell those apart — which is why the claimsStalled verdict that used to
+    // sit beside this was removed rather than repaired. Awaiting payout, Mining
+    // Rewards and the expiry countdown report the same ground truth by measuring
+    // it instead of inferring it.
+    PROP(bool powActive READONLY)
+
+    PROP(QString lastErrorMessage READONLY)
+    // lastErrorMessage is progress (replaying blocks), not a failure.
+    PROP(bool nodeRecovering READONLY)
+    // Ticks once per block the node processes. The value is meaningless; the
+    // *change* is the signal — proof the node is making progress, arriving on a
+    // push channel that keeps working when the status RPC is too busy to answer.
+    PROP(int processedBlockCount READONLY)
+    // The processed-block stream delivered its end sentinel. Resubscribing needs
+    // a node stop/start, so the silence after this is permanent, not slowness.
+    PROP(bool blockStreamEnded READONLY)
+    // The chain the running node was started against, from get_chain_id
+    PROP(QString chainId READONLY)
+    // What the node module's process costs this machine. Sampled here rather
+    // than reported by the node: liblogos measures it (it is what Basecamp's
+    // Core Inspector shows) but exposes it to hosts only — see
+    // logos-co/logos-liblogos#219
+    PROP(double nodeCpuPercent READONLY)
+    PROP(double nodeMemoryMb READONLY)
+    PROP(int cpuCount READONLY)
+    // What the node's data directory holds, and what is left on its volume.
+    // Unlike the two above this is NOT waiting on #219 — nothing anywhere in
+    // the stack measures disk, so the app is the right place for it. Free space
+    // is the one that matters: running out corrupts the chain db rather than
+    // slowing it down. -1 in either means the data directory was not located.
+    PROP(double nodeDiskUsedMb READONLY)
+    PROP(double nodeDiskFreeMb READONLY)
+    // libp2p connectivity of the running node, from get_network_info. -1 is
+    // "not reported": zero peers is a real and rather important reading, so it
+    // cannot double as the unknown value.
+    PROP(int peerCount READONLY)
+    PROP(int connectionCount READONLY)
+    // Whether any known address holds tokens — the lifecycle lane's "Funded".
+    // Refreshed with the account balances, not on the status poll: there is no
+    // total-balance call, so it costs one request per key, and it answers a
+    // question that changes rarely.
+    PROP(bool walletFunded READONLY)
+    // What this node has actually earned leading blocks, accumulated by the app
+    // from LeaderRewardClaimed events and persisted — see EarnedLedger. The
+    // node has no lifetime total to ask for: wallet_get_claimable_vouchers is
+    // what is *unclaimed*, and goes to zero the moment a claim settles.
+    //
+    // Gross: the reward note carries the full amount, and the claim's gas comes
+    // out of other notes, so no fee is netted off here.
+    //
+    // An empty total is "not counted yet" — the ledger cannot be opened before
+    // the node reports which chain it is on. A reported "0" is a real reading.
+    PROP(QString earnedTotal READONLY)
+    PROP(int earnedClaimCount READONLY)
+    PROP(int earnedClaimsSubmitted READONLY)
+    PROP(int powClaimsSubmitted READONLY)
+    PROP(int earnedClaimsPending READONLY)
+    PROP(int powClaimsPending READONLY)
+    // When this tally began, ISO 8601, or empty if it has not started. Both
+    // reward tiles are honest only if they say what they cover: nobody hands the
+    // app a lifetime total, so "12 vouchers since 14 Mar" is a true statement
+    // where a bare "12 vouchers" is a guess about everything before that.
+    PROP(QString claimsCountingSince READONLY)
+    // The notes this node can lead with, from wallet_get_leader_aged_notes
+    PROP(QString stakeTotal READONLY)
+    PROP(int stakeNoteCount READONLY)
+    PROP(QStringList stakeAddresses READONLY)
+    // Whole seconds the node has been *online*, 0 whenever it is not. Both the
+    // clock and the online edge live here: getCryptarchiaInfo already reads the
+    // node's `mode`, so the backend has the verdict in hand and only needed the
+    // same debounce the view applies. Keeping it here makes the clock monotonic,
+    // survive view reloads, and cost no round trip per edge.
+    // Falling out of Online resets it — time online is not cumulative, and a
+    // counter that survived a resync would be claiming continuity it never had.
+    // Pushed at the granularity the view renders, not once a second; see
+    // uptimeTickMs in BlockchainBackend.cpp.
+    PROP(int uptimeSeconds READONLY)
+    // Whether the NODE module is reachable — as opposed to this backend, which
+    // is what the view could see before and which stays healthy when the node
+    // module dies. False means its process is gone, not that it is busy. This is
+    // NOT the view's `connected`: that one means "the app lost the backend" and
+    // asks for an app restart, which is the wrong remedy for a dead node module.
+    PROP(bool nodeModuleReachable READONLY)
+    // Whether PoW mining was last *asked for* from here — intent, not state.
+    // Cleared on every transition out of Running, and wrong in between whenever
+    // the node starts or stops mining on its own.
+    //
+    // Named for what it actually is. It is the fallback for miningActive on a
+    // module with no pow_status, and the optimistic update that keeps the button
+    // responsive between a toggle and the next poll. Bind views to miningActive.
+    PROP(bool miningRequested READONLY)
+    // PoW reward claims paid to one of this wallet's keys, all-time for this
+    // chain — not per session. They used to reset on every start, on the premise
+    // that the block stream resumed at the tip; it does not, it replays whatever
+    // the node applies while catching up, so the counter silently refilled with
+    // history after a resync and meant something different every run. Both now
+    // come from ClaimLedger, which dedupes, gates on finality and persists.
+    PROP(int powRewardsClaimed READONLY)
+    // What those claims minted, in lepta, as a decimal string. GROSS, from the
+    // PoWRewardClaimed event's own note.
+    //
+    // This figure CHANGED: it used to be summed from the claim transaction's
+    // transfer outputs, which includes the change paid back to the claim key, so
+    // it counted the change as income and ran above the wallet balance without
+    // bound. The event's note is the minted reward and nothing else.
+    PROP(QString powRewardsLepta READONLY)
+    // Whether auto-claim was last started from here, seeded from the config's
+    // pow.auto_claim.targets. Intent and inference, like miningRequested, and
+    // the fallback for autoClaimArmed when pow_status is unavailable.
+    //
+    // It follows the node's own default, which is OFF: unattended claiming is
+    // opt-in through pow.auto_claim.targets, and generate_user_config writes no
+    // pow section at all, so a freshly generated config has nothing to arm.
+    PROP(bool autoClaimRunning READONLY)
+
+    // ---- PoW runtime state, read back from the node (pow_status) ----
+    PROP(bool powStatusKnown READONLY)
+    PROP(bool miningActive READONLY)
+    PROP(bool autoClaimArmed READONLY)
+    PROP(bool autoClaimSelfDisarmed READONLY)
+    PROP(bool powRewardsEnabled READONLY)
+    PROP(int autoClaimTick READONLY)
+    PROP(QString autoClaimTickUnit READONLY)
+    PROP(QVariantList powClaimTargets READONLY)
+
+    SLOT(void startBlockchain())
+    SLOT(void stopBlockchain())
+    SLOT(void refreshAccounts())
+    SLOT(QVariantMap getBalance(QString addressHex))
+    SLOT(QVariantMap transferFunds(QString fromKeyHex, QString toKeyHex, QString amountStr))
+    SLOT(QVariantMap claimLeaderRewards())
+    SLOT(QVariantMap getCryptarchiaInfo())
+    SLOT(QVariantMap getTimeInfo())
+    SLOT(QVariantMap getBlock(QString headerIdHex))
+    SLOT(QVariantMap getTransaction(QString txHashHex))
+    SLOT(QVariantMap findTransactionInBlocks(QString txHashHex))
+    SLOT(QVariantMap getPeerId())
+    SLOT(QVariantMap getClaimableVouchers())
+    SLOT(QVariantMap generateConfig(QString outputPath, QStringList initialPeers, int netPort, int blendPort, QString httpAddr, QString externalAddress, bool noPublicIpCheck, int deploymentMode, QString deploymentConfigPath, bool newNode))
+    SLOT(QVariantMap upgradeConfig())
+    SLOT(QVariantMap getNotes(QString walletAddressHex, QString optionalTipHex))
+    SLOT(QVariantMap channelDepositWithNotes(QString channelIdHex, QStringList inputNoteIdHexes, QString metadataBase58, QString changePublicKeyHex, QStringList fundingPublicKeyHexes, QString maxTxFee, QString optionalTipHex))
+    // A stop the user asked for was refused. Deliberately a signal, not a state:
+    // the node is still running and still catching up, so the status must keep
+    // saying so — this is a one-off "that didn't work, try again", not a mode
+    // the UI should sit in.
+    SIGNAL(stopFailed(QString reason))
+
+    SLOT(QVariantMap powStartMining())
+    SLOT(QVariantMap powStopMining())
+    // Tickets this node could claim right now, as the module's JSON:
+    // { claimable_tickets, slots_until_expiry: [ ... ] }. Polled rather than
+    // pushed, so the view owns the cadence.
+    SLOT(QVariantMap powClaimableRewards())
+    // claimAddressHex may be empty, which pays whichever auto-claim target is
+    // currently furthest below its threshold — the same choice auto-claim makes.
+    SLOT(QVariantMap powClaim(QString claimAddressHex))
+    // Runtime overrides on the node's own default. Neither is persisted, so both
+    // are undone by a node restart rather than by writing the config back.
+    SLOT(QVariantMap powStartAutoClaim())
+    SLOT(QVariantMap powStopAutoClaim())
+    // PoW config, edited into an already-generated user_config.yaml. The node
+    // reads it once when its PoW service starts, so the wizard offers it while
+    // the config is being written and before the node has ever run.
+    // getConfigWalletKeys reads the accounts out of that file rather than the
+    // wallet, which needs a running node the wizard does not have yet.
+    SLOT(QVariantMap getConfigWalletKeys(QString configPath))
+    SLOT(QVariantMap getPowConfig(QString configPath))
+    // Every PoW setting in one call. Deliberately not one call per field: the
+    // module validates the whole object against the file before writing any of
+    // it, so a rejected target cannot leave the mining knobs applied and the
+    // config half-configured.
+    SLOT(QVariantMap powConfigure(QString configPath, QString configJson))
+    // Claim-history filter: 0 all, 1 pending only. Applied on
+    // the source side so the remoted model holds only the rows that pass, which
+    // keeps ListView.count honest instead of counting hidden rows.
+    // Copies the keystore to a path the user picked. Copy, never move: the
+    // node still needs the original. Answers { success, value, error } with the
+    // destination on success.
+    SLOT(QVariantMap backupKeystore(QString destinationPath))
+    // Every key the keystore holds, as rows { address, label } — not just the
+    // ones the config wires to a job, which is what getConfigWalletKeys
+    // answers. The setup wizard shows the whole set, because what has to be
+    // backed up is the file, and a list that quietly omitted the blend and
+    // network keys would understate what is at stake.
+    SLOT(QVariantMap getKeystoreKeys(QString configPath))
+    SLOT(void setClaimHistoryFilter(int mode))
+    // Same, for the mining history. Two lists, two filters: they are
+    // different tabs, and one shared filter would move both.
+    SLOT(void setMiningHistoryFilter(int mode))
+    SLOT(void clearBlocks())
+    SLOT(void copyToClipboard(QString text))
+}

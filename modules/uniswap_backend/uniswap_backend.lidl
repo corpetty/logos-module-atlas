@@ -1,0 +1,23 @@
+module uniswap_backend {
+  version "0.1.0"
+  depends []
+
+  method networks() -> tstr description "The chains a swap can happen on: eth_rpc's enabled, in-scope chains that uniswap_module\nholds a deployment for. `{ ok, scope, networks: [{ chainId, name, nativeSymbol,\nnativeDecimals, testnet, verifiedProxyMode }], unsupported: [chainId] }`; `unsupported`\nnames enabled chains Uniswap is not deployed on."
+  method verdict(chain_id: int) -> tstr description "eth_rpc's verified-proxy verdict for `chain_id`: `{ ok, chainId, mode, state, usable,\nblocking, message, action, detail }`. A verdict that cannot be read is a blocking\n`mode: \"unknown\"` one, never `off`."
+  method tokens(chain_id: int) -> tstr description "The native coin, then the tokens offered on `chain_id` (pinned and enabled), as asset\nrows: `{ ok, chainId, tokens: [{ symbol, name, decimals, address?, native, … }] }`."
+  method catalogue(chain_id: int, query: tstr, offset: int, limit: int) -> tstr description "The token picker: token_list's catalogue for `chain_id`, the native row first on the\nfirst page. `{ ok, chainId, total, offset, shown, hasMore, listed, tokens, listError? }`."
+  method balances(chain_id: int, address: tstr, tokens_json: tstr) -> tstr description "Balances of `address` on `chain_id` for the native coin, every offered token and any\nextra token rows the caller names (the pair on screen, say). evm_assets' reply:\n`{ ok, chainId, address, tokenSort, balances, route }`."
+  method fee_tiers(chain_id: int) -> tstr description "fee_module's tiers for `chain_id`, relayed verbatim."
+  method accounts() -> tstr description "The keystore's accounts, their names and the wallets they were derived under, in one\nreply: `{ ok, accounts, labels?, wallets? }`. Read-only: this module can never create,\nimport or sign."
+  method quote(request_json: tstr) -> tstr description "Price a swap without side effects. `request_json`: `{ chainId, from, tokenIn, tokenOut,\namountUnits | amountIn, decimalsIn?, decimalsOut?, symbolIn?, symbolOut?, slippageBps?,\ndeadlineMins?, tier?, recipient?, maxFeePerGas?, maxPriorityFeePerGas?, gasLimits?,\nnonce? }`; a token is an address, \"ETH\", or an offered symbol, and missing decimals are\nlooked up. The fee fields are the user's, in wei, relayed as given, `gasLimits` one per\ncall in build order. The reply is uniswap_module's `build_swap` with the display figures\nand `tx_sender_module`'s `prepare` under `fee`."
+  method swap(request_json: tstr) -> tstr description "Build the swap afresh and ask the sender to make it: `{ ok, pending, requestId, handle,\nchainId, from, purpose, amountOutMin, deadline }`. Nothing is signed yet; poll\n`swap_status`."
+  method swap_status(request_id: tstr) -> tstr description "Advance a swap and report where it got to: the sender's `send_status` and its `final`,\nread off `status` for a sender that predates it. Polling IS the broadcast. `final:\nfalse` means ask again, refusals included."
+  method cancel_swap(request_id: tstr) -> tstr description "Withdraw a swap nobody has approved yet, releasing its nonces."
+  method swaps(address: tstr, chain_id: int) -> tstr description "This app's swaps for `address` on `chain_id`, newest first, one entry per bundle:\n`{ ok, chainId, address, stillDue, swaps: [{ requestId, status, timestamp, hashes, legs,\nswap, label, origin, via }] }`. Receipts due are swept first."
+
+  event networks_changed(chain_id: int) description "A chain's record, its enabled switch, or the device scope moved (`-1`: every chain)."
+  event tokens_changed(chain_id: int) description "The tokens offered on `chain_id`, or its native coin's metadata, moved."
+  event accounts_changed(count: int) description "The keystore's accounts moved. `count` is advisory; re-read `accounts`."
+  event swap_status_changed(request_id: tstr) description "A swap changed state."
+  event swaps_changed(address: tstr) description "A recorded row for `address` changed; empty when the sender named only a hash."
+}

@@ -1,0 +1,41 @@
+{
+  "stacks": {
+    "evm-wallet":     { "title": "EVM wallet",          "summary": "Ethereum/EVM accounts, signing, fees, RPC, tokens, swaps — one keystore, one tx sender, human approval in a signer UI." },
+    "monero-wallet":  { "title": "Monero wallet",       "summary": "wallet2 (monero_c) in-process, a backend coordinator, remote or in-process monerod." },
+    "blockchain-lez": { "title": "Blockchain & LEZ",    "summary": "Logos blockchain node, the Logos Execution Zone (LEZ) client/wallet, indexer, explorer and AMM." },
+    "messaging":      { "title": "Messaging",           "summary": "Delivery (Waku-style) node, e2e chat, libp2p, and RLN membership/proofs." },
+    "storage":        { "title": "Storage",             "summary": "Logos Storage node: upload, download, manifests." },
+    "platform":       { "title": "Platform",            "summary": "What Basecamp ships itself: package manager & downloader, capability (permissions), module lifecycle state, metrics, accounts." }
+  },
+  "modules": {
+    "keystore_module": "evm-wallet", "evm_signer_ui": "evm-wallet", "evm_signer_cli": "evm-wallet",
+    "evm_keystore_ui": "evm-wallet", "evm_keystore_cli": "evm-wallet", "tx_sender_module": "evm-wallet",
+    "fee_module": "evm-wallet", "eth_rpc_module": "evm-wallet", "eth_rpc_ui": "evm-wallet",
+    "verified_proxy_module": "evm-wallet", "verified_proxy_ui": "evm-wallet", "token_list_module": "evm-wallet",
+    "token_list_ui": "evm-wallet", "evm_assets_module": "evm-wallet", "uniswap_module": "evm-wallet",
+    "uniswap_backend": "evm-wallet", "uniswap_ui": "evm-wallet", "eth_wallet_backend": "evm-wallet",
+    "eth_wallet_ui": "evm-wallet",
+
+    "monero_wallet_core_module": "monero-wallet", "monero_wallet_backend": "monero-wallet",
+    "monero_node_module": "monero-wallet", "monerod_module": "monero-wallet", "monerod_ui": "monero-wallet",
+    "monero_wallet_ui": "monero-wallet", "monero_wallet_cli": "monero-wallet",
+
+    "blockchain_module": "blockchain-lez", "blockchain_ui": "blockchain-lez", "lez_core": "blockchain-lez",
+    "lez_wallet_ui": "blockchain-lez", "lez_indexer_module": "blockchain-lez", "lez_explorer_ui": "blockchain-lez",
+    "logos_execution_zone": "blockchain-lez", "amm_module": "blockchain-lez", "amm_ui": "blockchain-lez",
+
+    "delivery_module": "messaging", "chat_module": "messaging", "chat_ui": "messaging", "delivery_demo": "messaging",
+    "libp2p_module": "messaging", "liblogos_rln_module": "messaging", "liblogos_lez_rln_module": "messaging",
+
+    "storage_module": "storage", "storage_ui": "storage",
+
+    "package_manager": "platform", "package_downloader": "platform", "capability_module": "platform",
+    "modules_state": "platform", "modules_state_module": "platform", "package_manager_ui": "platform",
+    "openmetrics": "platform", "accounts_ui": "platform", "json_rpc_bridge": "platform"
+  },
+  "byCategory": {
+    "wallet": "evm-wallet", "blockchain": "blockchain-lez", "amm": "blockchain-lez", "explorer": "blockchain-lez",
+    "chat": "messaging", "messaging": "messaging", "protocol": "messaging",
+    "storage": "storage", "monitoring": "platform", "general": "platform"
+  }
+}

@@ -1,0 +1,24 @@
+module token_list_module {
+  version "0.1.0"
+  depends []
+
+  method configure(config_json: tstr) -> bool description "Set configuration: `{ listUrls?, proxy?, proxyRequired?, refreshSecs?,\ntimeoutSecs?, useEmbeddedList? }`. Omitted keys keep their stored value.\nEmits `config_changed`, plus `tokens_updated` for any chain the new\nconfig re-serves (`useEmbeddedList` is the one that moves rows)."
+  method config_status() -> tstr description "Whether a config has been SET, and what it is → `{ ok, state, source,\nconfig?, counts }`. No network I/O, so it is cheap on a startup path."
+  method init_defaults() -> tstr description "Apply the built-in offline defaults, only where nothing is configured →\n`{ ok, applied, state, source, config }`. Idempotent; `applied: false`\nmeans somebody got there first and is not an error. Emits\n`config_changed` when it applied, and normally no `tokens_updated`."
+  method refresh_now() -> tstr description "Fetch all configured lists through the fail-closed proxy → `{ ok, tokenCount }`."
+  method get_tokens(chain_id: int) -> tstr description "Merged builtin + custom + downloaded + embedded tokens for a chain, each row\nlabelled with the bucket it came from → `{ ok, tokens: [...] }`."
+  method get_tokens_by_address(chain_id: int, addresses_json: tstr) -> tstr description "Metadata for specific tokens only; `addresses_json` is a JSON array of\nhex addresses matched case-insensitively → `{ ok, tokens: [...] }`."
+  method get_all_tokens() -> tstr
+  method set_token_enabled(chain_id: int, address: tstr, enabled: bool) -> tstr description "Enable snapshots the catalogue row; disabling removes the snapshot. Pinned rows cannot\nbe disabled. `{ ok, chainId, address, enabled, changed }`."
+  method get_enabled_tokens(chain_id: int) -> tstr description "Persisted snapshots for one chain, each with `resolved` saying whether a current\ncatalogue bucket still describes the address."
+  method list_offered(chain_id: int) -> tstr description "Pinned rows followed by enabled snapshots. ERC-20 only."
+  method list_available(chain_id: int, query: tstr, offset: int, limit: int) -> tstr description "Offered rows first, then the rest of the catalogue, with search and pagination."
+  method add_custom_token(token_json: tstr) -> bool description "Add a user token: `{ chainId, address, name, symbol, decimals, logoURI? }`."
+  method import_custom_tokens(list_json: tstr, replace: bool) -> tstr description "Bulk-ingest one Uniswap-schema document into the CUSTOM list; the caller\nsupplies the bytes, so this fetches nothing. `replace` swaps the list\nwholesale, else entries merge → `{ ok, tokenCount }`."
+  method remove_custom_token(chain_id: int, address: tstr) -> bool
+  method get_custom_tokens() -> tstr
+  method get_list_sources() -> tstr
+
+  event tokens_updated(chain_id: int) description "The rows `get_tokens(chain_id)` serves have changed. Emitted once per\naffected chain, after the change is on disk."
+  event config_changed(source: tstr) description "The stored configuration record moved. Separate from `tokens_updated`\nbecause most config edits (a proxy, a refresh interval, a list URL) move\nno token row at all, and this store is shared between apps: without this\na consumer can only learn of another app's edit by polling\n`config_status`. `source` is the new `none|default|external` and is\nADVISORY — re-read `config_status()` for the record itself."
+}

@@ -1,0 +1,42 @@
+// Extracted by logos-module-atlas from logos-blockchain/logos-execution-zone-wallet-ui@4e49d9cead17:src/LEZWalletBackend.rep
+// https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/4e49d9cead1732e5c6089690d3eed4b0aff2d0f5/src/LEZWalletBackend.rep
+
+class LEZWalletBackend
+{
+    PROP(bool isWalletOpen READONLY)
+    PROP(bool isStartupResolved READONLY)
+    PROP(QString configPath READONLY)
+    PROP(QString storagePath READONLY)
+    PROP(QString notice READONLY)
+    PROP(int lastSyncedBlock READONLY)
+    PROP(int currentBlockHeight READONLY)
+    PROP(QString sequencerAddr READONLY)
+    PROP(QString testnetUrl READONLY)
+    PROP(QString localhostUrl READONLY)
+
+    SLOT(QString createAccountPublic())
+    SLOT(QString createAccountPrivate())
+    SLOT(void refreshAccounts())
+    SLOT(QString getBalance(QString accountIdHex, bool isPublic))
+    SLOT(void refreshBalances())
+    SLOT(QString getPublicAccountKey(QString accountIdHex))
+    SLOT(QString getPrivateAccountKeys(QString accountIdHex))
+    SLOT(bool syncToBlock(quint64 blockId))
+
+    SLOT(QString transferPublic(QString fromHex, QString toHex, QString amountStr))
+    SLOT(QString transferPrivate(QString fromHex, QString toHex, QString amountStr))
+    SLOT(QString transferPrivateOwned(QString fromHex, QString toHex, QString amountStr))
+    SLOT(QString transferShielded(QString fromHex, QString toKeysJson, QString amountStr))
+    SLOT(QString transferShieldedOwned(QString fromHex, QString toHex, QString amountStr))
+    SLOT(QString transferDeshielded(QString fromHex, QString toHex, QString amountStr))
+
+    SLOT(QString bridgeWithdraw(QString fromHex, QString bedrockAccountPkHex, QString amountStr))
+
+    SLOT(QString createNew(QString password, QString sequencerAddr))
+    SLOT(QString openExisting(QString configPath, QString storagePath))
+
+    SLOT(void copyToClipboard(QString text))
+
+    SLOT(bool checkLabelAvailable(QString label))
+    SLOT(QString addLabel(QString label, QString accountIdHex, bool isPublic))
+}

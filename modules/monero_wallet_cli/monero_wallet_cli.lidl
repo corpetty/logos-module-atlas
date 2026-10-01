@@ -1,0 +1,38 @@
+module monero_wallet_cli {
+  version "0.1.0"
+  depends []
+
+  method status() -> tstr description "`{ ok, held, custodian, approver, identity, approvers, custodians, awaiting, hint }`.\n`held` is \"holds every role this module needs\"; `hint` names the exact `configure`."
+  method open_wallet(name: tstr, password: tstr) -> tstr description "CUSTODIAN. Open a registered wallet on the active network. `{ ok, jobId }`; poll job_status."
+  method create_wallet(name: tstr, password: tstr, label: tstr) -> tstr description "CUSTODIAN. `{ ok, jobId }`. The wallet is registered on the active network and left open."
+  method restore_from_seed(params_json: tstr) -> tstr description "CUSTODIAN. `{ name, password, seed, restoreHeight, seedOffset?, label? }` as one quoted\ndocument or `@file`. A restore height of 0 scans from genesis — hours."
+  method restore_from_keys(params_json: tstr) -> tstr description "CUSTODIAN. `{ name, password, address, viewKey, spendKey?, restoreHeight, label? }`.\nOmit `spendKey` for a view-only wallet."
+  method change_password(old_password: tstr, new_password: tstr) -> tstr description "CUSTODIAN. `{ ok, jobId }`."
+  method reveal_seed(password: tstr) -> tstr description "CUSTODIAN. The 25-word seed, after the backend re-checks the password. Never stored."
+  method reveal_view_key(password: tstr) -> tstr description "CUSTODIAN. The private view key, after the backend re-checks the password."
+  method set_active_network(network: tstr) -> tstr description "CUSTODIAN. Refused while a wallet is open or a send is in flight."
+  method close_wallet() -> tstr description "Either role. Stores and closes the open wallet. `{ ok, jobId }`."
+  method prepare_send(send_json: tstr) -> tstr description "Build a send for review: `{ address, amountXmr | amount, priority?, accountIndex? }` as one\nquoted document. `{ ok, requestId }`; the preview arrives as a `prompt` event."
+  method transfer(address: tstr, amount_xmr: tstr) -> tstr description "`transfer <address> <amount>` — prepare_send without writing a JSON document by hand."
+  method show(request_id: tstr) -> tstr description "The block a human reads for one previewed send, plus the backend's status."
+  method confirm(request_id: tstr) -> tstr description "APPROVER: broadcast the previewed send. Governs BROADCAST — the engine signed at build."
+  method cancel(request_id: tstr) -> tstr description "Withdraw an unbroadcast send."
+  method list() -> tstr description "`{ ok, sends: [{ requestId, state }] }`."
+  method send_status(request_id: tstr) -> tstr
+  method job_status(job_id: tstr) -> tstr description "`{ ok, state: queued|running|done|failed, result?, error? }` for a lifecycle job id."
+  method wallet_status() -> tstr
+  method list_wallets() -> tstr
+  method list_networks() -> tstr
+  method balances(account_index: int) -> tstr
+  method receive_info(account_index: int) -> tstr description "The primary address and every subaddress of an account."
+  method address_new(account_index: int, label: tstr) -> tstr description "`address new [<label>]` — derive a fresh subaddress on the account."
+  method history() -> tstr
+  method address_valid(address: tstr) -> bool
+  method format_xmr(atomic: tstr) -> tstr
+  method parse_xmr(xmr: tstr) -> tstr
+  method caller_identity() -> tstr
+
+  event prompt(request_id: tstr, text: tstr) description "A send reached `previewed`. `text` is the whole block a human reads."
+  event settled(request_id: tstr, state: tstr) description "`sent` | `failed` | `cancelled` — the request left the awaiting set."
+  event queue_changed(count: int)
+}

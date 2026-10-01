@@ -1,0 +1,22 @@
+module monero_node_module {
+  version "0.1.0"
+  depends []
+
+  method set_node_config(network: tstr, config_json: tstr) -> tstr description "Store one network's config from `{ url, username?, password?, proxy?, proxyRequired?, timeoutSecs?, trusted?, mode? }`.\nA full replace: `mode` is `remote` unless the config says `local`."
+  method get_node_config(network: tstr) -> tstr
+  method effective_node(network: tstr) -> tstr description "What a wallet dials: the stored config, or in local mode monerod_module's loopback URL,\ntrusted and unproxied. `{ ok, result }` like get_node_config."
+  method local_node(network: tstr) -> tstr description "`{ ok, available, rpcUrl?, status?, error? }`: whether monerod_module can serve `network`."
+  method remove_node_config(network: tstr) -> bool
+  method list_networks() -> tstr description "`{ ok, networks: [name, ...] }`."
+  method config_status() -> tstr description "`{ ok, state: \"unready\"|\"unconfigured\"|\"configured\", source, networks }`."
+  method init_defaults() -> tstr description "Seed well-known defaults per-field-if-absent. `{ ok, applied: [...] }`."
+  method node_health(network: tstr) -> tstr description "`{ reachable, height, targetHeight, synced, restricted, rttMs, mode, local? }`."
+  method get_info(network: tstr) -> tstr
+  method get_fee_estimate(network: tstr) -> tstr
+  method get_version(network: tstr) -> tstr
+  method hard_fork_info(network: tstr) -> tstr
+  method send_raw_transaction(network: tstr, tx_as_hex: tstr) -> tstr description "Broadcast a signed tx blob via `/send_raw_transaction`."
+  method generateblocks(network: tstr, address: tstr, amount: int) -> tstr description "regtest only: mine `amount` blocks to `address`."
+  method raw_json_rpc(network: tstr, method: tstr, params_json: tstr) -> tstr description "Escape hatch: an arbitrary `/json_rpc` method. `params_json` is a JSON value."
+  method raw_endpoint(network: tstr, path: tstr, body_json: tstr) -> tstr description "Escape hatch: an arbitrary \"other\" endpoint (POST `<url>/<path>`)."
+}

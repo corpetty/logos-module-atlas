@@ -1,0 +1,21 @@
+// Extracted by logos-module-atlas from logos-co/logos-monerod-ui@10aaf706751d:src/MonerodBackend.rep
+// https://github.com/logos-co/logos-monerod-ui/blob/10aaf706751d4133bebe7fae42db21611f0704d9/src/MonerodBackend.rep
+
+#include <QVariantMap>
+
+class MonerodBackend
+{
+    PROP(QString state READONLY)       // stopped|starting|running|stopping|failed|unavailable
+    PROP(QString network READONLY)     // the network the view shows and would start
+    PROP(QString statusJson READONLY)
+    PROP(QString configJson READONLY)
+    PROP(QString logText READONLY)
+    PROP(QString lastError READONLY)
+    PROP(bool busy READONLY)           // start or stop in flight
+
+    SLOT(void selectNetwork(QString network))
+    SLOT(void saveConfig(QString configJson))
+    SLOT(void start())
+    SLOT(void stop())
+    SLOT(void refresh())
+}

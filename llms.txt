@@ -1,0 +1,124 @@
+# Logos Module Atlas
+
+> AI-readable registry of every Logos module available in Logos Basecamp 0.3.1 (latest release): 6 bundled in the app, 46 installable from its default catalog. Each module has a card, its canonical LIDL contract, and its annotated interface source, all pinned to the exact source commit that was released.
+
+Start with AGENTS.md for how to use this repo. registry.json is the machine-readable form of everything below.
+
+## Start here
+
+- [AGENTS.md](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/AGENTS.md): how an AI agent should navigate this registry
+- [registry.json](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/registry.json): every module — versions, deps, source commit, API summary
+- [Calling official modules](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/guides/calling-official-modules.md): depend on and call a module from C++, Rust, Nim or QML
+- [Compatibility](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/guides/compatibility.md): SDK/builder generations and variants that must match
+- [Key custody across chains](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/key-custody.md): who holds keys and how signing is approved, per chain
+- [Gaps](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/gaps.md): roadmap items not shipped in 0.3.1
+
+## Stacks
+
+- [EVM wallet](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/evm-wallet.md): Ethereum/EVM accounts, signing, fees, RPC, tokens, swaps — one keystore, one tx sender, human approval in a signer UI.
+- [Monero wallet](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/monero-wallet.md): wallet2 (monero_c) in-process, a backend coordinator, remote or in-process monerod.
+- [Blockchain & LEZ](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/blockchain-lez.md): Logos blockchain node, the Logos Execution Zone (LEZ) client/wallet, indexer, explorer and AMM.
+- [Messaging](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/messaging.md): Delivery (Waku-style) node, e2e chat, libp2p, and RLN membership/proofs.
+- [Storage](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/storage.md): Logos Storage node: upload, download, manifests.
+- [Platform](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/stacks/platform.md): What Basecamp ships itself: package manager & downloader, capability (permissions), module lifecycle state, metrics, accounts.
+
+## Modules: Blockchain & LEZ
+
+- [amm_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_module/README.md): core 0.1.0 — Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity.
+- [amm_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_ui/README.md): ui_qml 0.1.0 — Trade tokens and provide liquidity on the Logos DEX.
+- [blockchain_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/README.md): core 0.3.0 — Logos blockchain node for logos-core
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/blockchain_module.lidl
+- [blockchain_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_ui/README.md): ui_qml 0.3.0 — Blockchain UI module for the Logos application
+- [lez_core](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_core/README.md): core 0.5.0 — Logos Execution Zone Core Module for Logos Core
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_core/lez_core.lidl
+- [lez_explorer_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_explorer_ui/README.md): ui_qml 1.2.0 — Logos Execution Zone Block Explorer
+- [lez_indexer_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_indexer_module/README.md): core 1.2.0 — Logos Execution Zone Indexer Module for Logos Core
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_indexer_module/lez_indexer_module.lidl
+- [lez_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_wallet_ui/README.md): ui_qml 1.2.0 — Execution Zone Wallet UI module for the Logos application
+- [logos_execution_zone](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/logos_execution_zone/README.md): core 1.0.0 — Logos Execution Zone Module for Logos Core
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/logos_execution_zone/logos_execution_zone.lidl
+
+## Modules: EVM wallet
+
+- [eth_rpc_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_module/README.md): core 0.1.0 — Proxyable, fail-closed Ethereum JSON-RPC client. Per-chain config (endpoint + proxy); RPC calls keyed by chainId. socks5h/Tor-ready.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_module/eth_rpc_module.lidl
+- [eth_rpc_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_ui/README.md): ui_qml 0.1.0 — Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device.
+- [eth_wallet_backend](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_backend/README.md): core 0.1.0 — EVM wallet composer over reusable chain, asset, token, account, fee, and transaction-sender modules, with multi-chain balances and activity.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_backend/eth_wallet_backend.lidl
+- [eth_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_ui/README.md): ui_qml 0.1.0 — View EVM assets and activity across enabled networks, and send on an explicitly selected chain. Holds no key material.
+- [evm_assets_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_assets_module/README.md): core 0.1.0 — Reusable native and ERC-20 asset rows, balances, transfer building, and transaction-history decoration.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_assets_module/evm_assets_module.lidl
+- [evm_keystore_cli](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_keystore_cli/README.md): core 0.1.0 — Headless custodian for keystore_module: creates, imports, exports and deletes accounts over `logosctl call`. Every other headless surface only reads which accounts exist.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_keystore_cli/evm_keystore_cli.lidl
+- [evm_keystore_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_keystore_ui/README.md): ui_qml 0.1.0 — The one place accounts are created, imported, exported and deleted. Every other surface only reads which accounts exist.
+- [evm_signer_cli](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_signer_cli/README.md): core 0.1.0 — Headless approver for keystore_module: shows what a module asked to sign, in the keystore's own words, over `logosctl watch`, and takes the decision over `logosctl call`.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_signer_cli/evm_signer_cli.lidl
+- [evm_signer_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/evm_signer_ui/README.md): ui_qml 0.1.0 — The signing approval surface: shows what a module asked to sign, in the keystore's own words, and takes the vault password.
+- [fee_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/fee_module/README.md): core 0.1.0 — EIP-1559 fee suggestion for EVM chains: slow/normal/fast tiers derived from eth_feeHistory, with custom overrides.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/fee_module/fee_module.lidl
+- [keystore_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/keystore_module/README.md): core 0.1.0 — Keystore: scrypt vaults, BIP39/BIP32 HD derivation, secp256k1 signing. No network; private keys never leave the module.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/keystore_module/keystore_module.lidl
+- [token_list_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/token_list_module/README.md): core 0.1.0 — Reusable EVM token catalogue, enabled snapshots, pinned assets and paged picker. Proxyable, fail-closed.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/token_list_module/token_list_module.lidl
+- [token_list_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/token_list_ui/README.md): ui_qml 0.1.0 — Device-wide token catalogue and enabled set: built-in defaults, extra list URLs, custom tokens, and the ERC-20s shared by every Logos wallet on this device.
+- [tx_sender_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/tx_sender_module/README.md): core 0.1.0 — The one EVM transaction sender on the device: one nonce ledger, call bundles approved as one decision in the keystore, ordered broadcast, and a write-ahead local history. Holds no key material and chooses no chain.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/tx_sender_module/tx_sender_module.lidl
+- [uniswap_backend](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_backend/README.md): core 0.1.0 — The Uniswap app's backend: quotes, swaps and swap history composed from reusable EVM chain, token, asset, account, fee, quote and sender modules. Holds no key material.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_backend/uniswap_backend.lidl
+- [uniswap_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_module/README.md): core 0.1.0 — Uniswap price oracle + swap router: V2/V3/V4 token prices (best-rate, Multicall3-batched) and V2/V3 swap building. Multi-chain, configurable.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_module/uniswap_module.lidl
+- [uniswap_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_ui/README.md): ui_qml 0.1.0 — Swap EVM assets on Uniswap. A view over uniswap_backend, which composes the reusable EVM modules.
+- [verified_proxy_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_module/README.md): core 0.1.3 — Light-client-verified Ethereum JSON-RPC, wrapping nimbus libverifproxy
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_module/verified_proxy_module.lidl
+- [verified_proxy_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_ui/README.md): ui_qml 0.1.0 — Configure and operate the light-client-verified Ethereum proxy
+
+## Modules: Messaging
+
+- [chat_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_module/README.md): core 0.3.0 — Chat module for Logos
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_module/chat_module.lidl
+- [chat_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_ui/README.md): ui_qml 0.3.0 — Chat App for Logos - Private messaging interface
+- [delivery_demo](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_demo/README.md): ui_qml 0.3.0 — Educational UI demo for logos-delivery-module: subscribe to content topics, send and receive messages, see which delivery_module API calls back each interaction.
+- [delivery_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/README.md): core 0.3.0 — Logos Delivery Module - High-level message-delivery API
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/delivery_module.lidl
+- [liblogos_lez_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/README.md): core 4.2.1 — RLN registry provider (LEZ chain reads + registration/funding txs)
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/liblogos_lez_rln_module.lidl
+- [liblogos_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_rln_module/README.md): core 0.10.0 — Registry-agnostic RLN membership management (RLN-MEMBERSHIP-MANAGEMENT)
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_rln_module/liblogos_rln_module.lidl
+- [libp2p_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/libp2p_module/README.md): core 1.1.0 — Libp2p network protocol module for Logos
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/libp2p_module/libp2p_module.lidl
+
+## Modules: Monero wallet
+
+- [monero_node_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_node_module/README.md): core 0.1.0 — Proxyable, fail-closed monerod JSON-RPC client. Per-network config (endpoint + proxy); socks5h/Tor-ready. Never runs a node itself; local mode dials the one monerod_module runs.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_node_module/monero_node_module.lidl
+- [monero_wallet_backend](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_backend/README.md): core 0.1.0 — Monero wallet coordinator: wallet registry, sync poller, balances and history, send orchestration (build → review → broadcast). Holds no key material.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_backend/monero_wallet_backend.lidl
+- [monero_wallet_cli](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_cli/README.md): core 0.1.0 — Headless Monero wallet for monero_wallet_backend: open or create a wallet, read the balance and addresses, build a transfer, review it and broadcast or withdraw it, all over `logosctl call`. Holds the custodian and approver roles, so a bare CLI (the host anchor) can do none of it.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_cli/monero_wallet_cli.lidl
+- [monero_wallet_core_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_core_module/README.md): core 0.1.0 — In-process Monero wallet engine: wraps monero_c (wallet2 C ABI, LGPL-3.0, dynamically linked, built from source). Keys and the wallet password never leave this module.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_core_module/monero_wallet_core_module.lidl
+- [monero_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monero_wallet_ui/README.md): ui_qml 0.1.0 — The Monero wallet: balances, a reviewed send, receive addresses with a QR, activity, and the wallet management (create, restore, open, close, change password, show seed) every Monero wallet keeps in the same app. The password crosses as a SLOT argument only, never as a property.
+- [monerod_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monerod_module/README.md): core 0.1.0 — Runs a Monero node in-process: per-network config, start, stop, status and log tail.
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monerod_module/monerod_module.lidl
+- [monerod_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monerod_ui/README.md): ui_qml 0.1.0 — Run and manage a local Monero node: sync progress, peers, settings and the node log.
+
+## Modules: Platform
+
+- [accounts_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/accounts_ui/README.md): ui_qml 0.3.0 — Create and manage Logos accounts and their keys.
+- [capability_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/capability_module/README.md): core 1.0.0 — Coordinates permissions between modules
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/capability_module/capability_module.lidl
+- [modules_state](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/modules_state/README.md): core 0.1.0 — Read-only registry of module lifecycle state
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/modules_state/modules_state.lidl
+- [openmetrics](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/openmetrics/README.md): core 0.1.1 — Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics()
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/openmetrics/openmetrics.lidl
+- [package_downloader](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_downloader/README.md): core 1.0.0 — Online package catalog and download service
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_downloader/package_downloader.lidl
+- [package_manager](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_manager/README.md): core 1.0.0 — Plugin manager for the Logos system
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_manager/package_manager.lidl
+- [package_manager_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_manager_ui/README.md): ui_qml 1.0.0 — Package Manager UI plugin for managing plugins and packages
+
+## Modules: Storage
+
+- [storage_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/README.md): core 3.0.0 — Storage module
+  - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/storage_module.lidl
+- [storage_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_ui/README.md): ui_qml 3.0.0 — Storage interface for the Logos application

@@ -1,0 +1,86 @@
+// Extracted by logos-module-atlas from logos-co/logos-evm-keystore-ui@4460518b4b40:src/evm_keystore_ui.rep
+// https://github.com/logos-co/logos-evm-keystore-ui/blob/4460518b4b4081b90f9aad3e0bd677580dd37d6e/src/evm_keystore_ui.rep
+
+// QtRO view contract for the keystore UI.
+//
+// One of only TWO .rep files in the wallet stack allowed a password parameter — evm_signer_ui is
+// the other — and CI asserts every wallet .rep stays free of them.
+//
+// No PROP publishes a secret: a PROP is cached in the shell process and broadcast to every
+// replica. A phrase, a vault and previewed addresses are returned from SLOTs instead.
+class EvmKeystoreUi
+{
+    PROP(QString statusText="Starting" READONLY)
+    PROP(QString lastError="" READONLY)
+    PROP(bool busy=false READONLY)
+
+    // Ungated reads, all of them: an account list is not a secret, and a derivation path is
+    // public the moment its address is.
+    PROP(QString accountsJson="[]" READONLY)
+    PROP(QString labelsJson="{}" READONLY)
+    PROP(QString groupsJson="[]" READONLY)
+    PROP(QString provenanceJson="{}" READONLY)
+
+    // `{ <groupId>: <name> }`, from the keystore's own names document rather than from the
+    // group records — so a wallet whose record is gone is still named.
+    PROP(QString walletNamesJson="{}" READONLY)
+
+    // Which of the reads above answered: `{ "<read>": true|false }`. Every refused read empties
+    // what it feeds, and an empty answer is also a truthful screen for some keystore.
+    PROP(QString readsJson="{}" READONLY)
+
+    // { groups, staged, unexplained }, read from the key directory alone so it stays answerable
+    // when groups.json is not. It is what makes a key with no record nameable, and so deletable.
+    PROP(QString keyDirectoryJson="{}" READONLY)
+
+    // { kind, identity, approvers, custodians } — so the UI can say plainly whether it holds
+    // the role. The keystore holds those names itself; `configure` is what changes them.
+    PROP(QString identityJson="{}" READONLY)
+    PROP(bool isCustodian=false READONLY)
+
+    SLOT(void refresh())
+
+    // Returns the phrase. NOT a property: see the note above.
+    SLOT(QString generateMnemonic(int words))
+
+    // `derivable` is the storage choice, made once for the whole wallet: false keeps nothing,
+    // true stores its account key under `groupPassword`. Import is the only moment a name lands.
+    SLOT(bool importMnemonic(QString phrase, QString bip39Passphrase, QString accountPassword, QString groupPassword, bool derivable, QString groupLabel))
+
+    SLOT(bool importPrivateKey(QString privHex, QString accountPassword))
+    SLOT(bool importVaultJson(QString vaultJson, QString oldPassword, QString newPassword))
+
+    // The next account of a wallet, without the phrase. An empty `group` means "the only
+    // wallet that can derive"; with several the keystore refuses and names them.
+    SLOT(bool deriveNextAccount(QString group, QString groupPassword, QString accountPassword))
+    SLOT(bool deriveAccountAt(QString group, QString groupPassword, QString accountPassword, int bip44Account, int change, int index))
+
+    // Addresses a wallet WOULD derive — nothing written, no network. Returned, never a PROP.
+    SLOT(QString previewAddresses(QString group, QString groupPassword, int change, int from, int count))
+
+    // One-way, and deliberately NO password: a key whose password is lost is exactly the one a
+    // user most needs gone, and it refuses every new account while it sits there. Keyed on the
+    // key FILES, so a wallet whose bookkeeping was lost is still deletable.
+    SLOT(bool forgetDerivation(QString group))
+
+    // Returns the vault JSON for the caller to save. Not a property, same reason.
+    SLOT(QString exportVaultJson(QString address, QString password))
+
+    // Setting a name needs the account's own password; clearing it needs none. A name is what
+    // other screens render in place of an address, so writing one is a claim of custody.
+    SLOT(bool setLabel(QString address, QString label, QString password))
+
+    // Name a wallet, or clear it with an empty string. No uniqueness rule — the keystore allows
+    // two wallets one name, and the view qualifies them. What the wallet HOLDS decides what
+    // `password` has to be: one of its own accounts' (named by `address`) where it has
+    // accounts, its derivation key's (no `address`) where it has only a key, and neither
+    // where it holds nothing.
+    SLOT(bool setWalletName(QString group, QString name, QString address, QString password))
+
+    // Remove a wallet's record and its name. The keystore refuses while the wallet holds a
+    // derivation key or an account, so this can never reach key material — which is also why
+    // it takes no password: there is nothing here to check one against.
+    SLOT(bool removeWallet(QString group))
+    SLOT(bool changePassword(QString address, QString oldPassword, QString newPassword))
+    SLOT(bool deleteAccount(QString address, QString password))
+}

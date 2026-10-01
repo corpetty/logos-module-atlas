@@ -1,0 +1,29 @@
+module monero_wallet_core_module {
+  version "0.1.0"
+  description "In-process Monero wallet engine: wraps monero_c (wallet2 C ABI, LGPL-3.0, dynamically linked, built from source). Keys and the wallet password never leave this module."
+  category "wallet"
+  depends [monero_node_module]
+
+  method startJob(kind: tstr, params: {tstr: any}) -> result description "Queue a long operation. `kind` is one of: open_wallet, create_wallet,\nrestore_from_seed, restore_from_keys, close_wallet, rescan, create_transaction,\ncommit_transaction, dispose_transaction, change_password.\n\n`params` per kind (all strings unless noted):\nopen_wallet        { name, password, network }\ncreate_wallet      { name, password, network, language? }\nrestore_from_seed  { name, password, network, seed, restoreHeight(number), seedOffset? }\nrestore_from_keys  { name, password, network, address, viewKey, spendKey?, restoreHeight(number) }\nclose_wallet       { }\nrescan             { }\ncreate_transaction { address, amount (decimal atomic units), priority(number 0-3)?, accountIndex(number)?, paymentId? }\ncommit_transaction { txHandle }\ndispose_transaction{ txHandle }\nchange_password    { oldPassword, newPassword }\n\nReturns `{ jobId, receipt }`. The receipt is required by every follow-up call so a\njob id alone (which crosses the event plane) authorises nothing."
+  method jobStatus(jobId: tstr, receipt: tstr) -> {tstr: any} description "`{ ok, state: \"queued\"|\"running\"|\"done\"|\"failed\", progress, error }`."
+  method jobResult(jobId: tstr, receipt: tstr) -> result description "The job's result, once. Fails while the job is not done, and after it was acked."
+  method ackJob(jobId: tstr, receipt: tstr) -> bool description "Forget a finished job. Returns false for an unknown id or a wrong receipt."
+  method cancelJob(jobId: tstr, receipt: tstr) -> bool description "Cancel a queued job. A running wallet2 call cannot be interrupted; returns false then."
+  method status() -> {tstr: any} description "@code{.json}\n{ \"state\": \"no_wallet|opening|syncing|ready|closing|failed\",\n\"wallet\": string, \"network\": string, \"address\": string,\n\"connected\": bool, \"synchronized\": bool,\n\"walletHeight\": number, \"daemonHeight\": number,\n\"watchOnly\": bool, \"lastError\": string, \"libraryVersion\": string }\n@endcode"
+  method balance(accountIndex: int) -> tstr description "Balances in ATOMIC UNITS as decimal strings (1 XMR = 1e12; a JSON number loses\nprecision above 2^53)."
+  method unlockedBalance(accountIndex: int) -> tstr
+  method address(accountIndex: int, addressIndex: int) -> tstr description "The address at (account, index). (0, 0) is the primary address."
+  method subaddresses(accountIndex: int) -> [any] description "`[ { index, address } ]` for one account."
+  method createSubaddress(accountIndex: int, label: tstr) -> result description "Add a subaddress to an account. Returns `{ index, address }`."
+  method setSubaddressLabel(accountIndex: int, addressIndex: int, label: tstr) -> result description "Rename (or clear, with an empty string) a subaddress label. Returns `{ index, label }`."
+  method history() -> [any] description "`[ { txid, direction: \"in\"|\"out\", amount, fee, height, confirmations, timestamp,\npending, failed, unlockTime, paymentId } ]`, amounts as decimal strings."
+  method addressValid(addr: tstr, network: tstr) -> bool description "Whether `addr` is valid for `network` (mainnet|stagenet|testnet|regtest)."
+  method revealSeed(password: tstr) -> result description "The 25-word seed, after re-checking `password` against the open wallet's keys file.\nThe only way key material leaves this module. Never logged."
+  method revealViewKey(password: tstr) -> result description "The secret view key, same discipline as revealSeed()."
+  method listWallets() -> [any] description "Wallet names present in this instance's wallets directory."
+  method walletExists(name: tstr) -> bool
+  method libraryVersion() -> {tstr: any} description "This module's version and the pinned monero_c / Monero version."
+
+  event walletStateChanged(payloadJson: tstr) description "Emitted on every state transition with the same shape as status()."
+  event jobFinished(jobId: tstr, state: tstr) description "A ticket reached a terminal state: `state` is \"done\" or \"failed\"."
+}

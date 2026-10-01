@@ -1,0 +1,24 @@
+module package_downloader {
+  version "1.0.0"
+  description "Online package catalog and download service"
+  category "management"
+  depends []
+  optional_depends [storage_module, modules_state]
+
+  method addRepository(url: tstr) -> {tstr: any}
+  method removeRepository(url: tstr) -> {tstr: any}
+  method setRepositoryEnabled(url: tstr, enabled: bool) -> {tstr: any}
+  method listRepositories() -> [any]
+  method refreshCatalog() -> {tstr: any}
+  method getCatalog() -> [any]
+  method getCatalogForRepo(repoUrlOrName: tstr) -> [any]
+  method getDownloadSource() -> tstr
+  method setDownloadSource(source: tstr) -> {tstr: any}
+  method downloadPinned(repoUrlOrName: tstr, packageName: tstr, version: tstr, rootHash: tstr) -> {tstr: any}
+  method downloadResolvedDependencies(dependenciesJson: tstr, installedPackagesJson: tstr) -> [any]
+  method resolveDependencies(dependenciesJson: tstr, installedPackagesJson: tstr) -> [any]
+
+  event catalogChanged()
+  event downloadProgress(packageName: tstr, received: uint, total: uint)
+  event downloadDone(packageName: tstr, source: tstr)
+}

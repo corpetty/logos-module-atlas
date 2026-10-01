@@ -1,0 +1,35 @@
+module modules_state {
+  version "0.1.0"
+  description "Read-only registry of module lifecycle state"
+  category "system"
+  depends []
+
+  type ModuleRecord {
+    module: tstr
+    instance: ? tstr
+    pid: ? int
+    state: tstr
+    reason: ? tstr
+    path: tstr
+    type: tstr
+    version: tstr
+    dependencies: [tstr]
+    dependents: [tstr]
+    loadedAt: int
+    seq: uint
+  }
+
+  type ModuleListing {
+    modules: [ModuleRecord]
+    partial: bool
+    seq: uint
+  }
+
+  method list_modules() -> ModuleListing
+  method module_record(module: tstr) -> ? ModuleRecord
+  method is_ready(module: tstr) -> bool
+  method note_transition(module: tstr, instance: ? tstr, pid: ? int, old_state: tstr, new_state: tstr, reason: ? tstr, seq: uint) -> bool
+  method apply_snapshot(listing: ModuleListing) -> bool
+
+  event module_state_changed(module: tstr, instance: ? tstr, pid: ? int, old_state: tstr, new_state: tstr, reason: ? tstr, seq: uint)
+}

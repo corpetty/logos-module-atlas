@@ -1,0 +1,11 @@
+module openmetrics {
+  version "0.1.1"
+  description "Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics()"
+  category "monitoring"
+  depends []
+
+  method start(configJson: tstr) -> int
+  method stop() -> int
+  method getInfo() -> tstr
+  method scrape() -> tstr
+}

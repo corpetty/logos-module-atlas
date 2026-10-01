@@ -1,0 +1,85 @@
+// Extracted by logos-module-atlas from logos-co/logos-evm-signer-ui@62f89d5e563a:src/evm_signer_ui.rep
+// https://github.com/logos-co/logos-evm-signer-ui/blob/62f89d5e563a48bc8dc0c42b92343cf6d0347b68/src/evm_signer_ui.rep
+
+// QtRO view contract for the signer UI.
+//
+// This is the ONE .rep in the wallet stack permitted to carry a password
+// parameter. The QML half and this backend are one trust unit — they share a
+// plugin identity and one token — so the password crossing between them is not
+// a boundary crossing. Every OTHER ui .rep must be free of password parameters,
+// and CI asserts that.
+//
+// The keystore returns its lines in TWO lists, and this surface keeps them apart:
+// `claimLines` is what the requester SAYS the request is for, `renderLines` is what
+// is actually signed. Both verbatim — the backend may not reformat, elide, truncate
+// or re-order either. Merging them would put requester-authored text in the
+// keystore's typeface, which is the confusion the split exists to prevent.
+//
+// `interpretationLines` is the ONE exception, and it is constrained rather than
+// free-form. The backend decodes calldata locally (logos-tx-decoder, linked in,
+// offline) so this surface can say "this is a WETH transfer" and not only
+// "0xa9059cbb…". Three rules make that safe, and the tests assert them:
+//
+//   1. DERIVED, NOT FETCHED. The input is `renderLines` itself — the legs are
+//      read back out of the text on screen. Nothing is asked of another module
+//      or the network, so the interpretation cannot describe bytes other than
+//      the ones displayed.
+//   2. ADDITIVE, NEVER SUBSTITUTIVE. `renderLines` is shown in full whether or
+//      not anything decoded. An empty `interpretationLines` is the normal case
+//      for a message, a digest, or an unknown selector.
+//   3. SELF-LABELLING. Every line names its own confidence. Only a call to an
+//      address the decoder can identify says VERIFIED; a bare 4-byte match says
+//      UNVERIFIED, because a selector proves nothing about a contract.
+//
+// What remains deliberately absent: any field the backend authors from a source
+// other than `renderLines`. This plugin still has no client for any wallet,
+// chain, RPC or token-list module.
+class EvmSignerUi
+{
+    PROP(QString statusText="Starting" READONLY)
+    PROP(QString lastError="" READONLY)
+
+    // The queue, as summaries only — never leg detail.
+    PROP(QString pendingJson="[]" READONLY)
+
+    // The request currently on screen. Empty when nothing is being shown.
+    PROP(QString renderedHandle="" READONLY)
+    PROP(QString renderedBundleId="" READONLY)
+    PROP(QString renderedRequester="" READONLY)
+    // What is actually signed, and the commitment over it.
+    PROP(QStringList renderLines READONLY)
+
+    // What the REQUESTER claims this is for, verbatim. The keystore returns it
+    // as a second list precisely so an approver can separate it from the lines
+    // above WITHOUT parsing text: everything in `renderLines` the keystore
+    // derived by parsing the intent itself, everything here is attacker-supplied
+    // string. Show both, never merge them, and never let this one be styled to
+    // look like the derived half.
+    PROP(QStringList claimLines READONLY)
+
+    // Locally decoded reading of the calldata in `renderLines`. Empty whenever
+    // nothing decoded, which is not an error. Never a substitute for the above.
+    PROP(QStringList interpretationLines READONLY)
+
+    // False until the sheet has been fully visible for the dwell period. Held
+    // in C++ so a QML-side edit cannot shorten it.
+    PROP(bool dwellElapsed=false READONLY)
+
+    // Re-read the queue from the keystore.
+    SLOT(void refresh())
+    // Claim a request for display. Demotes whatever was rendered before. False for a
+    // handle the keystore does not hold, or one already settled — which a caller pointed
+    // here by an intent has to be able to tell apart from a request it can service.
+    SLOT(bool acknowledge(QString handle))
+    // The human said yes. `bundleId` must be the value that was displayed.
+    SLOT(bool approve(QString handle, QString bundleId, QString password))
+    // The human said no.
+    SLOT(bool reject(QString handle))
+    // Close the sheet without deciding (the request stays queued).
+    SLOT(void dismiss())
+
+    // A request reached a terminal state: `approved` or `rejected`. Relayed verbatim from
+    // the keystore's own event, so it fires however the request settled — from this sheet,
+    // from the queue by hand, or from a surface that is not this one at all.
+    SIGNAL(settled(QString handle, QString state))
+}

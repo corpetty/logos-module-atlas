@@ -1,0 +1,15 @@
+module evm_signer_cli {
+  version "0.1.0"
+  depends []
+
+  method status() -> tstr description "`{ ok, held, identity, approvers, custodians, rendered, pending_count, last_error, hint }`."
+  method list() -> tstr description "The keystore's queue summaries — never leg detail."
+  method show(handle: tstr) -> tstr description "Claim `handle` for display: the keystore's lines, verbatim, this signer's own\nreading of them, and the prompt text."
+  method approve(handle: tstr, bundle_id: tstr, password: tstr) -> tstr description "The human said yes to the request on screen. `bundle_id` must be the value shown."
+  method reject(handle: tstr) -> bool description "The human said no."
+  method refresh() -> tstr description "Re-read the queue now, then answer as `status` does."
+
+  event prompt(handle: tstr, text: tstr) description "A request is on screen. `text` is the whole block a human reads."
+  event settled(handle: tstr, state: tstr) description "`approved` | `rejected` from the keystore; `gone` when the poll finds it vanished."
+  event queue_changed(count: int)
+}

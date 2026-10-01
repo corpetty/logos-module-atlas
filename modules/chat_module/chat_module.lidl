@@ -1,0 +1,68 @@
+module chat_module {
+  version "0.3.0"
+  description "Chat module for Logos: e2e-encrypted conversations over delivery_module."
+  category "chat"
+  depends [delivery_module]
+
+  type Conversation {
+    convo_id: tstr
+    ? nickname: tstr
+    message_count: int
+    last_activity_ms: int
+    kind: tstr
+    ? name: tstr
+    ? description: tstr
+    ? preview: tstr
+    history_only: bool
+  }
+
+  type Message {
+    from_self: bool
+    content: tstr
+    timestamp_ms: int
+    ? sender: tstr
+  }
+
+  type Status {
+    convo_count: int
+    delivery_state: tstr
+    detail: tstr
+    delivery_adopted: bool
+  }
+
+  type GroupMember {
+    address: tstr
+    pending: bool
+  }
+
+  type ChatConfig {
+    ? delivery_preset: tstr
+    ? log_level: tstr
+  }
+
+  method init(config: ChatConfig) -> result
+  method shutdown() -> result
+  method get_log_path() -> tstr
+  method health() -> bool
+  method get_installation_name() -> tstr
+  method set_installation_name(name: tstr) -> result
+  method get_address() -> tstr
+  method create_conversation(peer_address: tstr) -> result
+  method create_group_conversation(name: tstr, desc: tstr) -> result
+  method add_group_member(convo_id: tstr, peer_address: tstr) -> result
+  method list_conversations() -> [Conversation]
+  method get_messages(convo_id: tstr) -> [Message]
+  method list_group_members(convo_id: tstr) -> [GroupMember]
+  method send_message(convo_id: tstr, content: tstr) -> result
+  method set_conversation_nickname(convo_id: tstr, nickname: tstr) -> result
+  method delete_conversation(convo_id: tstr) -> result
+  method status() -> Status
+
+  event message_received(convo_id: tstr, content: tstr, timestamp_ms: int, sender: tstr)
+  event message_sent(convo_id: tstr, content: tstr, timestamp_ms: int)
+  event conversation_created(convo_id: tstr, is_outgoing: bool, peer_label: tstr, kind: tstr, name: tstr, desc: tstr)
+  event conversation_updated(convo_id: tstr)
+  event members_changed(convo_id: tstr)
+  event conversation_deleted(convo_id: tstr)
+  event delivery_state_changed(delivery_state: tstr, detail: tstr, delivery_adopted: bool)
+}
