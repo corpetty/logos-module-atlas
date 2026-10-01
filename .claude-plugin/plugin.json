@@ -1,11 +1,21 @@
 {
   "name": "logos-module-atlas",
   "displayName": "Logos Module Atlas",
-  "version": "0.1.0",
+  "version": "0.1.202610011903",
   "description": "Registry of every Logos module available in the latest Logos Basecamp release — cards, canonical LIDL contracts, annotated interfaces, stack and integration guides.",
-  "author": { "name": "Corey Petty", "url": "https://github.com/corpetty" },
+  "author": {
+    "name": "Corey Petty",
+    "url": "https://github.com/corpetty"
+  },
   "homepage": "https://github.com/corpetty/logos-module-atlas",
   "repository": "https://github.com/corpetty/logos-module-atlas",
   "license": "MIT",
-  "keywords": ["logos", "basecamp", "logos-core", "lidl", "modules", "wallet"]
+  "keywords": [
+    "logos",
+    "basecamp",
+    "logos-core",
+    "lidl",
+    "modules",
+    "wallet"
+  ]
 }

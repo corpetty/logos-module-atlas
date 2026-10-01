@@ -3,7 +3,7 @@
     "name": "amm_module",
     "status": "failed",
     "ref": "github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca#lidl",
-    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca' does not provide attribute 'packages.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
   },
   {
     "name": "blockchain_module",
