@@ -37,7 +37,7 @@ def flake_ref(src: dict) -> str:
     return ref + (f"?dir={src['subdir']}" if src.get("subdir") else "")
 
 
-def build_one(mod: dict, force: bool, timeout: int) -> dict:
+def build_one(mod: dict, force: bool, timeout: int, previous: dict | None = None) -> dict:
     name, src = mod["name"], mod.get("source")
     dest = ROOT / "modules" / name
     stamp = dest / ".contract-commit"
@@ -48,6 +48,10 @@ def build_one(mod: dict, force: bool, timeout: int) -> dict:
     ok = {"name": name, "status": "ok", "commit": src["commit"], "ref": ref}
     if not force and stamp.exists() and stamp.read_text().strip() == src["commit"] and (dest / f"{name}.lidl").exists():
         return {**ok, "_action": "cached"}
+    # A module that had no contract at this exact commit won't grow one; retry only when it moves.
+    # (Keeping the old record also keeps nix's version-dependent error wording out of the diff.)
+    if not force and previous and previous.get("status") != "ok" and previous.get("ref") == ref:
+        return {**previous, "_action": "skipped"}
     try:
         p = subprocess.run(
             ["nix", "build", ref, "--no-link", "--print-out-paths"],
@@ -90,7 +94,7 @@ def main() -> None:
     previous = {r["name"]: r for r in json.loads(results_path.read_text())} if results_path.exists() else {}
 
     with ThreadPoolExecutor(args.jobs) as pool:
-        for r in pool.map(lambda m: build_one(m, args.force, args.timeout), mods):
+        for r in pool.map(lambda m: build_one(m, args.force, args.timeout, previous.get(m["name"])), mods):
             action = r.pop("_action", r["status"])
             previous[r["name"]] = r
             print(f"{action:>8}  {r['name']}" + (f"  — {r['reason']}" if r.get("reason") else ""), file=sys.stderr, flush=True)
