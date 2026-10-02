@@ -1,6 +1,6 @@
 # Stack: Logos Blockchain (Bedrock L1) + Logos Execution Zone (LEZ L2)
 
-**Pinned at:** Basecamp 0.3.1 (`aeb8192`); amm_module 0.1.0 (`145a2ac`), amm_ui 0.1.0 (`41d8c38`), blockchain_module 0.3.0 (`7952ba0`), blockchain_ui 0.3.0 (`c499bf1`), lez_core 0.5.0 (`b89e5d2`), lez_explorer_ui 1.2.0 (`69b7120`), lez_indexer_module 1.2.0 (`b27f3ee`), lez_wallet_ui 1.2.0 (`4e49d9c`), logos_execution_zone 1.0.0 (`01ceef1`).
+**Pinned at:** Basecamp 0.3.1 (`aeb8192`); amm_module 0.1.0 (`145a2ac`), amm_ui 0.1.0 (`41d8c38`), blockchain_module 0.3.0 (`7952ba0`), blockchain_ui 0.3.1 (`6418e33`), lez_core 0.5.0 (`b89e5d2`), lez_explorer_ui 1.2.0 (`69b7120`), lez_indexer_module 1.2.0 (`b27f3ee`), lez_wallet_ui 1.2.0 (`4e49d9c`), logos_execution_zone 1.0.0 (`01ceef1`).
 
 Nine catalog packages from the `logos-blockchain` org, as shipped in the default catalog
 `logos-co/logos-modules-release` (index snapshot 2026-10-01). Three independent chains of
@@ -25,7 +25,7 @@ followed to `logos-blockchain/lez-programs@fb76bec`, and `lez_core`'s Rust libra
 | module | type | role | holds keys? | depends on (manifest) | catalog version |
 |---|---|---|---|---|---|
 | `blockchain_module` | core | Bedrock L1 node + node wallet, PoW, channel deposits | **yes**: node `keystore.yaml` (ed25519 + zk) | — | 0.3.0 |
-| `blockchain_ui` | ui_qml | node onboarding, dashboard, wallet, mining, LEZ channel deposit | no (drives the module; can copy the keystore) | `blockchain_module >=0.3.0` | 0.3.0 |
+| `blockchain_ui` | ui_qml | node onboarding, dashboard, wallet, mining, LEZ channel deposit | no (drives the module; can copy the keystore) | `blockchain_module >=0.3.0` | 0.3.1 |
 | `lez_core` | core | LEZ wallet: accounts, transfers, generic/private txs, program deploy, bridge withdraw | **yes**: BIP39-derived key tree in `storage.json` | — | 0.5.0 |
 | `lez_wallet_ui` | ui_qml | LEZ wallet app (onboarding, accounts, 6 transfer rails, withdraw) | no (mnemonic shown once) | `lez_core >=0.5.0` | 1.2.0 |
 | `lez_indexer_module` | core | LEZ channel indexer (RocksDB), JSON query API | no | — | 1.2.0 |
@@ -295,7 +295,7 @@ again (not from inside the event handler — the node runtime panics). Blocks mi
 lost; backfill with `get_blocks`.
 
 Trust: the node's wallet signs with keys from `keystore.yaml` next to the user config
-(`blockchain_ui` locates and backs it up, [BlockchainBackend.cpp#L1398-L1421](https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/src/BlockchainBackend.cpp#L1398-L1421)).
+(`blockchain_ui` locates and backs it up, [BlockchainBackend.cpp#L1398-L1421](https://github.com/logos-blockchain/logos-blockchain-ui/blob/6418e3376d55d3263869717622f719d9b6f15f65/src/BlockchainBackend.cpp#L1398-L1421)).
 `wallet_transfer_funds`, `channel_deposit*`, `pow_claim`, `add_key`/`remove_key` are ungated —
 any module that can call `blockchain_module` can move node funds or rewrite a keystore at a path it
 names. The node also serves an HTTP API at `http_addr` (`localhost:8080` in `blockchain_ui`'s
@@ -306,12 +306,12 @@ A Rust client crate (`rust-client/`, `BlockchainModuleClient`) and a Zone SDK ba
 
 ## `blockchain_ui`
 
-Repo `logos-blockchain/logos-blockchain-ui@c499bf1`. Contract [src/BlockchainBackend.rep](https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/src/BlockchainBackend.rep#L1-L254).
+Repo `logos-blockchain/logos-blockchain-ui@6418e33`. Contract [src/BlockchainBackend.rep](https://github.com/logos-blockchain/logos-blockchain-ui/blob/6418e3376d55d3263869717622f719d9b6f15f65/src/BlockchainBackend.rep#L1-L254).
 `metadata.json` carries `bootstrap_peers` (4 testnet multiaddrs) and `lez_channel_id`
-`0101…01` used to pre-fill the LEZ deposit view
-([metadata.json#L12-L18](https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/metadata.json#L12-L18)).
+`0303…03` used to pre-fill the LEZ deposit view (0.3.0 shipped `0101…01`)
+([metadata.json#L12-L18](https://github.com/logos-blockchain/logos-blockchain-ui/blob/6418e3376d55d3263869717622f719d9b6f15f65/metadata.json#L12-L18)).
 Persists UI state in `QSettings("Logos","BlockchainUI")`. Calls `modules_state.module_record`
-for the node PID without declaring it ([BlockchainBackend.cpp#L1297-L1340](https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/src/BlockchainBackend.cpp#L1297-L1340)).
+for the node PID without declaring it ([BlockchainBackend.cpp#L1297-L1340](https://github.com/logos-blockchain/logos-blockchain-ui/blob/6418e3376d55d3263869717622f719d9b6f15f65/src/BlockchainBackend.cpp#L1297-L1340)).
 
 ---
 
@@ -390,9 +390,11 @@ against it is **unverified and unlikely**.
 
 ## Gotchas & open questions
 
-- **Which channel is LEZ testnet?** Three values ship: `blockchain_ui` `lez_channel_id` `0101…01`,
-  explorer default `0303…03` (changed 2026-10-01, catalog commit 3ba43d6), indexer sample `8301…01`.
-  Unverified which matches the sequencer at `testnet.lez.logos.co`.
+- **Which channel is LEZ testnet?** Two values ship. `blockchain_ui` 0.3.1's `lez_channel_id`
+  and the explorer default are both `0303…03`: the explorer changed on 2026-10-01 (catalog commit
+  3ba43d6), and `blockchain_ui` moved from `0101…01` in a release titled "Release 0.3.1 with
+  testnet LEZ channel id" ([6418e33](https://github.com/logos-blockchain/logos-blockchain-ui/commit/6418e3376d55d3263869717622f719d9b6f15f65)).
+  The indexer sample is still `8301…01`. Unverified against the sequencer at `testnet.lez.logos.co`.
 - Basecamp dev (`nix build`) builds only install `-dev` variants; catalog packages are portable
   variants — test catalog installs on a portable/distributed Basecamp (see `stacks/platform.md`).
 - `lez-module/doctests/*.yaml` still says `logos_execution_zone`; the doc-test text is stale.
