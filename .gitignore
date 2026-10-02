@@ -1,2 +1,4 @@
 __pycache__/
 result*
+# Written by Claude Code when it loads the mod; extends the generated .claude-plugin/types/
+tsconfig.json

@@ -12,6 +12,11 @@ module and need to know what exists, what it does, and its exact API.
 
 ## Finding what you need
 
+In Claude Code 2.1.287 or later with this plugin installed, the tools
+`mcp__logos-module-atlas__search`, `__module` and `__method` answer steps 1–3 from
+the same files in one call each. Everything below still applies to reading the
+files directly.
+
 1. **Find candidates in `registry.json`.** It has one record per module: availability
    (bundled and/or in the catalog), versions, platforms, dependencies both ways, the
    source repo and commit, and an API summary.
@@ -71,6 +76,9 @@ in the release, and where any work on them lives.
 | `gaps.md` | Roadmap vs. what ships | humans / agents |
 | `data/stacks.json` | Module → stack assignment | humans |
 | `data/contracts.json` | Per-module contract build result | `scripts/fetch_contracts.py` |
+| `hooks/register.js`, `hooks/atlas.js` | Claude Code mod: atlas tools, prompt context, edit checks, `/atlas` | humans / agents, never the generator |
+| `tests/*.test.ts` | The mod's tests (`claude plugin test`) | humans / agents |
+| `scripts/check_mod.mjs` | Checks the mod against the real registry and contracts | humans / agents |
 
 Generated files are overwritten on every refresh, so never hand-edit them. Put
 corrections in `NOTES.md`, a stack doc, or the generator.

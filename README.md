@@ -24,6 +24,28 @@ Pick one:
   involves Logos modules. Run `/plugin marketplace update logos-module-atlas` to pick
   up refreshes.
 
+  On Claude Code 2.1.287 or later, the plugin is also a
+  [mod](https://code.claude.com/docs/en/plugins/mods/overview) (`hooks/`), which adds:
+
+  - **Tools for Claude:** `module`, `method` and `search` (as
+    `mcp__logos-module-atlas__*`) answer from the registry and contracts in one call.
+  - **Context:** a prompt that names a module carries a line on where it ships and
+    where its contract is, once per conversation.
+  - **Edit checks:** an edit that calls a method or event a module's contract doesn't
+    declare is refused with the closest real names, and so is a `metadata.json` mistake
+    that breaks a module (a string in `uses`, a version range no release satisfies). The same edit made
+    again goes through, so a wrong check can't block Claude. Risks such as an
+    unversioned dependency are passed to Claude as a note instead.
+  - **`/atlas`:** a pane to browse and search the modules, with no Claude turn.
+    `/atlas <module>` or `/atlas <words>` answers in the transcript, and works while
+    Claude is busy.
+
+  A mod is code that runs with your permissions. This one reads the plugin's own files
+  and any `metadata.json` Claude edits, and makes no network or process calls:
+  `claude plugin validate .claude-plugin/plugin.json` lists every call it makes. Tests
+  run with `claude plugin test`. To turn the mod off and keep the skill, set
+  `"disableAllHooks": true` in your settings, or disable the plugin in `/plugin`.
+
 - **From a project's `CLAUDE.md`**, given a local clone (e.g. Muster):
 
   ```markdown
@@ -57,7 +79,9 @@ modules/<name>/      README.md card · <name>.lidl contract · interface.* sourc
 stacks/              EVM wallet, Monero wallet, blockchain & LEZ, messaging, storage, platform, key custody
 guides/              calling official modules from your own module; SDK/variant compatibility
 gaps.md              roadmap items not in the release (e.g. Bitcoin, Zcash)
-scripts/             build_registry.py, fetch_contracts.py, refresh.sh
+scripts/             build_registry.py, fetch_contracts.py, refresh.sh · check_mod.mjs (the mod against real data)
+hooks/               the Claude Code mod: register.js (events, tools, /atlas pane) · atlas.js (logic)
+tests/               the mod's tests, for `claude plugin test`
 ```
 
 ## Refreshing
@@ -67,7 +91,10 @@ scripts/refresh.sh
 ```
 
 You need `python3`, `gh` (or `GITHUB_TOKEN`), and `nix` with flakes for the
-contracts. A GitHub Action runs this daily.
+contracts. A GitHub Action runs this daily. Before it commits, it checks that the
+refresh left the hand-written files alone and that the mod still validates, passes its
+tests and reads the new data (`node scripts/check_mod.mjs`). The `Mod` workflow runs
+the same checks on pull requests.
 
 ## License
 
