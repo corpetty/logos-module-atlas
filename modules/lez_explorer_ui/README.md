@@ -8,7 +8,7 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `explorer` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **1.2.0** (released 2026-10-01) · all: 1.2.0, 1.1.2, 1.1.1, 1.1.0, 1.0.0 |
+| Catalog version | **1.2.0** (released 2026-10-02) · all: 1.2.0, 1.1.2, 1.1.1, 1.1.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [lez_explorer_ui-v1.2.0](https://github.com/logos-co/logos-modules-release/releases/download/lez_explorer_ui-v1.2.0/lez_explorer_ui-1.2.0.lgx) · sha256 `742a0bc0c1b21459…` |
 | Source | [logos-blockchain/lez-explorer-ui@69b7120](https://github.com/logos-blockchain/lez-explorer-ui/tree/69b7120baf723d74be65aa8c12c865d94f742966) |

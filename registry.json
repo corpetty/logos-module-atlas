@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-01T19:03:15+00:00",
+  "generatedAt": "2026-10-02T12:30:19+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.1",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-01T18:37:23Z",
+      "indexGeneratedAt": "2026-10-02T08:00:12Z",
       "packageCount": 46
     }
   ],
@@ -1364,7 +1364,7 @@
           "1.1.0",
           "1.0.0"
         ],
-        "releasedAt": "2026-10-01T12:19:40Z",
+        "releasedAt": "2026-10-02T07:58:39Z",
         "publisherRef": "lez_explorer_ui-v1.2.0",
         "catalogCommit": "3ba43d6ebeba32799e82bf728c590a775c5baf91",
         "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/lez_explorer_ui-v1.2.0/lez_explorer_ui-1.2.0.lgx",

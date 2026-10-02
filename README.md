@@ -78,7 +78,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-01 from Basecamp [0.3.1](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.1) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-01T18:37)._
+_Generated 2026-10-02 from Basecamp [0.3.1](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.1) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-02T08:00)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
