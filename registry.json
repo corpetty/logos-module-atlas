@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-02T15:45:26+00:00",
+  "generatedAt": "2026-10-02T16:15:40+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.1",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-02T12:42:16Z",
+      "indexGeneratedAt": "2026-10-02T15:49:07Z",
       "packageCount": 46
     }
   ],
@@ -529,8 +529,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.3.0",
+        "latest": "0.3.1",
         "versions": [
+          "0.3.1",
           "0.3.0",
           "0.2.1",
           "0.2.1-rc.3",
@@ -538,12 +539,12 @@
           "0.1.3-rc.13",
           "0.0.999"
         ],
-        "releasedAt": "2026-09-30T13:59:49Z",
-        "publisherRef": "blockchain_ui-v0.3.0",
-        "catalogCommit": "4091313b4fb4ccd93189fbc84851843ed1e9b7a4",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.0/blockchain_ui-0.3.0.lgx",
-        "sha256": "eb90a22a749b5555b52edf69f0beb7cf57a09b5011373335ce11a15d8af36c09",
-        "size": 13858563,
+        "releasedAt": "2026-10-02T15:47:37Z",
+        "publisherRef": "blockchain_ui-v0.3.1",
+        "catalogCommit": "93c4501c0d1c1a2ec0eaf0c96d823d87432c3aa8",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.1/blockchain_ui-0.3.1.lgx",
+        "sha256": "be6bc4babdeb8b4f7f31203ce7ae7dbbd32c66f9128efcc2c582caa22b32191c",
+        "size": 13859322,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -552,10 +553,10 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-blockchain-ui",
-        "commit": "c499bf195d07cc8a00279a367826139820cd19c1",
+        "commit": "6418e3376d55d3263869717622f719d9b6f15f65",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@4091313b4fb4 submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.0)",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/tree/c499bf195d07cc8a00279a367826139820cd19c1"
+        "pinnedBy": "logos-co/logos-modules-release@93c4501c0d1c submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.1)",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/tree/6418e3376d55d3263869717622f719d9b6f15f65"
       },
       "dependencies": [
         {
@@ -572,13 +573,13 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/BlockchainBackend.rep",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/src/BlockchainBackend.rep",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/6418e3376d55d3263869717622f719d9b6f15f65/src/BlockchainBackend.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/c499bf195d07cc8a00279a367826139820cd19c1/README.md"
+          "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/6418e3376d55d3263869717622f719d9b6f15f65/README.md"
         }
       ],
       "qmlView": null,
@@ -10619,7 +10620,7 @@
           "2.0.0",
           "1.0.0"
         ],
-        "releasedAt": "2026-09-30T20:02:09Z",
+        "releasedAt": "2026-10-02T15:25:35Z",
         "publisherRef": "storage_ui-v3.0.0",
         "catalogCommit": "3ba43d6ebeba32799e82bf728c590a775c5baf91",
         "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.0.0/storage_ui-3.0.0.lgx",
