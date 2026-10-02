@@ -16,6 +16,12 @@ is readable, fetch the same paths from
 
 ## How to answer with it
 
+If the tools `mcp__logos-module-atlas__search`, `mcp__logos-module-atlas__module` and
+`mcp__logos-module-atlas__method` are available (the plugin's mod, Claude Code
+2.1.287 or later), use them for steps 2 and 3. They read the same registry and
+contracts, and `method` returns the full description, which is where JSON payload
+shapes are documented. Read the stack docs and guides from the paths they return.
+
 1. **Check freshness.** Read `registry.json` → `.basecamp.tag` and `.generatedAt`. If
    it is more than a couple of weeks old and the task depends on recent versions, tell
    the user. A local clone refreshes with `git pull` or `scripts/refresh.sh`; the

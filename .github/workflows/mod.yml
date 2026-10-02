@@ -1,0 +1,61 @@
+name: Mod
+
+# Validate and test the Claude Code mod (hooks/) when its code, tests, manifest, skill or
+# the data it reads change. The daily refresh runs the same checks before it commits.
+on:
+  pull_request:
+    paths:
+      - "hooks/**"
+      - "tests/**"
+      - "skills/**"
+      - ".claude-plugin/**"
+      - "registry.json"
+      - "modules/**/*.lidl"
+      - "scripts/check_mod.mjs"
+      - ".github/workflows/mod.yml"
+  push:
+    branches: [main]
+    paths:
+      - "hooks/**"
+      - "tests/**"
+      - "skills/**"
+      - ".claude-plugin/**"
+      - "registry.json"
+      - "modules/**/*.lidl"
+      - "scripts/check_mod.mjs"
+      - ".github/workflows/mod.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Mods need 2.1.287 or later. Their events and methods can change between releases,
+  # so move this deliberately, after running the tests against the new version.
+  CLAUDE_CODE_VERSION: "2.1.287"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Claude Code
+        run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+
+      # None of these sign in or reach the network.
+      - name: Validate the marketplace and the plugin
+        run: |
+          claude plugin validate .
+          claude plugin validate .claude-plugin/plugin.json
+
+      - name: Run the mod's tests
+        run: claude plugin test
+
+      - name: Check the mod against the real data
+        run: node scripts/check_mod.mjs

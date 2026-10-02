@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+env:
+  # Keep in step with mod.yml.
+  CLAUDE_CODE_VERSION: "2.1.287"
+
 concurrency:
   group: refresh
   cancel-in-progress: false
@@ -40,6 +44,30 @@ jobs:
           args=()
           if [ -n "${{ inputs.basecamp_tag }}" ]; then args=(--basecamp-tag "${{ inputs.basecamp_tag }}"); fi
           scripts/refresh.sh "${args[@]}"
+
+      # This job pushes to main, and installed plugins run the mod's code, so the
+      # generator must never write it. Anything outside generated data stops the refresh.
+      - name: Check the refresh left hand-written files alone
+        run: |
+          changed=$(git status --porcelain --untracked-files=all -- hooks tests skills scripts .github .claude-plugin)
+          if [ -n "$changed" ]; then
+            echo "::error::The refresh changed hand-written files:"
+            echo "$changed"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # A refresh that breaks the mod would ship to every installed copy, so check it first.
+      - name: Check the mod against the refreshed data
+        run: |
+          npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+          claude plugin validate .
+          claude plugin validate .claude-plugin/plugin.json
+          claude plugin test
+          node scripts/check_mod.mjs
 
       - name: Commit changes
         run: |

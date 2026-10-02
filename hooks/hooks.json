@@ -1,0 +1,4 @@
+{
+  "description": "Logos Module Atlas mod: atlas tools, module context, contract checks, /atlas pane",
+  "modules": ["./register.js"]
+}
