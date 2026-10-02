@@ -13,6 +13,7 @@ on:
       - "modules/**/*.lidl"
       - "scripts/check_mod.mjs"
       - ".github/workflows/mod.yml"
+      - ".github/claude-code-version"
   push:
     branches: [main]
     paths:
@@ -24,15 +25,11 @@ on:
       - "modules/**/*.lidl"
       - "scripts/check_mod.mjs"
       - ".github/workflows/mod.yml"
+      - ".github/claude-code-version"
   workflow_dispatch:
 
 permissions:
   contents: read
-
-env:
-  # Mods need 2.1.287 or later. Their events and methods can change between releases,
-  # so move this deliberately, after running the tests against the new version.
-  CLAUDE_CODE_VERSION: "2.1.287"
 
 jobs:
   check:
@@ -45,8 +42,10 @@ jobs:
         with:
           node-version: 24
 
+      # The pinned version. Mod events and methods can change between releases, so the
+      # weekly canary tries the newest one first and says when it's safe to move this.
       - name: Install Claude Code
-        run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+        run: npm install -g "@anthropic-ai/claude-code@$(cat .github/claude-code-version)"
 
       # None of these sign in or reach the network.
       - name: Validate the marketplace and the plugin

@@ -1,7 +1,9 @@
 name: Refresh registry
 
 # Re-resolve the latest Basecamp release and its default catalog, rebuild any
-# contract whose pinned commit moved, and commit the result.
+# contract whose pinned commit moved, and commit the result. Then report, as GitHub
+# issues that open and close themselves, any hand-written doc the release has left
+# behind (atlas:drift) and a refresh that failed (atlas:refresh-failed).
 on:
   schedule:
     - cron: "17 6 * * *"
@@ -12,11 +14,13 @@ on:
         required: false
 
 permissions:
-  contents: write
+  contents: write # commit the refresh
+  issues: write # open and close the atlas:* issues
+  actions: write # re-enable the scheduled workflows
 
 env:
-  # Keep in step with mod.yml.
-  CLAUDE_CODE_VERSION: "2.1.287"
+  GH_TOKEN: ${{ github.token }}
+  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
 concurrency:
   group: refresh
@@ -63,7 +67,7 @@ jobs:
       # A refresh that breaks the mod would ship to every installed copy, so check it first.
       - name: Check the mod against the refreshed data
         run: |
-          npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+          npm install -g "@anthropic-ai/claude-code@$(cat .github/claude-code-version)"
           claude plugin validate .
           claude plugin validate .claude-plugin/plugin.json
           claude plugin test
@@ -92,3 +96,44 @@ jobs:
           idx=$(jq -r '.catalogs[0].indexGeneratedAt' registry.json)
           git commit -m "refresh: Basecamp ${rel}, catalog index ${idx} (plugin ${version})"
           git push
+
+      # The refresh can't rewrite the stack docs, the guides or gaps.md. Keep one issue
+      # open that lists what the release has left behind, and close it once nothing has.
+      - name: Report drift in the hand-written docs
+        run: |
+          if python3 scripts/check_drift.py > "$RUNNER_TEMP/drift.md"; then
+            scripts/issue.sh resolve atlas:drift "Nothing has drifted as of $RUN_URL."
+          else
+            status=$?
+            if [ "$status" -ne 1 ]; then exit "$status"; fi
+            cat "$RUNNER_TEMP/drift.md" >> "$GITHUB_STEP_SUMMARY"
+            scripts/issue.sh set atlas:drift "Hand-written docs are behind the release" "$RUNNER_TEMP/drift.md"
+          fi
+
+      - name: Report the failure
+        if: failure()
+        run: |
+          cat > "$RUNNER_TEMP/failed.md" <<EOF
+          The refresh failed: $RUN_URL
+
+          Until it passes, the registry, the cards and installed copies of the plugin miss
+          new releases. Open the run to see which step failed. Two of them stop a refresh on
+          purpose: one that touched hand-written files, and one whose data the mod can't read.
+          EOF
+          LABEL_COLOR=d73a4a scripts/issue.sh report atlas:refresh-failed "The daily refresh is failing" "$RUNNER_TEMP/failed.md"
+
+      - name: Close the failure report
+        if: success()
+        run: |
+          scripts/issue.sh resolve atlas:refresh-failed "The refresh passed again: $RUN_URL"
+
+      # GitHub turns off the schedule of a public repository with no activity for 60 days,
+      # and a refresh only commits when something changed. Re-enabling the workflows
+      # through the API, as keepalive actions do, keeps them running without empty commits.
+      - name: Keep the scheduled workflows enabled
+        if: always()
+        run: |
+          for workflow in refresh.yml canary.yml; do
+            gh api -X PUT "repos/${{ github.repository }}/actions/workflows/$workflow/enable" \
+              || echo "::warning::Could not re-enable $workflow"
+          done

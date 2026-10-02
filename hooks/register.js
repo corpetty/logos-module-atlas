@@ -12,6 +12,7 @@ import {
   describeCallProblems,
   findCalls,
   findMentions,
+  groupByStack,
   isStale,
   mentionContext,
   methodDetail,
@@ -322,10 +323,11 @@ export function register(on) {
       })
     }
 
-    const stacks = Object.entries(registry.stacks).flatMap(([key, stack]) => {
-      const mods = registry.modules.filter((m) => m.stack === key)
-      return mods.length ? [blank(), line([`${stack.title} (${mods.length})`], { bold: true }), ...mods.map((m) => moduleRow(m, m.description ?? ''))] : []
-    })
+    const stacks = groupByStack(registry).flatMap(([title, mods]) => [
+      blank(),
+      line([`${title} (${mods.length})`], { bold: true }),
+      ...mods.map((m) => moduleRow(m, m.description ?? '')),
+    ])
     return Box({
       flexDirection: 'column',
       children: [
