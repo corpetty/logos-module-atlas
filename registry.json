@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-02T12:30:19+00:00",
+  "generatedAt": "2026-10-02T15:45:26+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.1",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-02T08:00:12Z",
+      "indexGeneratedAt": "2026-10-02T12:42:16Z",
       "packageCount": 46
     }
   ],
@@ -10621,7 +10621,7 @@
         ],
         "releasedAt": "2026-09-30T20:02:09Z",
         "publisherRef": "storage_ui-v3.0.0",
-        "catalogCommit": "aca2455db09557d9502ee8ff462f89c2ebd07a9d",
+        "catalogCommit": "3ba43d6ebeba32799e82bf728c590a775c5baf91",
         "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.0.0/storage_ui-3.0.0.lgx",
         "sha256": "b321c21c87377dd41459c79d81fed3d0aa1ee913fc0def4785e98731ebdbacba",
         "size": 23168574,
@@ -10636,7 +10636,7 @@
         "repo": "logos-co/logos-storage-ui",
         "commit": "63e9cb1755e48bd36bc0e29192e8c861ebf02fb6",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@aca2455db095 submodules/logos-storage-ui (tag storage_ui-v3.0.0)",
+        "pinnedBy": "logos-co/logos-modules-release@3ba43d6ebeba submodules/logos-storage-ui (tag storage_ui-v3.0.0)",
         "url": "https://github.com/logos-co/logos-storage-ui/tree/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6"
       },
       "dependencies": [

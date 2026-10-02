@@ -12,7 +12,7 @@
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
 | Package | [storage_ui-v3.0.0](https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.0.0/storage_ui-3.0.0.lgx) · sha256 `b321c21c87377dd4…` |
 | Source | [logos-co/logos-storage-ui@63e9cb1](https://github.com/logos-co/logos-storage-ui/tree/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6) |
-| Pinned by | logos-co/logos-modules-release@aca2455db095 submodules/logos-storage-ui (tag storage_ui-v3.0.0) |
+| Pinned by | logos-co/logos-modules-release@3ba43d6ebeba submodules/logos-storage-ui (tag storage_ui-v3.0.0) |
 | Depends on | [`storage_module`](../storage_module/README.md) |
 | Required by | — |
 
