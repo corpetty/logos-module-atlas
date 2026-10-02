@@ -440,13 +440,21 @@ export function searchText(registry, query) {
     .join('\n')
 }
 
+/**
+ * Modules grouped by stack, as [title, modules] in the registry's order. A module the
+ * generator placed in no known stack (a new catalog package nobody has assigned yet)
+ * goes in a last "Other" group.
+ */
+export function groupByStack(registry) {
+  const groups = Object.entries(registry.stacks).map(([key, stack]) => [stack.title, registry.modules.filter((m) => m.stack === key)])
+  groups.push(['Other', registry.modules.filter((m) => !registry.stacks[m.stack])])
+  return groups.filter(([, modules]) => modules.length)
+}
+
 /** Every module, grouped by stack, as text. */
 export function overviewText(registry) {
   const lines = [`Logos Module Atlas: ${registry.modules.length} modules in Basecamp ${registry.basecamp.tag}, registry generated ${registry.generatedAt.slice(0, 10)}.`]
-  for (const [key, stack] of Object.entries(registry.stacks)) {
-    const names = registry.modules.filter((m) => m.stack === key).map((m) => m.name)
-    if (names.length) lines.push(`${stack.title}: ${names.join(', ')}`)
-  }
+  for (const [title, modules] of groupByStack(registry)) lines.push(`${title}: ${modules.map((m) => m.name).join(', ')}`)
   lines.push('Run /atlas <module> for one module, or /atlas <words> to search.')
   return lines.join('\n')
 }

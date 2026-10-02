@@ -1,0 +1,93 @@
+name: Claude Code canary
+
+# Every week, run the mod's checks on the newest Claude Code. CI stays on the version in
+# .github/claude-code-version, because mod events and methods can change between
+# releases. This says, as issues that open and close themselves, when a newer version
+# breaks the mod (atlas:canary) and when it's safe to move the pin (atlas:raise-pin).
+on:
+  schedule:
+    - cron: "41 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write # open and close the atlas:* issues
+  actions: write # re-enable the scheduled workflows
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install the newest Claude Code
+        run: |
+          npm install -g @anthropic-ai/claude-code@latest
+          echo "LATEST=$(claude --version | awk '{print $1}')" >> "$GITHUB_ENV"
+          echo "PINNED=$(cat .github/claude-code-version)" >> "$GITHUB_ENV"
+
+      - name: Check the mod on it
+        id: check
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          {
+            claude plugin validate .
+            claude plugin validate .claude-plugin/plugin.json
+            claude plugin test
+            node scripts/check_mod.mjs
+          } 2>&1 | tee "$RUNNER_TEMP/canary.log"
+
+      - name: Report
+        run: |
+          echo "Claude Code $LATEST (pinned: $PINNED): ${{ steps.check.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.check.outcome }}" != success ]; then
+            {
+              echo "The mod's checks fail on Claude Code $LATEST: $RUN_URL"
+              echo
+              echo "CI stays on $PINNED, so nothing breaks there, but users who update Claude Code"
+              echo "may hit this. Read the release notes and the types Claude Code writes to"
+              echo "\`.claude-plugin/types/\` when it loads the mod, then update \`hooks/\`."
+              echo
+              echo "The end of the output:"
+              echo
+              echo '```'
+              tail -n 60 "$RUNNER_TEMP/canary.log"
+              echo '```'
+            } > "$RUNNER_TEMP/broken.md"
+            LABEL_COLOR=d73a4a scripts/issue.sh set atlas:canary "Claude Code $LATEST breaks the mod" "$RUNNER_TEMP/broken.md"
+            exit 1
+          fi
+
+          scripts/issue.sh resolve atlas:canary "Claude Code $LATEST passes the mod's checks: $RUN_URL"
+          newest=$(printf '%s\n%s\n' "$PINNED" "$LATEST" | sort -V | tail -n 1)
+          if [ "$LATEST" != "$PINNED" ] && [ "$newest" = "$LATEST" ]; then
+            cat > "$RUNNER_TEMP/raise.md" <<EOF
+          Claude Code $LATEST passes the mod's checks ($RUN_URL), and CI is pinned to $PINNED.
+
+          To move the pin, set \`.github/claude-code-version\` to \`$LATEST\` in a pull request.
+          The Mod workflow runs on it, and the next canary closes this issue.
+          EOF
+            LABEL_COLOR=0e8a16 scripts/issue.sh set atlas:raise-pin "Raise the pinned Claude Code to $LATEST" "$RUNNER_TEMP/raise.md"
+          else
+            scripts/issue.sh resolve atlas:raise-pin "CI is on the newest Claude Code, $LATEST."
+          fi
+
+      # GitHub turns off the schedule of a public repository with no activity for 60 days.
+      # Each scheduled workflow re-enables both, so either one keeps the other running.
+      - name: Keep the scheduled workflows enabled
+        if: always()
+        run: |
+          for workflow in refresh.yml canary.yml; do
+            gh api -X PUT "repos/${{ github.repository }}/actions/workflows/$workflow/enable" \
+              || echo "::warning::Could not re-enable $workflow"
+          done

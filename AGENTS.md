@@ -79,6 +79,8 @@ in the release, and where any work on them lives.
 | `hooks/register.js`, `hooks/atlas.js` | Claude Code mod: atlas tools, prompt context, edit checks, `/atlas` | humans / agents, never the generator |
 | `tests/*.test.ts` | The mod's tests (`claude plugin test`) | humans / agents |
 | `scripts/check_mod.mjs` | Checks the mod against the real registry and contracts | humans / agents |
+| `scripts/check_drift.py`, `scripts/issue.sh` | Reports hand-written docs the release has left behind, as an `atlas:drift` issue | humans / agents |
+| `.github/claude-code-version` | The Claude Code version CI runs the mod's checks on | humans / agents |
 
 Generated files are overwritten on every refresh, so never hand-edit them. Put
 corrections in `NOTES.md`, a stack doc, or the generator.
@@ -91,5 +93,9 @@ scripts/refresh.sh          # build_registry → fetch_contracts (nix) → build
 
 `.github/workflows/refresh.yml` runs this daily and commits any changes. A new
 Basecamp release, a new catalog package or a version bump all flow in automatically.
-The hand-written stack docs do not, so check their "Pinned at" line against the cards
-when a module's version has moved.
+The hand-written docs do not. After each refresh, `scripts/check_drift.py` compares the
+stack docs' "Pinned at" lines, the guides' "Verified against" lines, the release each doc
+names, and `data/stacks.json` with the registry. It keeps one GitHub issue labelled
+`atlas:drift` open listing what's behind. To work through it, run
+`python3 scripts/check_drift.py` locally: it prints the same list and exits 0 once
+nothing is left.

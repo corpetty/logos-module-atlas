@@ -20,7 +20,6 @@ const contracts = new Map()
 
 for (const m of modules) {
   for (const key of ['name', 'type', 'stack', 'availability']) if (m[key] == null) fail(`${m.name}: no "${key}"`)
-  if (!registry.stacks?.[m.stack]) fail(`${m.name}: stack "${m.stack}" is not in registry.stacks`)
   if (m.contract?.file) {
     let contract
     try {

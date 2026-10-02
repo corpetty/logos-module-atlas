@@ -68,11 +68,21 @@ const signerUi = {
   api: { methods: [{ name: 'approve', signature: 'approve(handle: QString)', summary: 'Approve a request.' }] },
 }
 
+// A new catalog package nobody has assigned yet: the generator puts it in stack "other"
+const newcomer = {
+  ...signerUi,
+  name: 'newcomer_module',
+  description: 'A catalog package nobody has placed in a stack yet.',
+  type: 'core',
+  stack: 'other',
+  api: { methods: [] },
+}
+
 const REGISTRY = {
   generatedAt: '2026-10-01T19:03:15+00:00',
   basecamp: { tag: '0.3.1' },
   stacks: { 'evm-wallet': { title: 'EVM wallet' } },
-  modules: [keystore, txSender, signerUi],
+  modules: [keystore, txSender, signerUi, newcomer],
 }
 
 // Answer the mod's file reads from the fixture, and start the session, as Claude Code would
@@ -299,6 +309,7 @@ test('the pane lists, searches, opens a module, follows a dependency and drafts 
   for (const surface of ['terminal', 'desktop'] as const) {
     const ui = await $.ui.mount({ ...PANE, surface })
     expect(await ui.find({ type: 'Text', text: 'EVM wallet (3)' })).toBeDefined()
+    expect(await ui.find({ type: 'Text', text: 'Other (1)' })).toBeDefined()
     await ui.input({ key: 'search', text: 'approve' })
     expect(await ui.find({ type: 'Text', text: 'methods: request_approval' })).toBeDefined()
     await ui.input({ key: 'search', text: '' })
@@ -325,4 +336,5 @@ test('/atlas with nothing to draw on prints the overview', async ($, on) => {
   await $.session.start({ surface: null, isInteractive: false, cwd: '/work' })
   const out = await $.command.run({ command: 'atlas', args: '' })
   expect(out.text).toContain('EVM wallet: keystore_module, tx_sender_module, evm_signer_ui')
+  expect(out.text).toContain('Other: newcomer_module')
 })

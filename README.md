@@ -21,8 +21,11 @@ Pick one:
   ```
 
   This installs the `logos-module-atlas` skill, which Claude loads whenever a task
-  involves Logos modules. Run `/plugin marketplace update logos-module-atlas` to pick
-  up refreshes.
+  involves Logos modules. The registry refreshes daily, but Claude Code doesn't
+  auto-update plugins from third-party marketplaces unless you turn it on: in `/plugin`,
+  open the **Marketplaces** tab, select `logos-module-atlas` and choose **Enable
+  auto-update**. To update by hand, run `claude plugin marketplace update
+  logos-module-atlas`, then `claude plugin update logos-module-atlas@logos-module-atlas`.
 
   On Claude Code 2.1.287 or later, the plugin is also a
   [mod](https://code.claude.com/docs/en/plugins/mods/overview) (`hooks/`), which adds:
@@ -79,7 +82,7 @@ modules/<name>/      README.md card · <name>.lidl contract · interface.* sourc
 stacks/              EVM wallet, Monero wallet, blockchain & LEZ, messaging, storage, platform, key custody
 guides/              calling official modules from your own module; SDK/variant compatibility
 gaps.md              roadmap items not in the release (e.g. Bitcoin, Zcash)
-scripts/             build_registry.py, fetch_contracts.py, refresh.sh · check_mod.mjs (the mod against real data)
+scripts/             build_registry.py, fetch_contracts.py, refresh.sh · check_mod.mjs, check_drift.py, issue.sh (CI checks and reports)
 hooks/               the Claude Code mod: register.js (events, tools, /atlas pane) · atlas.js (logic)
 tests/               the mod's tests, for `claude plugin test`
 ```
@@ -95,6 +98,20 @@ contracts. A GitHub Action runs this daily. Before it commits, it checks that th
 refresh left the hand-written files alone and that the mod still validates, passes its
 tests and reads the new data (`node scripts/check_mod.mjs`). The `Mod` workflow runs
 the same checks on pull requests.
+
+What the automation can't fix, it reports as GitHub issues that open and close
+themselves, one per label:
+
+| Label | Opened when | Closed when |
+|---|---|---|
+| `atlas:drift` | A stack doc, guide or `gaps.md` is behind the release, or a module has no stack of its own in `data/stacks.json` (`scripts/check_drift.py`) | A refresh finds nothing behind |
+| `atlas:refresh-failed` | The daily refresh fails | A refresh passes |
+| `atlas:canary` | The weekly canary finds the newest Claude Code breaks the mod | The canary passes |
+| `atlas:raise-pin` | A newer Claude Code passes, so CI's pin in `.github/claude-code-version` can move | The pin is the newest |
+
+Both scheduled workflows also re-enable each other through the GitHub API, so the
+daily refresh keeps running through quiet stretches upstream when it has nothing to
+commit.
 
 ## License
 
