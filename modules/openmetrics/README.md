@@ -8,20 +8,20 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [platform](../../stacks/platform.md) · category `monitoring` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.1** (released 2026-07-26) · all: 0.1.1, 0.1.0 |
-| Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [openmetrics-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/openmetrics-v0.1.1/openmetrics-0.1.1.lgx) · sha256 `83bf44a9d346e1f6…` |
-| Source | [logos-co/openmetrics-module@f8da2a0](https://github.com/logos-co/openmetrics-module/tree/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68) |
-| Pinned by | logos-co/logos-modules-release@bd9f7f199fb2 submodules/openmetrics-module (tag openmetrics-v0.1.1) |
+| Catalog version | **0.1.2** (released 2026-10-02) · all: 0.1.2, 0.1.1, 0.1.0 |
+| Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
+| Package | [openmetrics-v0.1.2](https://github.com/logos-co/logos-modules-release/releases/download/openmetrics-v0.1.2/openmetrics-0.1.2.lgx) · sha256 `b90daadf4d34f4e5…` |
+| Source | [logos-co/openmetrics-module@802012a](https://github.com/logos-co/openmetrics-module/tree/802012aabbc63e24755251e0b1419769dda68715) |
+| Pinned by | logos-co/logos-modules-release@7d79f9f5f048 submodules/openmetrics-module (tag openmetrics-v0.1.2) |
 | Depends on | — |
 | Required by | — |
 
 ## Read these first
 
 1. **Contract** — [`openmetrics.lidl`](openmetrics.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/openmetrics_impl.h`](https://github.com/logos-co/openmetrics-module/blob/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68/src/openmetrics_impl.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/openmetrics_impl.h`](https://github.com/logos-co/openmetrics-module/blob/802012aabbc63e24755251e0b1419769dda68715/src/openmetrics_impl.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/platform.md](../../stacks/platform.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/openmetrics-module/blob/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/openmetrics-module/blob/802012aabbc63e24755251e0b1419769dda68715/README.md)
 
 ## API at a glance
 
@@ -35,5 +35,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["openmetrics"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/openmetrics-module/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install openmetrics --version 0.1.1`
+- Contract from source: `nix build 'github:logos-co/openmetrics-module/802012aabbc63e24755251e0b1419769dda68715#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install openmetrics --version 0.1.2`

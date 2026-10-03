@@ -146,8 +146,8 @@
   {
     "name": "openmetrics",
     "status": "ok",
-    "commit": "f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68",
-    "ref": "github:logos-co/openmetrics-module/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68#lidl"
+    "commit": "802012aabbc63e24755251e0b1419769dda68715",
+    "ref": "github:logos-co/openmetrics-module/802012aabbc63e24755251e0b1419769dda68715#lidl"
   },
   {
     "name": "package_downloader",
@@ -164,8 +164,8 @@
   {
     "name": "storage_module",
     "status": "ok",
-    "commit": "a9c14b8c977da51310361b03fe4d9efd763ae926",
-    "ref": "github:logos-co/logos-storage-module/a9c14b8c977da51310361b03fe4d9efd763ae926#lidl"
+    "commit": "8a663daa542386f5bf271555b3db2f58d328f073",
+    "ref": "github:logos-co/logos-storage-module/8a663daa542386f5bf271555b3db2f58d328f073#lidl"
   },
   {
     "name": "token_list_module",

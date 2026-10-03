@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/openmetrics-module@f8da2a025cc2:src/openmetrics_impl.h
-// https://github.com/logos-co/openmetrics-module/blob/f8da2a025cc2ff0ee2e284df5dc227fcfb0d6b68/src/openmetrics_impl.h
+// Extracted by logos-module-atlas from logos-co/openmetrics-module@802012aabbc6:src/openmetrics_impl.h
+// https://github.com/logos-co/openmetrics-module/blob/802012aabbc63e24755251e0b1419769dda68715/src/openmetrics_impl.h
 
 #pragma once
 

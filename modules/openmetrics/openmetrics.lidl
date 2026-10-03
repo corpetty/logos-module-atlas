@@ -1,5 +1,5 @@
 module openmetrics {
-  version "0.1.1"
+  version "0.1.2"
   description "Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics()"
   category "monitoring"
   depends []

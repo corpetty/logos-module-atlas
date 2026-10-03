@@ -122,7 +122,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-02 from Basecamp [0.3.1](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.1) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-02T15:49)._
+_Generated 2026-10-03 from Basecamp [0.3.1](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.1) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-03T06:50)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
@@ -193,7 +193,7 @@ _Generated 2026-10-02 from Basecamp [0.3.1](https://github.com/logos-co/logos-ba
 | [`accounts_ui`](modules/accounts_ui/README.md) | ui_qml | 0.3.0 | catalog | — | Create and manage Logos accounts and their keys. |
 | [`capability_module`](modules/capability_module/README.md) | core | 1.0.0 | bundled | [lidl](modules/capability_module/capability_module.lidl) | Coordinates permissions between modules |
 | [`modules_state`](modules/modules_state/README.md) | core | 0.1.0 | bundled | [lidl](modules/modules_state/modules_state.lidl) | Read-only registry of module lifecycle state |
-| [`openmetrics`](modules/openmetrics/README.md) | core | 0.1.1 | catalog | [lidl](modules/openmetrics/openmetrics.lidl) | Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics() |
+| [`openmetrics`](modules/openmetrics/README.md) | core | 0.1.2 | catalog | [lidl](modules/openmetrics/openmetrics.lidl) | Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics() |
 | [`package_downloader`](modules/package_downloader/README.md) | core | 1.0.0 | bundled | [lidl](modules/package_downloader/package_downloader.lidl) | Online package catalog and download service |
 | [`package_manager`](modules/package_manager/README.md) | core | 1.0.0 | bundled | [lidl](modules/package_manager/package_manager.lidl) | Plugin manager for the Logos system |
 | [`package_manager_ui`](modules/package_manager_ui/README.md) | ui_qml | 1.0.0 | bundled | — | Package Manager UI plugin for managing plugins and packages |
@@ -202,7 +202,7 @@ _Generated 2026-10-02 from Basecamp [0.3.1](https://github.com/logos-co/logos-ba
 
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
-| [`storage_module`](modules/storage_module/README.md) | core | 3.0.0 | bundled + catalog | [lidl](modules/storage_module/storage_module.lidl) | Storage module |
+| [`storage_module`](modules/storage_module/README.md) | core | 3.0.1 | bundled + catalog | [lidl](modules/storage_module/storage_module.lidl) | Storage module |
 | [`storage_ui`](modules/storage_ui/README.md) | ui_qml | 3.0.0 | catalog | — | Storage interface for the Logos application |
 
 <!-- registry:end -->

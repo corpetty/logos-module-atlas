@@ -109,7 +109,7 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/capability_module/capability_module.lidl
 - [modules_state](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/modules_state/README.md): core 0.1.0 — Read-only registry of module lifecycle state
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/modules_state/modules_state.lidl
-- [openmetrics](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/openmetrics/README.md): core 0.1.1 — Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics()
+- [openmetrics](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/openmetrics/README.md): core 0.1.2 — Serves an OpenMetrics /metrics endpoint by scraping modules that implement collectMetrics()
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/openmetrics/openmetrics.lidl
 - [package_downloader](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_downloader/README.md): core 1.0.0 — Online package catalog and download service
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/package_downloader/package_downloader.lidl
@@ -119,6 +119,6 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 ## Modules: Storage
 
-- [storage_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/README.md): core 3.0.0 — Storage module
+- [storage_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/README.md): core 3.0.1 — Storage module
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/storage_module.lidl
 - [storage_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_ui/README.md): ui_qml 3.0.0 — Storage interface for the Logos application
