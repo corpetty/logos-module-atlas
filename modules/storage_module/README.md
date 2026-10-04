@@ -8,20 +8,20 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [storage](../../stacks/storage.md) · category `protocol` |
 | Availability | bundled in Basecamp 0.3.1 (v3.0.0); installable from the default catalog *Logos Official* |
-| Catalog version | **3.0.1** (released 2026-10-02) · all: 3.0.1, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.1, 2.0.0, 1.2.0, 1.1.0, 1.0.0 |
+| Catalog version | **3.0.2** (released 2026-10-03) · all: 3.0.2, 3.0.1, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.1, 2.0.0, 1.2.0, 1.1.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [storage_module-v3.0.1](https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.0.1/storage_module-3.0.1.lgx) · sha256 `c78cae50aabd74b2…` |
-| Source | [logos-co/logos-storage-module@8a663da](https://github.com/logos-co/logos-storage-module/tree/8a663daa542386f5bf271555b3db2f58d328f073) |
-| Pinned by | logos-co/logos-modules-release@c9aa51680675 submodules/logos-storage-module (tag storage_module-v3.0.1) |
+| Package | [storage_module-v3.0.2](https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.0.2/storage_module-3.0.2.lgx) · sha256 `49accbb8e538bc13…` |
+| Source | [logos-co/logos-storage-module@7548f41](https://github.com/logos-co/logos-storage-module/tree/7548f41ae189917d58c37f0fb6d3a2700b99f59b) |
+| Pinned by | logos-co/logos-modules-release@1b7f8967b1d9 submodules/logos-storage-module (tag storage_module-v3.0.2) |
 | Depends on | — |
 | Required by | [`storage_ui`](../storage_ui/README.md) |
 
 ## Read these first
 
 1. **Contract** — [`storage_module.lidl`](storage_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/storage_module_plugin.h`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/src/storage_module_plugin.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/storage_module_plugin.h`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/storage.md](../../stacks/storage.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`CLAUDE.md`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/CLAUDE.md), [`README.md`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/README.md), [`docs/api_reference.rst`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/docs/api_reference.rst), [`docs/index.rst`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/docs/index.rst), [`docs/qt-creator.md`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/docs/qt-creator.md), [`docs/logoscore-overview/logoscore.md`](https://github.com/logos-co/logos-storage-module/blob/8a663daa542386f5bf271555b3db2f58d328f073/docs/logoscore-overview/logoscore.md)
+4. **Upstream docs** — [`CLAUDE.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/CLAUDE.md), [`README.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/README.md), [`docs/api_reference.rst`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/api_reference.rst), [`docs/index.rst`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/index.rst), [`docs/qt-creator.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/qt-creator.md), [`docs/logoscore-overview/logoscore.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/logoscore-overview/logoscore.md)
 
 ## API at a glance
 
@@ -76,5 +76,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["storage_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-storage-module/8a663daa542386f5bf271555b3db2f58d328f073#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install storage_module --version 3.0.1`
+- Contract from source: `nix build 'github:logos-co/logos-storage-module/7548f41ae189917d58c37f0fb6d3a2700b99f59b#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install storage_module --version 3.0.2`

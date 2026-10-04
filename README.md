@@ -122,7 +122,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-03 from Basecamp [0.3.1](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.1) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-03T06:50)._
+_Generated 2026-10-04 from Basecamp [0.3.1](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.1) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-04T08:22)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
@@ -202,7 +202,7 @@ _Generated 2026-10-03 from Basecamp [0.3.1](https://github.com/logos-co/logos-ba
 
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
-| [`storage_module`](modules/storage_module/README.md) | core | 3.0.1 | bundled + catalog | [lidl](modules/storage_module/storage_module.lidl) | Storage module |
+| [`storage_module`](modules/storage_module/README.md) | core | 3.0.2 | bundled + catalog | [lidl](modules/storage_module/storage_module.lidl) | Storage module |
 | [`storage_ui`](modules/storage_ui/README.md) | ui_qml | 3.0.0 | catalog | — | Storage interface for the Logos application |
 
 <!-- registry:end -->

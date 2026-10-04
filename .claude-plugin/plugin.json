@@ -1,7 +1,7 @@
 {
   "name": "logos-module-atlas",
   "displayName": "Logos Module Atlas",
-  "version": "0.1.202610031137",
+  "version": "0.1.202610041220",
   "description": "Registry of every Logos module available in the latest Logos Basecamp release — cards, canonical LIDL contracts, annotated interfaces, stack and integration guides.",
   "author": {
     "name": "Corey Petty",

@@ -119,6 +119,6 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 ## Modules: Storage
 
-- [storage_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/README.md): core 3.0.1 — Storage module
+- [storage_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/README.md): core 3.0.2 — Storage module
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/storage_module.lidl
 - [storage_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_ui/README.md): ui_qml 3.0.0 — Storage interface for the Logos application
