@@ -8,11 +8,11 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [storage](../../stacks/storage.md) · category `storage` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **3.0.0** (released 2026-10-02) · all: 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.2, 2.0.1, 2.0.0, 1.0.0 |
+| Catalog version | **3.0.0** (released 2026-10-05) · all: 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.2, 2.0.1, 2.0.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
 | Package | [storage_ui-v3.0.0](https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.0.0/storage_ui-3.0.0.lgx) · sha256 `b321c21c87377dd4…` |
 | Source | [logos-co/logos-storage-ui@63e9cb1](https://github.com/logos-co/logos-storage-ui/tree/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6) |
-| Pinned by | logos-co/logos-modules-release@3ba43d6ebeba submodules/logos-storage-ui (tag storage_ui-v3.0.0) |
+| Pinned by | logos-co/logos-modules-release@dcd51de9a6d7 submodules/logos-storage-ui (tag storage_ui-v3.0.0) |
 | Depends on | [`storage_module`](../storage_module/README.md) |
 | Required by | — |
 
