@@ -26,8 +26,8 @@
   {
     "name": "delivery_module",
     "status": "ok",
-    "commit": "bec859430d963d5c0775af85456eff80d9d1c456",
-    "ref": "github:logos-co/logos-delivery-module/bec859430d963d5c0775af85456eff80d9d1c456#lidl"
+    "commit": "f3aa9ffe6ac1857374c60c38ea75560b529865fb",
+    "ref": "github:logos-co/logos-delivery-module/f3aa9ffe6ac1857374c60c38ea75560b529865fb#lidl"
   },
   {
     "name": "eth_rpc_module",

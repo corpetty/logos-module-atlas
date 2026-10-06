@@ -8,19 +8,19 @@
 | Type | `ui_qml` · qml |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **1.2.0** (released 2026-10-01) · all: 1.2.0, 1.1.1, 1.1.0, 1.0.0 |
+| Catalog version | **1.2.0** (released 2026-10-06) · all: 1.2.0, 1.1.1, 1.1.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [lez_wallet_ui-v1.2.0](https://github.com/logos-co/logos-modules-release/releases/download/lez_wallet_ui-v1.2.0/lez_wallet_ui-1.2.0.lgx) · sha256 `b34581f8ea60404c…` |
-| Source | [logos-blockchain/logos-execution-zone-wallet-ui@4e49d9c](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/tree/4e49d9cead1732e5c6089690d3eed4b0aff2d0f5) |
-| Pinned by | logos-co/logos-modules-release@f154863e8c08 submodules/logos-execution-zone-wallet-ui (tag lez_wallet_ui-v1.2.0) |
+| Package | [lez_wallet_ui-v1.2.0](https://github.com/logos-co/logos-modules-release/releases/download/lez_wallet_ui-v1.2.0/lez_wallet_ui-1.2.0.lgx) · sha256 `afae9dec6f57dcb2…` |
+| Source | [logos-blockchain/logos-execution-zone-wallet-ui@961cc32](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/tree/961cc324e842eb8062ffc485283813ad2649cde5) |
+| Pinned by | logos-co/logos-modules-release@271ede1e29f2 submodules/logos-execution-zone-wallet-ui (tag lez_wallet_ui-v1.2.0) |
 | Depends on | [`lez_core`](../lez_core/README.md) `>=0.5.0` |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/LEZWalletBackend.rep`](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/4e49d9cead1732e5c6089690d3eed4b0aff2d0f5/src/LEZWalletBackend.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/LEZWalletBackend.rep`](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/961cc324e842eb8062ffc485283813ad2649cde5/src/LEZWalletBackend.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/4e49d9cead1732e5c6089690d3eed4b0aff2d0f5/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/961cc324e842eb8062ffc485283813ad2649cde5/README.md)
 
 ## API at a glance
 
@@ -59,5 +59,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-blockchain/logos-execution-zone-wallet-ui/4e49d9cead1732e5c6089690d3eed4b0aff2d0f5#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-blockchain/logos-execution-zone-wallet-ui/961cc324e842eb8062ffc485283813ad2649cde5#lidl' --no-link --print-out-paths`
 - Install: Basecamp → Package Manager, or `logosctl install lez_wallet_ui --version 1.2.0`

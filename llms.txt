@@ -78,7 +78,7 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_module/chat_module.lidl
 - [chat_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_ui/README.md): ui_qml 0.3.0 — Chat App for Logos - Private messaging interface
 - [delivery_demo](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_demo/README.md): ui_qml 0.3.0 — Educational UI demo for logos-delivery-module: subscribe to content topics, send and receive messages, see which delivery_module API calls back each interaction.
-- [delivery_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/README.md): core 0.3.0 — Logos Delivery Module - High-level message-delivery API
+- [delivery_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/README.md): core 0.3.1 — Logos Delivery Module - High-level message-delivery API
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/delivery_module.lidl
 - [liblogos_lez_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/README.md): core 4.2.1 — RLN registry provider (LEZ chain reads + registration/funding txs)
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/liblogos_lez_rln_module.lidl
@@ -121,4 +121,4 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 - [storage_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/README.md): core 3.0.2 — Storage module
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_module/storage_module.lidl
-- [storage_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_ui/README.md): ui_qml 3.0.0 — Storage interface for the Logos application
+- [storage_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/storage_ui/README.md): ui_qml 3.0.2 — Storage interface for the Logos application

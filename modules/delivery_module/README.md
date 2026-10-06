@@ -8,20 +8,20 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [messaging](../../stacks/messaging.md) · category `protocol` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.3.0** (released 2026-09-30) · all: 0.3.0, 0.2.1, 0.2.0, 0.1.3, 0.1.2 |
+| Catalog version | **0.3.1** (released 2026-10-05) · all: 0.3.1, 0.3.0, 0.2.1, 0.2.0, 0.1.3, 0.1.2 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [delivery_module-v0.3.0](https://github.com/logos-co/logos-modules-release/releases/download/delivery_module-v0.3.0/delivery_module-0.3.0.lgx) · sha256 `f744f0f9ef84438b…` |
-| Source | [logos-co/logos-delivery-module@bec8594](https://github.com/logos-co/logos-delivery-module/tree/bec859430d963d5c0775af85456eff80d9d1c456) |
-| Pinned by | logos-co/logos-modules-release@6526f4892e12 submodules/logos-delivery-module (tag delivery_module-v0.3.0) |
+| Package | [delivery_module-v0.3.1](https://github.com/logos-co/logos-modules-release/releases/download/delivery_module-v0.3.1/delivery_module-0.3.1.lgx) · sha256 `9b37e731ea8209ed…` |
+| Source | [logos-co/logos-delivery-module@f3aa9ff](https://github.com/logos-co/logos-delivery-module/tree/f3aa9ffe6ac1857374c60c38ea75560b529865fb) |
+| Pinned by | logos-co/logos-modules-release@127f3b75942b submodules/logos-delivery-module (tag delivery_module-v0.3.1) |
 | Depends on | — |
 | Required by | [`chat_module`](../chat_module/README.md), [`chat_ui`](../chat_ui/README.md), [`delivery_demo`](../delivery_demo/README.md) |
 
 ## Read these first
 
 1. **Contract** — [`delivery_module.lidl`](delivery_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/delivery_module_plugin.h`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/src/delivery_module_plugin.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/delivery_module_plugin.h`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/src/delivery_module_plugin.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/messaging.md](../../stacks/messaging.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/README.md), [`docs/index.rst`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/index.rst), [`docs/pages/api-layers.rst`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/api-layers.rst), [`docs/pages/api_reference.rst`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/api_reference.rst), [`docs/pages/architecture.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/architecture.md), [`docs/pages/internal.rst`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/internal.rst), [`docs/pages/networks.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/networks.md), [`docs/pages/query-node.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/query-node.md), [`docs/pages/rln.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/rln.md), [`docs/pages/run-node.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/run-node.md), [`docs/pages/versioning.md`](https://github.com/logos-co/logos-delivery-module/blob/bec859430d963d5c0775af85456eff80d9d1c456/docs/pages/versioning.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/README.md), [`docs/index.rst`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/index.rst), [`docs/pages/api-layers.rst`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/api-layers.rst), [`docs/pages/api_reference.rst`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/api_reference.rst), [`docs/pages/architecture.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/architecture.md), [`docs/pages/internal.rst`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/internal.rst), [`docs/pages/networks.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/networks.md), [`docs/pages/query-node.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/query-node.md), [`docs/pages/rln.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/rln.md), [`docs/pages/run-node.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/run-node.md), [`docs/pages/versioning.md`](https://github.com/logos-co/logos-delivery-module/blob/f3aa9ffe6ac1857374c60c38ea75560b529865fb/docs/pages/versioning.md)
 
 ## API at a glance
 
@@ -69,5 +69,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["delivery_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-delivery-module/bec859430d963d5c0775af85456eff80d9d1c456#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install delivery_module --version 0.3.0`
+- Contract from source: `nix build 'github:logos-co/logos-delivery-module/f3aa9ffe6ac1857374c60c38ea75560b529865fb#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install delivery_module --version 0.3.1`

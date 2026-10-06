@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-blockchain/logos-execution-zone-wallet-ui@4e49d9cead17:src/LEZWalletBackend.rep
-// https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/4e49d9cead1732e5c6089690d3eed4b0aff2d0f5/src/LEZWalletBackend.rep
+// Extracted by logos-module-atlas from logos-blockchain/logos-execution-zone-wallet-ui@961cc324e842:src/LEZWalletBackend.rep
+// https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/961cc324e842eb8062ffc485283813ad2649cde5/src/LEZWalletBackend.rep
 
 class LEZWalletBackend
 {

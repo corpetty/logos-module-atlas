@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-storage-ui@63e9cb1755e4:src/StorageBackend.rep
-// https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.rep
+// Extracted by logos-module-atlas from logos-co/logos-storage-ui@7b89afee451b:src/StorageBackend.rep
+// https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.rep
 
 #include <QVariantList>
 #include <QUrl>
