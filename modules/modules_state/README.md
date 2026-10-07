@@ -7,9 +7,9 @@
 |---|---|
 | Type | `core` · interface `universal` · c++ |
 | Stack | [platform](../../stacks/platform.md) · category `system` |
-| Availability | bundled in Basecamp 0.3.1 (v0.1.0) |
-| Source | [logos-co/logos-modules-state-module@ed0f4ba](https://github.com/logos-co/logos-modules-state-module/tree/ed0f4ba534520542764775efc1d0ef705a02e616) |
-| Pinned by | logos-co/logos-basecamp@0.3.1 flake.lock (logos-modules-state-module) |
+| Availability | bundled in Basecamp 0.3.2 (v0.1.0) |
+| Source | [logos-co/logos-modules-state-module@c70da49](https://github.com/logos-co/logos-modules-state-module/tree/c70da49aa56e48f867d50b9ff58679749f09dbcf) |
+| Pinned by | logos-co/logos-basecamp@0.3.2 flake.lock (logos-modules-state-module) |
 | Depends on | — |
 | Required by | — |
 | Concurrency | `single` |
@@ -17,9 +17,9 @@
 ## Read these first
 
 1. **Contract** — [`modules_state.lidl`](modules_state.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/modules_state_impl.h`](https://github.com/logos-co/logos-modules-state-module/blob/ed0f4ba534520542764775efc1d0ef705a02e616/src/modules_state_impl.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/modules_state_impl.h`](https://github.com/logos-co/logos-modules-state-module/blob/c70da49aa56e48f867d50b9ff58679749f09dbcf/src/modules_state_impl.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/platform.md](../../stacks/platform.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-modules-state-module/blob/ed0f4ba534520542764775efc1d0ef705a02e616/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-modules-state-module/blob/c70da49aa56e48f867d50b9ff58679749f09dbcf/README.md)
 
 ## API at a glance
 
@@ -38,4 +38,4 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["modules_state"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-modules-state-module/ed0f4ba534520542764775efc1d0ef705a02e616#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-co/logos-modules-state-module/c70da49aa56e48f867d50b9ff58679749f09dbcf#lidl' --no-link --print-out-paths`

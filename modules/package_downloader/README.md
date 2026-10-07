@@ -7,9 +7,9 @@
 |---|---|
 | Type | `core` · interface `universal` · c++ |
 | Stack | [platform](../../stacks/platform.md) · category `management` |
-| Availability | bundled in Basecamp 0.3.1 (v1.0.0) |
-| Source | [logos-co/logos-package-downloader-module@d40d4ab](https://github.com/logos-co/logos-package-downloader-module/tree/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8) |
-| Pinned by | logos-co/logos-basecamp@0.3.1 flake.lock (logos-package-downloader-module) |
+| Availability | bundled in Basecamp 0.3.2 (v1.0.0) |
+| Source | [logos-co/logos-package-downloader-module@7b0ca8b](https://github.com/logos-co/logos-package-downloader-module/tree/7b0ca8b74acde01c277431a1372092980a3f31df) |
+| Pinned by | logos-co/logos-basecamp@0.3.2 flake.lock (logos-package-downloader-module) |
 | Depends on | — |
 | Required by | [`package_manager_ui`](../package_manager_ui/README.md) |
 | Concurrency | `multi` |
@@ -17,9 +17,9 @@
 ## Read these first
 
 1. **Contract** — [`package_downloader.lidl`](package_downloader.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/package_downloader_impl.h`](https://github.com/logos-co/logos-package-downloader-module/blob/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8/src/package_downloader_impl.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/package_downloader_impl.h`](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/src/package_downloader_impl.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/platform.md](../../stacks/platform.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-package-downloader-module/blob/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8/README.md), [`docs/index.md`](https://github.com/logos-co/logos-package-downloader-module/blob/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8/docs/index.md), [`docs/project.md`](https://github.com/logos-co/logos-package-downloader-module/blob/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8/docs/project.md), [`docs/spec.md`](https://github.com/logos-co/logos-package-downloader-module/blob/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8/docs/spec.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/README.md), [`docs/index.md`](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/docs/index.md), [`docs/project.md`](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/docs/project.md), [`docs/spec.md`](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/docs/spec.md)
 
 ## API at a glance
 
@@ -37,14 +37,18 @@
 | `downloadPinned` | `downloadPinned(repoUrlOrName: tstr, packageName: tstr, version: tstr, rootHash: tstr)` |  |
 | `downloadResolvedDependencies` | `downloadResolvedDependencies(dependenciesJson: tstr, installedPackagesJson: tstr) -> [any]` |  |
 | `resolveDependencies` | `resolveDependencies(dependenciesJson: tstr, installedPackagesJson: tstr) -> [any]` |  |
+| `start` | `start()` |  |
+| `stop` | `stop()` |  |
+| `getState` | `getState() -> tstr` |  |
 
 | Event | Payload | Summary |
 |---|---|---|
 | `catalogChanged` | `catalogChanged()` |  |
 | `downloadProgress` | `downloadProgress(packageName: tstr, received: uint, total: uint)` |  |
 | `downloadDone` | `downloadDone(packageName: tstr, source: tstr)` |  |
+| `stateChanged` | `stateChanged(state: tstr)` |  |
 
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["package_downloader"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-package-downloader-module/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-co/logos-package-downloader-module/7b0ca8b74acde01c277431a1372092980a3f31df#lidl' --no-link --print-out-paths`

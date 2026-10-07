@@ -7,17 +7,17 @@
 |---|---|
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [platform](../../stacks/platform.md) · category `ui` |
-| Availability | bundled in Basecamp 0.3.1 (v1.0.0) |
-| Source | [logos-co/logos-package-manager-ui@3174edd](https://github.com/logos-co/logos-package-manager-ui/tree/3174edd016f8464c6bbdb667db54d0f7b117a62c) |
-| Pinned by | logos-co/logos-basecamp@0.3.1 flake.lock (logos-package-manager-ui) |
+| Availability | bundled in Basecamp 0.3.2 (v1.0.0) |
+| Source | [logos-co/logos-package-manager-ui@8b67bf0](https://github.com/logos-co/logos-package-manager-ui/tree/8b67bf0213596e021d441e5d1d43f857142003b6) |
+| Pinned by | logos-co/logos-basecamp@0.3.2 flake.lock (logos-package-manager-ui) |
 | Depends on | [`package_manager`](../package_manager/README.md), [`package_downloader`](../package_downloader/README.md) |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/package_manager_ui.rep`](https://github.com/logos-co/logos-package-manager-ui/blob/3174edd016f8464c6bbdb667db54d0f7b117a62c/src/package_manager_ui.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/package_manager_ui.rep`](https://github.com/logos-co/logos-package-manager-ui/blob/8b67bf0213596e021d441e5d1d43f857142003b6/src/package_manager_ui.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/platform.md](../../stacks/platform.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-package-manager-ui/blob/3174edd016f8464c6bbdb667db54d0f7b117a62c/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-package-manager-ui/blob/8b67bf0213596e021d441e5d1d43f857142003b6/README.md)
 
 ## API at a glance
 
@@ -79,4 +79,4 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-co/logos-package-manager-ui/3174edd016f8464c6bbdb667db54d0f7b117a62c#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-co/logos-package-manager-ui/8b67bf0213596e021d441e5d1d43f857142003b6#lidl' --no-link --print-out-paths`

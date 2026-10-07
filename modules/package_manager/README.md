@@ -7,18 +7,18 @@
 |---|---|
 | Type | `core` · interface `universal` · c++ |
 | Stack | [platform](../../stacks/platform.md) · category `management` |
-| Availability | bundled in Basecamp 0.3.1 (v1.0.0) |
-| Source | [logos-co/logos-package-manager-module@41df424](https://github.com/logos-co/logos-package-manager-module/tree/41df424fe04155c243db090659cef619e070a60b) |
-| Pinned by | logos-co/logos-basecamp@0.3.1 flake.lock (logos-package-manager-module) |
+| Availability | bundled in Basecamp 0.3.2 (v1.0.0) |
+| Source | [logos-co/logos-package-manager-module@4c5fa07](https://github.com/logos-co/logos-package-manager-module/tree/4c5fa074489f1977f57d6ae0b0538b379c4428d4) |
+| Pinned by | logos-co/logos-basecamp@0.3.2 flake.lock (logos-package-manager-module) |
 | Depends on | — |
 | Required by | [`package_manager_ui`](../package_manager_ui/README.md) |
 
 ## Read these first
 
 1. **Contract** — [`package_manager.lidl`](package_manager.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/package_manager_impl.h`](https://github.com/logos-co/logos-package-manager-module/blob/41df424fe04155c243db090659cef619e070a60b/src/package_manager_impl.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/package_manager_impl.h`](https://github.com/logos-co/logos-package-manager-module/blob/4c5fa074489f1977f57d6ae0b0538b379c4428d4/src/package_manager_impl.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/platform.md](../../stacks/platform.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-package-manager-module/blob/41df424fe04155c243db090659cef619e070a60b/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-package-manager-module/blob/4c5fa074489f1977f57d6ae0b0538b379c4428d4/README.md)
 
 ## API at a glance
 
@@ -82,4 +82,4 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["package_manager"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-package-manager-module/41df424fe04155c243db090659cef619e070a60b#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-co/logos-package-manager-module/4c5fa074489f1977f57d6ae0b0538b379c4428d4#lidl' --no-link --print-out-paths`

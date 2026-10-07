@@ -17,8 +17,12 @@ module package_downloader {
   method downloadPinned(repoUrlOrName: tstr, packageName: tstr, version: tstr, rootHash: tstr) -> {tstr: any}
   method downloadResolvedDependencies(dependenciesJson: tstr, installedPackagesJson: tstr) -> [any]
   method resolveDependencies(dependenciesJson: tstr, installedPackagesJson: tstr) -> [any]
+  method start() -> {tstr: any}
+  method stop() -> {tstr: any}
+  method getState() -> tstr
 
   event catalogChanged()
   event downloadProgress(packageName: tstr, received: uint, total: uint)
   event downloadDone(packageName: tstr, source: tstr)
+  event stateChanged(state: tstr)
 }

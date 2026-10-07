@@ -7,7 +7,7 @@
 |---|---|
 | Type | `core` · interface `universal` · c++ |
 | Stack | [storage](../../stacks/storage.md) · category `protocol` |
-| Availability | bundled in Basecamp 0.3.1 (v3.0.0); installable from the default catalog *Logos Official* |
+| Availability | bundled in Basecamp 0.3.2 (v3.0.2); installable from the default catalog *Logos Official* |
 | Catalog version | **3.0.2** (released 2026-10-03) · all: 3.0.2, 3.0.1, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.1, 2.0.0, 1.2.0, 1.1.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
 | Package | [storage_module-v3.0.2](https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.0.2/storage_module-3.0.2.lgx) · sha256 `49accbb8e538bc13…` |

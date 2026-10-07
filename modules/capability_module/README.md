@@ -7,9 +7,9 @@
 |---|---|
 | Type | `core` · interface `universal` · c++ |
 | Stack | [platform](../../stacks/platform.md) · category `security` |
-| Availability | bundled in Basecamp 0.3.1 (v1.0.0) |
+| Availability | bundled in Basecamp 0.3.2 (v1.0.0) |
 | Source | [logos-co/logos-capability-module@1a1b8b5](https://github.com/logos-co/logos-capability-module/tree/1a1b8b5a1167931afbf41ebaafbe76034e6357a0) |
-| Pinned by | logos-co/logos-basecamp@0.3.1 flake.lock (logos-capability-module) |
+| Pinned by | logos-co/logos-basecamp@0.3.2 flake.lock (logos-capability-module) |
 | Depends on | — |
 | Required by | — |
 

@@ -26,8 +26,8 @@
   {
     "name": "delivery_module",
     "status": "ok",
-    "commit": "f3aa9ffe6ac1857374c60c38ea75560b529865fb",
-    "ref": "github:logos-co/logos-delivery-module/f3aa9ffe6ac1857374c60c38ea75560b529865fb#lidl"
+    "commit": "c25b7868099949c375e7affdeb1502b354fd92e3",
+    "ref": "github:logos-co/logos-delivery-module/c25b7868099949c375e7affdeb1502b354fd92e3#lidl"
   },
   {
     "name": "eth_rpc_module",
@@ -110,8 +110,8 @@
   {
     "name": "modules_state",
     "status": "ok",
-    "commit": "ed0f4ba534520542764775efc1d0ef705a02e616",
-    "ref": "github:logos-co/logos-modules-state-module/ed0f4ba534520542764775efc1d0ef705a02e616#lidl"
+    "commit": "c70da49aa56e48f867d50b9ff58679749f09dbcf",
+    "ref": "github:logos-co/logos-modules-state-module/c70da49aa56e48f867d50b9ff58679749f09dbcf#lidl"
   },
   {
     "name": "monero_node_module",
@@ -152,14 +152,14 @@
   {
     "name": "package_downloader",
     "status": "ok",
-    "commit": "d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8",
-    "ref": "github:logos-co/logos-package-downloader-module/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8#lidl"
+    "commit": "7b0ca8b74acde01c277431a1372092980a3f31df",
+    "ref": "github:logos-co/logos-package-downloader-module/7b0ca8b74acde01c277431a1372092980a3f31df#lidl"
   },
   {
     "name": "package_manager",
     "status": "ok",
-    "commit": "41df424fe04155c243db090659cef619e070a60b",
-    "ref": "github:logos-co/logos-package-manager-module/41df424fe04155c243db090659cef619e070a60b#lidl"
+    "commit": "4c5fa074489f1977f57d6ae0b0538b379c4428d4",
+    "ref": "github:logos-co/logos-package-manager-module/4c5fa074489f1977f57d6ae0b0538b379c4428d4#lidl"
   },
   {
     "name": "storage_module",
