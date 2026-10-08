@@ -122,7 +122,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-07 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-07T12:44)._
+_Generated 2026-10-08 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-08T12:44)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
@@ -178,13 +178,13 @@ _Generated 2026-10-07 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
-| [`monero_node_module`](modules/monero_node_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/monero_node_module/monero_node_module.lidl) | Proxyable, fail-closed monerod JSON-RPC client. Per-network config (endpoint + proxy); socks5h/Tor-ready. Never runs a node itself; local… |
-| [`monero_wallet_backend`](modules/monero_wallet_backend/README.md) | core | 0.1.0 | catalog | [lidl](modules/monero_wallet_backend/monero_wallet_backend.lidl) | Monero wallet coordinator: wallet registry, sync poller, balances and history, send orchestration (build → review → broadcast). Holds no … |
-| [`monero_wallet_cli`](modules/monero_wallet_cli/README.md) | core | 0.1.0 | catalog | [lidl](modules/monero_wallet_cli/monero_wallet_cli.lidl) | Headless Monero wallet for monero_wallet_backend: open or create a wallet, read the balance and addresses, build a transfer, review it an… |
-| [`monero_wallet_core_module`](modules/monero_wallet_core_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/monero_wallet_core_module/monero_wallet_core_module.lidl) | In-process Monero wallet engine: wraps monero_c (wallet2 C ABI, LGPL-3.0, dynamically linked, built from source). Keys and the wallet pas… |
-| [`monero_wallet_ui`](modules/monero_wallet_ui/README.md) | ui_qml | 0.1.0 | catalog | — | The Monero wallet: balances, a reviewed send, receive addresses with a QR, activity, and the wallet management (create, restore, open, cl… |
-| [`monerod_module`](modules/monerod_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/monerod_module/monerod_module.lidl) | Runs a Monero node in-process: per-network config, start, stop, status and log tail. |
-| [`monerod_ui`](modules/monerod_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Run and manage a local Monero node: sync progress, peers, settings and the node log. |
+| [`monero_node_module`](modules/monero_node_module/README.md) | core | 0.1.1 | catalog | [lidl](modules/monero_node_module/monero_node_module.lidl) | Proxyable, fail-closed monerod JSON-RPC client. Per-network config (endpoint + proxy); socks5h/Tor-ready. Never runs a node itself; local… |
+| [`monero_wallet_backend`](modules/monero_wallet_backend/README.md) | core | 0.1.1 | catalog | [lidl](modules/monero_wallet_backend/monero_wallet_backend.lidl) | Monero wallet coordinator: wallet registry, sync poller, balances and history, send orchestration (build → review → broadcast). Holds no … |
+| [`monero_wallet_cli`](modules/monero_wallet_cli/README.md) | core | 0.1.1 | catalog | [lidl](modules/monero_wallet_cli/monero_wallet_cli.lidl) | Headless Monero wallet for monero_wallet_backend: open or create a wallet, read the balance and addresses, build a transfer, review it an… |
+| [`monero_wallet_core_module`](modules/monero_wallet_core_module/README.md) | core | 0.1.1 | catalog | [lidl](modules/monero_wallet_core_module/monero_wallet_core_module.lidl) | In-process Monero wallet engine: wraps monero_c (wallet2 C ABI, LGPL-3.0, dynamically linked, built from source). Keys and the wallet pas… |
+| [`monero_wallet_ui`](modules/monero_wallet_ui/README.md) | ui_qml | 0.1.1 | catalog | — | The Monero wallet: balances, a reviewed send, receive addresses with a QR, activity, and the wallet management (create, restore, open, cl… |
+| [`monerod_module`](modules/monerod_module/README.md) | core | 0.1.1 | catalog | [lidl](modules/monerod_module/monerod_module.lidl) | Runs a Monero node in-process: per-network config, start, stop, status and log tail. |
+| [`monerod_ui`](modules/monerod_ui/README.md) | ui_qml | 0.1.1 | catalog | — | Run and manage a local Monero node: sync progress, peers, settings and the node log. |
 
 ### [Platform](stacks/platform.md)
 

@@ -8,21 +8,21 @@
 | Type | `core` · interface `cdylib` · rust |
 | Stack | [monero-wallet](../../stacks/monero-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-30) · all: 0.1.0 |
+| Catalog version | **0.1.1** (released 2026-10-07) · all: 0.1.1, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [monero_wallet_backend-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_backend-v0.1.0/monero_wallet_backend-0.1.0.lgx) · sha256 `be49d6a90b07d354…` |
-| Source | [logos-co/logos-monero-wallet-backend@7690984](https://github.com/logos-co/logos-monero-wallet-backend/tree/769098441db339f7541ba8804722ae3f20614309) |
-| Pinned by | logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-monero-wallet-backend (tag monero_wallet_backend-v0.1.0) |
-| Depends on | [`monero_wallet_core_module`](../monero_wallet_core_module/README.md), [`monero_node_module`](../monero_node_module/README.md) |
+| Package | [monero_wallet_backend-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_backend-v0.1.1/monero_wallet_backend-0.1.1.lgx) · sha256 `6e952f4cf6e3f1f4…` |
+| Source | [logos-co/logos-monero-wallet-backend@a17d0df](https://github.com/logos-co/logos-monero-wallet-backend/tree/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a) |
+| Pinned by | logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-wallet-backend (tag monero_wallet_backend-v0.1.1) |
+| Depends on | [`monero_wallet_core_module`](../monero_wallet_core_module/README.md) `~0.1.1`, [`monero_node_module`](../monero_node_module/README.md) `~0.1.0` |
 | Required by | [`monero_wallet_cli`](../monero_wallet_cli/README.md), [`monero_wallet_ui`](../monero_wallet_ui/README.md) |
 | Concurrency | `multi` |
 
 ## Read these first
 
 1. **Contract** — [`monero_wallet_backend.lidl`](monero_wallet_backend.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.rs`](interface.rs), extracted from [`rust-lib/src/glue.rs`](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.rs`](interface.rs), extracted from [`rust-lib/src/glue.rs`](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/monero-wallet.md](../../stacks/monero-wallet.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/README.md)
 
 ## API at a glance
 
@@ -72,5 +72,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["monero_wallet_backend"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-monero-wallet-backend/769098441db339f7541ba8804722ae3f20614309#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install monero_wallet_backend --version 0.1.0`
+- Contract from source: `nix build 'github:logos-co/logos-monero-wallet-backend/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install monero_wallet_backend --version 0.1.1`

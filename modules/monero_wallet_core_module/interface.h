@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-core-module@7fc923dcce9a:src/monero_wallet_core_impl.h
-// https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/monero_wallet_core_impl.h
+// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-core-module@c513e58d05a0:src/monero_wallet_core_impl.h
+// https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/monero_wallet_core_impl.h
 
 #pragma once
 

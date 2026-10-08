@@ -8,19 +8,19 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [monero-wallet](../../stacks/monero-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-30) · all: 0.1.0 |
+| Catalog version | **0.1.1** (released 2026-10-07) · all: 0.1.1, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [monero_wallet_ui-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_ui-v0.1.0/monero_wallet_ui-0.1.0.lgx) · sha256 `50bd8a0584baba9b…` |
-| Source | [logos-co/logos-monero-wallet-ui@345fc5d](https://github.com/logos-co/logos-monero-wallet-ui/tree/345fc5deb3ac61844dc27bb396bd77087e89c05c) |
-| Pinned by | logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-monero-wallet-ui (tag monero_wallet_ui-v0.1.0) |
-| Depends on | [`monero_wallet_backend`](../monero_wallet_backend/README.md), [`monero_wallet_core_module`](../monero_wallet_core_module/README.md), [`monero_node_module`](../monero_node_module/README.md) |
+| Package | [monero_wallet_ui-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_ui-v0.1.1/monero_wallet_ui-0.1.1.lgx) · sha256 `30623f654ad32c7b…` |
+| Source | [logos-co/logos-monero-wallet-ui@b2e3c6a](https://github.com/logos-co/logos-monero-wallet-ui/tree/b2e3c6a697751337bcc51a0965a23199ffee6730) |
+| Pinned by | logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-wallet-ui (tag monero_wallet_ui-v0.1.1) |
+| Depends on | [`monero_wallet_backend`](../monero_wallet_backend/README.md) `~0.1.0`, [`monero_wallet_core_module`](../monero_wallet_core_module/README.md) `~0.1.0`, [`monero_node_module`](../monero_node_module/README.md) `~0.1.0` |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/monero_wallet_ui.rep`](https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/src/monero_wallet_ui.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/monero_wallet_ui.rep`](https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/src/monero_wallet_ui.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/monero-wallet.md](../../stacks/monero-wallet.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/README.md)
 
 ## API at a glance
 
@@ -79,5 +79,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-co/logos-monero-wallet-ui/345fc5deb3ac61844dc27bb396bd77087e89c05c#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install monero_wallet_ui --version 0.1.0`
+- Contract from source: `nix build 'github:logos-co/logos-monero-wallet-ui/b2e3c6a697751337bcc51a0965a23199ffee6730#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install monero_wallet_ui --version 0.1.1`

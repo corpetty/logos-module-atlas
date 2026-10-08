@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-monero-node-module@ddaec9337b4d:rust-lib/src/glue.rs
-// https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/rust-lib/src/glue.rs
+// Extracted by logos-module-atlas from logos-co/logos-monero-node-module@787cff16dad4:rust-lib/src/glue.rs
+// https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/rust-lib/src/glue.rs
 
 pub trait MoneroNodeModule: Send + Sync + 'static {
     /// Store one network's config from `{ url, username?, password?, proxy?, proxyRequired?, timeoutSecs?, trusted?, mode? }`.

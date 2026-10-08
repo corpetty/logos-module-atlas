@@ -1,5 +1,5 @@
 module monerod_module {
-  version "0.1.0"
+  version "0.1.1"
   description "Runs a Monero node in-process: per-network config, start, stop, status and log tail."
   category "wallet"
   depends []

@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-ui@345fc5deb3ac:src/monero_wallet_ui.rep
-// https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/src/monero_wallet_ui.rep
+// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-ui@b2e3c6a69775:src/monero_wallet_ui.rep
+// https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/src/monero_wallet_ui.rep
 
 // QtRO view contract for the Monero wallet — one app, the way every Monero wallet is one app:
 // balances, send, receive and activity, plus the wallet management (create · restore · open ·

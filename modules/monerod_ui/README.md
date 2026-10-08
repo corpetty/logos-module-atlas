@@ -8,19 +8,19 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [monero-wallet](../../stacks/monero-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-28) · all: 0.1.0 |
+| Catalog version | **0.1.1** (released 2026-10-07) · all: 0.1.1, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [monerod_ui-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/monerod_ui-v0.1.0/monerod_ui-0.1.0.lgx) · sha256 `0c4f6dd53c6932b6…` |
-| Source | [logos-co/logos-monerod-ui@10aaf70](https://github.com/logos-co/logos-monerod-ui/tree/10aaf706751d4133bebe7fae42db21611f0704d9) |
-| Pinned by | logos-co/logos-modules-release@ecc846005308 submodules/logos-monerod-ui (tag monerod_ui-v0.1.0) |
-| Depends on | [`monerod_module`](../monerod_module/README.md) |
+| Package | [monerod_ui-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/monerod_ui-v0.1.1/monerod_ui-0.1.1.lgx) · sha256 `f781f68ea5a44578…` |
+| Source | [logos-co/logos-monerod-ui@634637d](https://github.com/logos-co/logos-monerod-ui/tree/634637ddf8daed02f13172bfa68dbde5bbcd9c0a) |
+| Pinned by | logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monerod-ui (tag monerod_ui-v0.1.1) |
+| Depends on | [`monerod_module`](../monerod_module/README.md) `~0.1.0` |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/MonerodBackend.rep`](https://github.com/logos-co/logos-monerod-ui/blob/10aaf706751d4133bebe7fae42db21611f0704d9/src/MonerodBackend.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/MonerodBackend.rep`](https://github.com/logos-co/logos-monerod-ui/blob/634637ddf8daed02f13172bfa68dbde5bbcd9c0a/src/MonerodBackend.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/monero-wallet.md](../../stacks/monero-wallet.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monerod-ui/blob/10aaf706751d4133bebe7fae42db21611f0704d9/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monerod-ui/blob/634637ddf8daed02f13172bfa68dbde5bbcd9c0a/README.md)
 
 ## API at a glance
 
@@ -42,5 +42,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-co/logos-monerod-ui/10aaf706751d4133bebe7fae42db21611f0704d9#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install monerod_ui --version 0.1.0`
+- Contract from source: `nix build 'github:logos-co/logos-monerod-ui/634637ddf8daed02f13172bfa68dbde5bbcd9c0a#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install monerod_ui --version 0.1.1`

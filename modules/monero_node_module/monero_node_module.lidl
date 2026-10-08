@@ -1,5 +1,5 @@
 module monero_node_module {
-  version "0.1.0"
+  version "0.1.1"
   depends []
 
   method set_node_config(network: tstr, config_json: tstr) -> tstr description "Store one network's config from `{ url, username?, password?, proxy?, proxyRequired?, timeoutSecs?, trusted?, mode? }`.\nA full replace: `mode` is `remote` unless the config says `local`."

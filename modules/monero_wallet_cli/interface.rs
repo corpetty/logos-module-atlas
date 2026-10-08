@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-cli@9f5958f7172a:rust-lib/src/glue.rs
-// https://github.com/logos-co/logos-monero-wallet-cli/blob/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905/rust-lib/src/glue.rs
+// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-cli@fa4b388dd9d0:rust-lib/src/glue.rs
+// https://github.com/logos-co/logos-monero-wallet-cli/blob/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369/rust-lib/src/glue.rs
 
 pub trait MoneroWalletCliModule: Send + Sync + 'static {
     /// `{ ok, held, custodian, approver, identity, approvers, custodians, awaiting, hint }`.

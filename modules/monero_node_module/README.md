@@ -8,11 +8,11 @@
 | Type | `core` · interface `cdylib` · rust |
 | Stack | [monero-wallet](../../stacks/monero-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-28) · all: 0.1.0 |
+| Catalog version | **0.1.1** (released 2026-10-07) · all: 0.1.1, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [monero_node_module-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/monero_node_module-v0.1.0/monero_node_module-0.1.0.lgx) · sha256 `67902c96c228e32a…` |
-| Source | [logos-co/logos-monero-node-module@ddaec93](https://github.com/logos-co/logos-monero-node-module/tree/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f) |
-| Pinned by | logos-co/logos-modules-release@ecc846005308 submodules/logos-monero-node-module (tag monero_node_module-v0.1.0) |
+| Package | [monero_node_module-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/monero_node_module-v0.1.1/monero_node_module-0.1.1.lgx) · sha256 `a8b3ebe856e35e73…` |
+| Source | [logos-co/logos-monero-node-module@787cff1](https://github.com/logos-co/logos-monero-node-module/tree/787cff16dad4b077e4601415a706874bbf168458) |
+| Pinned by | logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-node-module (tag monero_node_module-v0.1.1) |
 | Depends on | — |
 | Required by | [`monero_wallet_backend`](../monero_wallet_backend/README.md), [`monero_wallet_core_module`](../monero_wallet_core_module/README.md), [`monero_wallet_ui`](../monero_wallet_ui/README.md) |
 | Concurrency | `multi` |
@@ -20,9 +20,9 @@
 ## Read these first
 
 1. **Contract** — [`monero_node_module.lidl`](monero_node_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.rs`](interface.rs), extracted from [`rust-lib/src/glue.rs`](https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/rust-lib/src/glue.rs). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.rs`](interface.rs), extracted from [`rust-lib/src/glue.rs`](https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/rust-lib/src/glue.rs). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/monero-wallet.md](../../stacks/monero-wallet.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/README.md)
 
 ## API at a glance
 
@@ -49,5 +49,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["monero_node_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-monero-node-module/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install monero_node_module --version 0.1.0`
+- Contract from source: `nix build 'github:logos-co/logos-monero-node-module/787cff16dad4b077e4601415a706874bbf168458#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install monero_node_module --version 0.1.1`

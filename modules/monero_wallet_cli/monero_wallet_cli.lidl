@@ -1,5 +1,5 @@
 module monero_wallet_cli {
-  version "0.1.0"
+  version "0.1.1"
   depends []
 
   method status() -> tstr description "`{ ok, held, custodian, approver, identity, approvers, custodians, awaiting, hint }`.\n`held` is \"holds every role this module needs\"; `hint` names the exact `configure`."

@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-monerod-module@9ed580d1423f:src/monerod_module_impl.h
-// https://github.com/logos-co/logos-monerod-module/blob/9ed580d1423f3415f5934a18faddf022b616cb86/src/monerod_module_impl.h
+// Extracted by logos-module-atlas from logos-co/logos-monerod-module@246ff75bb125:src/monerod_module_impl.h
+// https://github.com/logos-co/logos-monerod-module/blob/246ff75bb1253478516bb47b041c47638c268a7d/src/monerod_module_impl.h
 
 #pragma once
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T13:20:42+00:00",
+  "generatedAt": "2026-10-08T13:26:21+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-07T12:44:36Z",
+      "indexGeneratedAt": "2026-10-08T12:44:24Z",
       "packageCount": 46
     }
   ],
@@ -7640,16 +7640,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-28T23:38:52Z",
-        "publisherRef": "monero_node_module-v0.1.0",
-        "catalogCommit": "ecc8460053082f03a87fa5d4d7ddd71fed09eead",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_node_module-v0.1.0/monero_node_module-0.1.0.lgx",
-        "sha256": "67902c96c228e32a362505c7f3d1d22d73d4561d8c05a04587105dc252ac4a82",
-        "size": 29019152,
+        "releasedAt": "2026-10-07T21:27:02Z",
+        "publisherRef": "monero_node_module-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_node_module-v0.1.1/monero_node_module-0.1.1.lgx",
+        "sha256": "a8b3ebe856e35e7311cc2be5787c71f6872adb6ba2cd837e381cc7713d610754",
+        "size": 29017955,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -7659,10 +7660,10 @@
       },
       "source": {
         "repo": "logos-co/logos-monero-node-module",
-        "commit": "ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f",
+        "commit": "787cff16dad4b077e4601415a706874bbf168458",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@ecc846005308 submodules/logos-monero-node-module (tag monero_node_module-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monero-node-module/tree/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-node-module (tag monero_node_module-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monero-node-module/tree/787cff16dad4b077e4601415a706874bbf168458"
       },
       "dependencies": [],
       "requiredBy": [
@@ -7678,19 +7679,19 @@
       "interfaceSource": {
         "file": "interface.rs",
         "from": "rust-lib/src/glue.rs",
-        "url": "https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/rust-lib/src/glue.rs",
+        "url": "https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/rust-lib/src/glue.rs",
         "lang": "rs"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/README.md"
+          "url": "https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "monero_node_module.lidl",
-        "builtFrom": "ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f",
+        "builtFrom": "787cff16dad4b077e4601415a706874bbf168458",
         "stale": false
       },
       "api": {
@@ -7802,16 +7803,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-30T20:13:19Z",
-        "publisherRef": "monero_wallet_backend-v0.1.0",
-        "catalogCommit": "34013bd5dfd2e6be53d59a328edfd71f8c9660d8",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_backend-v0.1.0/monero_wallet_backend-0.1.0.lgx",
-        "sha256": "be49d6a90b07d354646844ffea181031d9a5af9b1017fa164d906eb7abea73e7",
-        "size": 18213314,
+        "releasedAt": "2026-10-07T21:39:27Z",
+        "publisherRef": "monero_wallet_backend-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_backend-v0.1.1/monero_wallet_backend-0.1.1.lgx",
+        "sha256": "6e952f4cf6e3f1f476196b7d38a563ed11afda1440ca2f0d67a6991d8f606624",
+        "size": 18213463,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -7821,19 +7823,19 @@
       },
       "source": {
         "repo": "logos-co/logos-monero-wallet-backend",
-        "commit": "769098441db339f7541ba8804722ae3f20614309",
+        "commit": "a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-monero-wallet-backend (tag monero_wallet_backend-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monero-wallet-backend/tree/769098441db339f7541ba8804722ae3f20614309"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-wallet-backend (tag monero_wallet_backend-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monero-wallet-backend/tree/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a"
       },
       "dependencies": [
         {
           "name": "monero_wallet_core_module",
-          "version": null
+          "version": "~0.1.1"
         },
         {
           "name": "monero_node_module",
-          "version": null
+          "version": "~0.1.0"
         }
       ],
       "requiredBy": [
@@ -7848,19 +7850,19 @@
       "interfaceSource": {
         "file": "interface.rs",
         "from": "rust-lib/src/glue.rs",
-        "url": "https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs",
+        "url": "https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs",
         "lang": "rs"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/README.md"
+          "url": "https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "monero_wallet_backend.lidl",
-        "builtFrom": "769098441db339f7541ba8804722ae3f20614309",
+        "builtFrom": "a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a",
         "stale": false
       },
       "api": {
@@ -8073,16 +8075,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-28T23:40:43Z",
-        "publisherRef": "monero_wallet_cli-v0.1.0",
-        "catalogCommit": "ecc8460053082f03a87fa5d4d7ddd71fed09eead",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_cli-v0.1.0/monero_wallet_cli-0.1.0.lgx",
-        "sha256": "733ca91732e62fb5e7566ff742b8cd7abeb682c9a2a6eef41505758e09347390",
-        "size": 17712992,
+        "releasedAt": "2026-10-07T21:26:30Z",
+        "publisherRef": "monero_wallet_cli-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_cli-v0.1.1/monero_wallet_cli-0.1.1.lgx",
+        "sha256": "a13ee94bd866d580d0625d68c54d5141b1b2596c842d9f36ffbffcb105439f1a",
+        "size": 17710628,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -8092,15 +8095,15 @@
       },
       "source": {
         "repo": "logos-co/logos-monero-wallet-cli",
-        "commit": "9f5958f7172a2f12c7fa16996da1ea3fdf1a7905",
+        "commit": "fa4b388dd9d0dce63bb218cb5ea42f3fedf39369",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@ecc846005308 submodules/logos-monero-wallet-cli (tag monero_wallet_cli-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monero-wallet-cli/tree/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-wallet-cli (tag monero_wallet_cli-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monero-wallet-cli/tree/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369"
       },
       "dependencies": [
         {
           "name": "monero_wallet_backend",
-          "version": null
+          "version": "~0.1.0"
         }
       ],
       "requiredBy": [],
@@ -8112,19 +8115,19 @@
       "interfaceSource": {
         "file": "interface.rs",
         "from": "rust-lib/src/glue.rs",
-        "url": "https://github.com/logos-co/logos-monero-wallet-cli/blob/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905/rust-lib/src/glue.rs",
+        "url": "https://github.com/logos-co/logos-monero-wallet-cli/blob/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369/rust-lib/src/glue.rs",
         "lang": "rs"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monero-wallet-cli/blob/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905/README.md"
+          "url": "https://github.com/logos-co/logos-monero-wallet-cli/blob/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "monero_wallet_cli.lidl",
-        "builtFrom": "9f5958f7172a2f12c7fa16996da1ea3fdf1a7905",
+        "builtFrom": "fa4b388dd9d0dce63bb218cb5ea42f3fedf39369",
         "stale": false
       },
       "api": {
@@ -8312,16 +8315,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-30T20:14:07Z",
-        "publisherRef": "monero_wallet_core_module-v0.1.0",
-        "catalogCommit": "34013bd5dfd2e6be53d59a328edfd71f8c9660d8",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_core_module-v0.1.0/monero_wallet_core_module-0.1.0.lgx",
-        "sha256": "0df66ccc75b47f441472a09e29fb748ee480db874fa6e363fa1eba4073095099",
-        "size": 49205896,
+        "releasedAt": "2026-10-07T21:36:28Z",
+        "publisherRef": "monero_wallet_core_module-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_core_module-v0.1.1/monero_wallet_core_module-0.1.1.lgx",
+        "sha256": "116c50d043d9c0538483f048609cf5c5a65976b69af666629b246215c1591347",
+        "size": 49500146,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -8331,15 +8335,15 @@
       },
       "source": {
         "repo": "logos-co/logos-monero-wallet-core-module",
-        "commit": "7fc923dcce9ac5d40db8dd30f658eb63849e7212",
+        "commit": "c513e58d05a08abfdb789e82c94bab052f3eb7e5",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-monero-wallet-core-module (tag monero_wallet_core_module-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monero-wallet-core-module/tree/7fc923dcce9ac5d40db8dd30f658eb63849e7212"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-wallet-core-module (tag monero_wallet_core_module-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monero-wallet-core-module/tree/c513e58d05a08abfdb789e82c94bab052f3eb7e5"
       },
       "dependencies": [
         {
           "name": "monero_node_module",
-          "version": null
+          "version": "~0.1.0"
         }
       ],
       "requiredBy": [
@@ -8354,19 +8358,19 @@
       "interfaceSource": {
         "file": "interface.h",
         "from": "src/monero_wallet_core_impl.h",
-        "url": "https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/monero_wallet_core_impl.h",
+        "url": "https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/monero_wallet_core_impl.h",
         "lang": "h"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/README.md"
+          "url": "https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "monero_wallet_core_module.lidl",
-        "builtFrom": "7fc923dcce9ac5d40db8dd30f658eb63849e7212",
+        "builtFrom": "c513e58d05a08abfdb789e82c94bab052f3eb7e5",
         "stale": false
       },
       "api": {
@@ -8499,16 +8503,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-30T20:14:17Z",
-        "publisherRef": "monero_wallet_ui-v0.1.0",
-        "catalogCommit": "34013bd5dfd2e6be53d59a328edfd71f8c9660d8",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_ui-v0.1.0/monero_wallet_ui-0.1.0.lgx",
-        "sha256": "50bd8a0584baba9bf946c4a24c6ac7694b2edd2e80344d7f6c8a5355a81df19d",
-        "size": 15033969,
+        "releasedAt": "2026-10-07T21:26:56Z",
+        "publisherRef": "monero_wallet_ui-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monero_wallet_ui-v0.1.1/monero_wallet_ui-0.1.1.lgx",
+        "sha256": "30623f654ad32c7be491ef3c900f48c75cac65303da982c67981de20d9c54e05",
+        "size": 15034118,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -8518,23 +8523,23 @@
       },
       "source": {
         "repo": "logos-co/logos-monero-wallet-ui",
-        "commit": "345fc5deb3ac61844dc27bb396bd77087e89c05c",
+        "commit": "b2e3c6a697751337bcc51a0965a23199ffee6730",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-monero-wallet-ui (tag monero_wallet_ui-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monero-wallet-ui/tree/345fc5deb3ac61844dc27bb396bd77087e89c05c"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monero-wallet-ui (tag monero_wallet_ui-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monero-wallet-ui/tree/b2e3c6a697751337bcc51a0965a23199ffee6730"
       },
       "dependencies": [
         {
           "name": "monero_wallet_backend",
-          "version": null
+          "version": "~0.1.0"
         },
         {
           "name": "monero_wallet_core_module",
-          "version": null
+          "version": "~0.1.0"
         },
         {
           "name": "monero_node_module",
-          "version": null
+          "version": "~0.1.0"
         }
       ],
       "requiredBy": [],
@@ -8567,13 +8572,13 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/monero_wallet_ui.rep",
-        "url": "https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/src/monero_wallet_ui.rep",
+        "url": "https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/src/monero_wallet_ui.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/README.md"
+          "url": "https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/README.md"
         }
       ],
       "qmlView": "qml/MoneroWalletView.qml",
@@ -8821,16 +8826,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-28T23:51:06Z",
-        "publisherRef": "monerod_module-v0.1.0",
-        "catalogCommit": "ecc8460053082f03a87fa5d4d7ddd71fed09eead",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monerod_module-v0.1.0/monerod_module-0.1.0.lgx",
-        "sha256": "b93dcd0d093f7d4519108cd1b1e19e94c99aed9044272f540228b92b97fea53c",
-        "size": 46985258,
+        "releasedAt": "2026-10-07T21:32:43Z",
+        "publisherRef": "monerod_module-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monerod_module-v0.1.1/monerod_module-0.1.1.lgx",
+        "sha256": "547dfaefb3919c38ab7cddc06f6b267faffa734e6258461a38eb5e462d2d044f",
+        "size": 47035653,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -8840,10 +8846,10 @@
       },
       "source": {
         "repo": "logos-co/logos-monerod-module",
-        "commit": "9ed580d1423f3415f5934a18faddf022b616cb86",
+        "commit": "246ff75bb1253478516bb47b041c47638c268a7d",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@ecc846005308 submodules/logos-monerod-module (tag monerod_module-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monerod-module/tree/9ed580d1423f3415f5934a18faddf022b616cb86"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monerod-module (tag monerod_module-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monerod-module/tree/246ff75bb1253478516bb47b041c47638c268a7d"
       },
       "dependencies": [],
       "requiredBy": [
@@ -8857,19 +8863,19 @@
       "interfaceSource": {
         "file": "interface.h",
         "from": "src/monerod_module_impl.h",
-        "url": "https://github.com/logos-co/logos-monerod-module/blob/9ed580d1423f3415f5934a18faddf022b616cb86/src/monerod_module_impl.h",
+        "url": "https://github.com/logos-co/logos-monerod-module/blob/246ff75bb1253478516bb47b041c47638c268a7d/src/monerod_module_impl.h",
         "lang": "h"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monerod-module/blob/9ed580d1423f3415f5934a18faddf022b616cb86/README.md"
+          "url": "https://github.com/logos-co/logos-monerod-module/blob/246ff75bb1253478516bb47b041c47638c268a7d/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "monerod_module.lidl",
-        "builtFrom": "9ed580d1423f3415f5934a18faddf022b616cb86",
+        "builtFrom": "246ff75bb1253478516bb47b041c47638c268a7d",
         "stale": false
       },
       "api": {
@@ -8942,16 +8948,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-28T23:41:53Z",
-        "publisherRef": "monerod_ui-v0.1.0",
-        "catalogCommit": "ecc8460053082f03a87fa5d4d7ddd71fed09eead",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monerod_ui-v0.1.0/monerod_ui-0.1.0.lgx",
-        "sha256": "0c4f6dd53c6932b62616ae95d905ffd4ec8e47bebcc1347151066330a6e705ed",
-        "size": 14576183,
+        "releasedAt": "2026-10-07T21:25:33Z",
+        "publisherRef": "monerod_ui-v0.1.1",
+        "catalogCommit": "7eb9ac0f592b48de583581843adbc46a618bf317",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/monerod_ui-v0.1.1/monerod_ui-0.1.1.lgx",
+        "sha256": "f781f68ea5a44578caadc5d5af66e42ddeaf6f425280c7ac3aff0a4d7efb1818",
+        "size": 14576176,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -8961,15 +8968,15 @@
       },
       "source": {
         "repo": "logos-co/logos-monerod-ui",
-        "commit": "10aaf706751d4133bebe7fae42db21611f0704d9",
+        "commit": "634637ddf8daed02f13172bfa68dbde5bbcd9c0a",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@ecc846005308 submodules/logos-monerod-ui (tag monerod_ui-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-monerod-ui/tree/10aaf706751d4133bebe7fae42db21611f0704d9"
+        "pinnedBy": "logos-co/logos-modules-release@7eb9ac0f592b submodules/logos-monerod-ui (tag monerod_ui-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-monerod-ui/tree/634637ddf8daed02f13172bfa68dbde5bbcd9c0a"
       },
       "dependencies": [
         {
           "name": "monerod_module",
-          "version": null
+          "version": "~0.1.0"
         }
       ],
       "requiredBy": [],
@@ -8994,13 +9001,13 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/MonerodBackend.rep",
-        "url": "https://github.com/logos-co/logos-monerod-ui/blob/10aaf706751d4133bebe7fae42db21611f0704d9/src/MonerodBackend.rep",
+        "url": "https://github.com/logos-co/logos-monerod-ui/blob/634637ddf8daed02f13172bfa68dbde5bbcd9c0a/src/MonerodBackend.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-monerod-ui/blob/10aaf706751d4133bebe7fae42db21611f0704d9/README.md"
+          "url": "https://github.com/logos-co/logos-monerod-ui/blob/634637ddf8daed02f13172bfa68dbde5bbcd9c0a/README.md"
         }
       ],
       "qmlView": null,

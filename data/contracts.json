@@ -116,32 +116,32 @@
   {
     "name": "monero_node_module",
     "status": "ok",
-    "commit": "ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f",
-    "ref": "github:logos-co/logos-monero-node-module/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f#lidl"
+    "commit": "787cff16dad4b077e4601415a706874bbf168458",
+    "ref": "github:logos-co/logos-monero-node-module/787cff16dad4b077e4601415a706874bbf168458#lidl"
   },
   {
     "name": "monero_wallet_backend",
     "status": "ok",
-    "commit": "769098441db339f7541ba8804722ae3f20614309",
-    "ref": "github:logos-co/logos-monero-wallet-backend/769098441db339f7541ba8804722ae3f20614309#lidl"
+    "commit": "a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a",
+    "ref": "github:logos-co/logos-monero-wallet-backend/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a#lidl"
   },
   {
     "name": "monero_wallet_cli",
     "status": "ok",
-    "commit": "9f5958f7172a2f12c7fa16996da1ea3fdf1a7905",
-    "ref": "github:logos-co/logos-monero-wallet-cli/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905#lidl"
+    "commit": "fa4b388dd9d0dce63bb218cb5ea42f3fedf39369",
+    "ref": "github:logos-co/logos-monero-wallet-cli/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369#lidl"
   },
   {
     "name": "monero_wallet_core_module",
     "status": "ok",
-    "commit": "7fc923dcce9ac5d40db8dd30f658eb63849e7212",
-    "ref": "github:logos-co/logos-monero-wallet-core-module/7fc923dcce9ac5d40db8dd30f658eb63849e7212#lidl"
+    "commit": "c513e58d05a08abfdb789e82c94bab052f3eb7e5",
+    "ref": "github:logos-co/logos-monero-wallet-core-module/c513e58d05a08abfdb789e82c94bab052f3eb7e5#lidl"
   },
   {
     "name": "monerod_module",
     "status": "ok",
-    "commit": "9ed580d1423f3415f5934a18faddf022b616cb86",
-    "ref": "github:logos-co/logos-monerod-module/9ed580d1423f3415f5934a18faddf022b616cb86#lidl"
+    "commit": "246ff75bb1253478516bb47b041c47638c268a7d",
+    "ref": "github:logos-co/logos-monerod-module/246ff75bb1253478516bb47b041c47638c268a7d#lidl"
   },
   {
     "name": "openmetrics",

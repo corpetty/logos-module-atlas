@@ -1,5 +1,5 @@
 module monero_wallet_core_module {
-  version "0.1.0"
+  version "0.1.1"
   description "In-process Monero wallet engine: wraps monero_c (wallet2 C ABI, LGPL-3.0, dynamically linked, built from source). Keys and the wallet password never leave this module."
   category "wallet"
   depends [monero_node_module]

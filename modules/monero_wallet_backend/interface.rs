@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-backend@769098441db3:rust-lib/src/glue.rs
-// https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs
+// Extracted by logos-module-atlas from logos-co/logos-monero-wallet-backend@a17d0df6e7c8:rust-lib/src/glue.rs
+// https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs
 
 pub trait MoneroWalletBackendModule: Send + Sync + 'static {
     /// Name who holds the two roles: `{ approvers?, custodians? }` → `{ ok, approvers, custodians }`.
