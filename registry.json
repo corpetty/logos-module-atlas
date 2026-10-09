@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-08T13:26:21+00:00",
+  "generatedAt": "2026-10-09T13:13:57+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-08T12:44:24Z",
+      "indexGeneratedAt": "2026-10-09T12:42:08Z",
       "packageCount": 46
     }
   ],
@@ -186,8 +186,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.3.0",
+        "latest": "0.3.1",
         "versions": [
+          "0.3.1",
           "0.3.0",
           "0.2.4",
           "0.2.3",
@@ -198,12 +199,12 @@
           "0.1.3-rc.13",
           "0.0.999"
         ],
-        "releasedAt": "2026-09-30T08:46:43Z",
-        "publisherRef": "blockchain_module-v0.3.0",
-        "catalogCommit": "0b28c75140bbe713b7bf69fe1ceb7a649478add8",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.0/blockchain_module-0.3.0.lgx",
-        "sha256": "dabac353fb91f29f9e413f5934cd58d7ee301a34115c15292baeaad6356b95ce",
-        "size": 151504429,
+        "releasedAt": "2026-10-09T12:36:37Z",
+        "publisherRef": "blockchain_module-v0.3.1",
+        "catalogCommit": "98dd01d26730bfe699c8dec66352d3a64d658537",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.1/blockchain_module-0.3.1.lgx",
+        "sha256": "973fdb75648fe00d177b8b13e76acf891a0c73898fd3b800a78d2734587a63d0",
+        "size": 151684985,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -212,10 +213,10 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-blockchain-module",
-        "commit": "7952ba0cc9c519e1d5198b27de425c872d23b9fc",
+        "commit": "a0c1a223d41885aa772efe5ec59be2d6b30e6c9f",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@0b28c75140bb submodules/logos-blockchain-module (tag blockchain_module-v0.3.0)",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-module/tree/7952ba0cc9c519e1d5198b27de425c872d23b9fc"
+        "pinnedBy": "logos-co/logos-modules-release@98dd01d26730 submodules/logos-blockchain-module (tag blockchain_module-v0.3.1)",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-module/tree/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f"
       },
       "dependencies": [],
       "requiredBy": [
@@ -229,19 +230,19 @@
       "interfaceSource": {
         "file": "interface.lidl",
         "from": "blockchain_module.lidl",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/7952ba0cc9c519e1d5198b27de425c872d23b9fc/blockchain_module.lidl",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f/blockchain_module.lidl",
         "lang": "lidl"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/7952ba0cc9c519e1d5198b27de425c872d23b9fc/README.md"
+          "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "blockchain_module.lidl",
-        "builtFrom": "7952ba0cc9c519e1d5198b27de425c872d23b9fc",
+        "builtFrom": "a0c1a223d41885aa772efe5ec59be2d6b30e6c9f",
         "stale": false
       },
       "api": {
@@ -529,8 +530,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.3.1",
+        "latest": "0.3.2",
         "versions": [
+          "0.3.2",
           "0.3.1",
           "0.3.0",
           "0.2.1",
@@ -539,12 +541,12 @@
           "0.1.3-rc.13",
           "0.0.999"
         ],
-        "releasedAt": "2026-10-05T12:20:02Z",
-        "publisherRef": "blockchain_ui-v0.3.1",
-        "catalogCommit": "1b90dd62bb2d406fc3d0405f77754d1a9f3964f8",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.1/blockchain_ui-0.3.1.lgx",
-        "sha256": "139cfa2a1fc8e2e41e877474c4b18c86b2eef145c06c6aa9258d2b2daa60cd5f",
-        "size": 13862193,
+        "releasedAt": "2026-10-09T11:30:27Z",
+        "publisherRef": "blockchain_ui-v0.3.2",
+        "catalogCommit": "3a778be88f56e64e7d05225fc226e1b97b19c962",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.2/blockchain_ui-0.3.2.lgx",
+        "sha256": "f7300897146809a7993a58e30851263f1b5c8b5e7515dc13430b00c4d5e7e459",
+        "size": 13864398,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -553,10 +555,10 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-blockchain-ui",
-        "commit": "1aaa64aa7d2038d05f3f8a728b5f3359ef61383e",
+        "commit": "d445c0f23c93031c3e8a71cda20a5d0458f90aae",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@1b90dd62bb2d submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.1)",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/tree/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e"
+        "pinnedBy": "logos-co/logos-modules-release@3a778be88f56 submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.2)",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/tree/d445c0f23c93031c3e8a71cda20a5d0458f90aae"
       },
       "dependencies": [
         {
@@ -573,13 +575,13 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/BlockchainBackend.rep",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e/src/BlockchainBackend.rep",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/src/BlockchainBackend.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e/README.md"
+          "url": "https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/README.md"
         }
       ],
       "qmlView": null,
@@ -1656,19 +1658,20 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "1.2.0",
+        "latest": "1.2.1",
         "versions": [
+          "1.2.1",
           "1.2.0",
           "1.1.1",
           "1.1.0",
           "1.0.0"
         ],
-        "releasedAt": "2026-10-06T10:43:09Z",
-        "publisherRef": "lez_wallet_ui-v1.2.0",
-        "catalogCommit": "271ede1e29f2d502407920c60efa0e30d8cc8e43",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/lez_wallet_ui-v1.2.0/lez_wallet_ui-1.2.0.lgx",
-        "sha256": "afae9dec6f57dcb2f1515b288ffa2775a23f227f79d7f3bc78a454c7ed156602",
-        "size": 12970768,
+        "releasedAt": "2026-10-09T11:30:10Z",
+        "publisherRef": "lez_wallet_ui-v1.2.1",
+        "catalogCommit": "3a778be88f56e64e7d05225fc226e1b97b19c962",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/lez_wallet_ui-v1.2.1/lez_wallet_ui-1.2.1.lgx",
+        "sha256": "11cba5fda084a9c145baac7e48f04915e6638a7fac89af2f5fedfe84ab97ce5a",
+        "size": 12970818,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -1677,10 +1680,10 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-execution-zone-wallet-ui",
-        "commit": "961cc324e842eb8062ffc485283813ad2649cde5",
+        "commit": "8e1886428d1295279b2b549e3f3a1b57e323815a",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@271ede1e29f2 submodules/logos-execution-zone-wallet-ui (tag lez_wallet_ui-v1.2.0)",
-        "url": "https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/tree/961cc324e842eb8062ffc485283813ad2649cde5"
+        "pinnedBy": "logos-co/logos-modules-release@3a778be88f56 submodules/logos-execution-zone-wallet-ui (tag lez_wallet_ui-v1.2.1)",
+        "url": "https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/tree/8e1886428d1295279b2b549e3f3a1b57e323815a"
       },
       "dependencies": [
         {
@@ -1697,13 +1700,13 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/LEZWalletBackend.rep",
-        "url": "https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/961cc324e842eb8062ffc485283813ad2649cde5/src/LEZWalletBackend.rep",
+        "url": "https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/8e1886428d1295279b2b549e3f3a1b57e323815a/src/LEZWalletBackend.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/961cc324e842eb8062ffc485283813ad2649cde5/README.md"
+          "url": "https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/blob/8e1886428d1295279b2b549e3f3a1b57e323815a/README.md"
         }
       ],
       "qmlView": null,

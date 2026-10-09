@@ -8,20 +8,20 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.3.0** (released 2026-09-30) · all: 0.3.0, 0.2.4, 0.2.3, 0.2.2, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
+| Catalog version | **0.3.1** (released 2026-10-09) · all: 0.3.1, 0.3.0, 0.2.4, 0.2.3, 0.2.2, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [blockchain_module-v0.3.0](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.0/blockchain_module-0.3.0.lgx) · sha256 `dabac353fb91f29f…` |
-| Source | [logos-blockchain/logos-blockchain-module@7952ba0](https://github.com/logos-blockchain/logos-blockchain-module/tree/7952ba0cc9c519e1d5198b27de425c872d23b9fc) |
-| Pinned by | logos-co/logos-modules-release@0b28c75140bb submodules/logos-blockchain-module (tag blockchain_module-v0.3.0) |
+| Package | [blockchain_module-v0.3.1](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.1/blockchain_module-0.3.1.lgx) · sha256 `973fdb75648fe00d…` |
+| Source | [logos-blockchain/logos-blockchain-module@a0c1a22](https://github.com/logos-blockchain/logos-blockchain-module/tree/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f) |
+| Pinned by | logos-co/logos-modules-release@98dd01d26730 submodules/logos-blockchain-module (tag blockchain_module-v0.3.1) |
 | Depends on | — |
 | Required by | [`blockchain_ui`](../blockchain_ui/README.md) |
 
 ## Read these first
 
 1. **Contract** — [`blockchain_module.lidl`](blockchain_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`blockchain_module.lidl`](https://github.com/logos-blockchain/logos-blockchain-module/blob/7952ba0cc9c519e1d5198b27de425c872d23b9fc/blockchain_module.lidl). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`blockchain_module.lidl`](https://github.com/logos-blockchain/logos-blockchain-module/blob/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f/blockchain_module.lidl). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-module/blob/7952ba0cc9c519e1d5198b27de425c872d23b9fc/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-module/blob/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f/README.md)
 
 ## API at a glance
 
@@ -86,5 +86,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["blockchain_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-module/7952ba0cc9c519e1d5198b27de425c872d23b9fc#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install blockchain_module --version 0.3.0`
+- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-module/a0c1a223d41885aa772efe5ec59be2d6b30e6c9f#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install blockchain_module --version 0.3.1`

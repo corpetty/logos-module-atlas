@@ -26,15 +26,15 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 - [amm_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_module/README.md): core 0.1.0 — Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity.
 - [amm_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_ui/README.md): ui_qml 0.1.0 — Trade tokens and provide liquidity on the Logos DEX.
-- [blockchain_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/README.md): core 0.3.0 — Logos blockchain node for logos-core
+- [blockchain_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/README.md): core 0.3.1 — Logos blockchain node for logos-core
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/blockchain_module.lidl
-- [blockchain_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_ui/README.md): ui_qml 0.3.1 — Blockchain UI module for the Logos application
+- [blockchain_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_ui/README.md): ui_qml 0.3.2 — Blockchain UI module for the Logos application
 - [lez_core](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_core/README.md): core 0.5.0 — Logos Execution Zone Core Module for Logos Core
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_core/lez_core.lidl
 - [lez_explorer_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_explorer_ui/README.md): ui_qml 1.2.0 — Logos Execution Zone Block Explorer
 - [lez_indexer_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_indexer_module/README.md): core 1.2.0 — Logos Execution Zone Indexer Module for Logos Core
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_indexer_module/lez_indexer_module.lidl
-- [lez_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_wallet_ui/README.md): ui_qml 1.2.0 — Execution Zone Wallet UI module for the Logos application
+- [lez_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_wallet_ui/README.md): ui_qml 1.2.1 — Execution Zone Wallet UI module for the Logos application
 - [logos_execution_zone](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/logos_execution_zone/README.md): core 1.0.0 — Logos Execution Zone Module for Logos Core
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/logos_execution_zone/logos_execution_zone.lidl
 

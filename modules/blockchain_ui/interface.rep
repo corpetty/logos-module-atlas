@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-blockchain/logos-blockchain-ui@1aaa64aa7d20:src/BlockchainBackend.rep
-// https://github.com/logos-blockchain/logos-blockchain-ui/blob/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e/src/BlockchainBackend.rep
+// Extracted by logos-module-atlas from logos-blockchain/logos-blockchain-ui@d445c0f23c93:src/BlockchainBackend.rep
+// https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/src/BlockchainBackend.rep
 
 class BlockchainBackend
 {

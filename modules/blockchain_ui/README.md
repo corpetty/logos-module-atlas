@@ -8,19 +8,19 @@
 | Type | `ui_qml` · qml |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.3.1** (released 2026-10-05) · all: 0.3.1, 0.3.0, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
+| Catalog version | **0.3.2** (released 2026-10-09) · all: 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [blockchain_ui-v0.3.1](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.1/blockchain_ui-0.3.1.lgx) · sha256 `139cfa2a1fc8e2e4…` |
-| Source | [logos-blockchain/logos-blockchain-ui@1aaa64a](https://github.com/logos-blockchain/logos-blockchain-ui/tree/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e) |
-| Pinned by | logos-co/logos-modules-release@1b90dd62bb2d submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.1) |
+| Package | [blockchain_ui-v0.3.2](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.2/blockchain_ui-0.3.2.lgx) · sha256 `f7300897146809a7…` |
+| Source | [logos-blockchain/logos-blockchain-ui@d445c0f](https://github.com/logos-blockchain/logos-blockchain-ui/tree/d445c0f23c93031c3e8a71cda20a5d0458f90aae) |
+| Pinned by | logos-co/logos-modules-release@3a778be88f56 submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.2) |
 | Depends on | [`blockchain_module`](../blockchain_module/README.md) `>=0.3.0` |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/BlockchainBackend.rep`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e/src/BlockchainBackend.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/BlockchainBackend.rep`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/src/BlockchainBackend.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/README.md)
 
 ## API at a glance
 
@@ -127,5 +127,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-ui/1aaa64aa7d2038d05f3f8a728b5f3359ef61383e#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install blockchain_ui --version 0.3.1`
+- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-ui/d445c0f23c93031c3e8a71cda20a5d0458f90aae#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install blockchain_ui --version 0.3.2`
