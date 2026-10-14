@@ -1,8 +1,8 @@
 # EVM wallet stack
 
-**Pinned at:** Basecamp 0.3.1 (`aeb8192`); eth_rpc_module 0.1.0 (`42cc465`), eth_rpc_ui 0.1.0 (`d670fdf`), eth_wallet_backend 0.1.0 (`2866409`), eth_wallet_ui 0.1.0 (`81f8676`), evm_assets_module 0.1.0 (`3235e6b`), evm_keystore_cli 0.1.0 (`47554a1`), evm_keystore_ui 0.1.0 (`4460518`), evm_signer_cli 0.1.0 (`861c2ed`), evm_signer_ui 0.1.0 (`62f89d5`), fee_module 0.1.0 (`5bf49b7`), keystore_module 0.1.0 (`2318c67`), token_list_module 0.1.0 (`213e628`), token_list_ui 0.1.0 (`7fc7ba6`), tx_sender_module 0.1.0 (`7cd2fea`), uniswap_backend 0.1.0 (`b561baa`), uniswap_module 0.1.0 (`cc677c3`), uniswap_ui 0.1.0 (`69caca7`), verified_proxy_module 0.1.3 (`f0cf1f4`), verified_proxy_ui 0.1.0 (`28d4cdd`).
+**Pinned at:** Basecamp 0.3.2 (`f2fae63`); eth_rpc_module 0.1.0 (`42cc465`), eth_rpc_ui 0.1.0 (`d670fdf`), eth_wallet_backend 0.1.0 (`2866409`), eth_wallet_ui 0.1.0 (`81f8676`), evm_assets_module 0.1.0 (`3235e6b`), evm_keystore_cli 0.1.0 (`47554a1`), evm_keystore_ui 0.1.0 (`4460518`), evm_signer_cli 0.1.0 (`861c2ed`), evm_signer_ui 0.1.0 (`62f89d5`), fee_module 0.1.0 (`5bf49b7`), keystore_module 0.1.0 (`2318c67`), token_list_module 0.1.0 (`213e628`), token_list_ui 0.1.0 (`7fc7ba6`), tx_sender_module 0.1.0 (`7cd2fea`), uniswap_backend 0.1.0 (`b561baa`), uniswap_module 0.1.0 (`cc677c3`), uniswap_ui 0.1.0 (`69caca7`), verified_proxy_module 0.1.3 (`f0cf1f4`), verified_proxy_ui 0.1.0 (`28d4cdd`).
 
-The Ethereum/EVM wallet that Logos Basecamp 0.3.1 offers through its default catalog
+The Ethereum/EVM wallet that Logos Basecamp 0.3.2 offers through its default catalog
 (`logos-co/logos-modules-release`). None of these modules ships inside the app. Every one comes
 from the catalog: 19 packages, all at `0.1.0` (published 2026-09-28) except `verified_proxy_module`
 `0.1.3` (2026-09-29). Every claim below was read at the commit pinned in
@@ -135,7 +135,7 @@ transport [ks-glue-gates] [ks-specs-identity]. `tx_sender_module` and `uniswap_b
 caller only to label it ("[asked by X]", `origin`, `meta.via`) and gate nothing on it
 [tx-caller].
 
-**What a malicious co-resident module can do.** Basecamp 0.3.1 runs with *no* inter-module access
+**What a malicious co-resident module can do.** Basecamp 0.3.2 runs with *no* inter-module access
 policy by default, so any loaded module can call any other [bc-main-policy].
 
 1. **Take over the roles.** `configure` is ungated by design, "deferred, not refuted"
@@ -470,10 +470,10 @@ for polling. Do not make synchronous calls from inside an event callback: the si
 [rpc-specs-route]: https://github.com/logos-co/logos-evm-eth-rpc-module/blob/42cc465e0cbd748117a0af0cf983404348683335/docs/specs.md#L299-L316
 [rpc-proxy]: https://github.com/logos-co/logos-evm-eth-rpc-module/blob/42cc465e0cbd748117a0af0cf983404348683335/rust-lib/src/proxy.rs#L1-L75
 [vp-readme]: https://github.com/logos-co/logos-verified-proxy-module/blob/f0cf1f45def716515bca735ff04deab565c4a962/README.md#L1-L181
-[bc-intents-providers]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/docs/app-to-app-intents.md#L52
-[bc-intents-calling]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/docs/app-to-app-intents.md#L158-L178
-[bc-main-policy]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/app/main.cpp#L359-L375
-[bc-paths]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/app/utils/LogosBasecampPaths.h#L35-L67
+[bc-intents-providers]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L52
+[bc-intents-calling]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L158-L178
+[bc-main-policy]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/main.cpp#L359-L375
+[bc-paths]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/utils/LogosBasecampPaths.h#L35-L67
 
 The link definitions above are invisible when rendered; each bracketed tag in the prose is a
 clickable permalink. Tag prefixes map to repositories and commits as follows:
@@ -485,4 +485,4 @@ clickable permalink. Tag prefixes map to repositories and commits as follows:
 | su-* / sc-* / kc-* | `logos-evm-signer-ui@62f89d5`, `logos-evm-signer-cli@861c2ed`, `logos-evm-keystore-cli@47554a1` |
 | wb-* / wui-* | `logos-eth-wallet-backend@2866409`, `logos-eth-wallet-ui@81f8676` |
 | rpc-* / vp-* / as-* / ub-* | `logos-evm-eth-rpc-module@42cc465`, `logos-verified-proxy-module@f0cf1f4`, `logos-evm-assets-module@3235e6b`, `logos-uniswap-backend@b561baa` |
-| bc-* | `logos-co/logos-basecamp@aeb8192` (tag `0.3.1`) |
+| bc-* | `logos-co/logos-basecamp@f2fae63` (tag `0.3.2`) |

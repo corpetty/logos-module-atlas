@@ -1,34 +1,40 @@
 # Monero wallet stack
 
-**Pinned at:** Basecamp 0.3.1 (`aeb8192`); monero_node_module 0.1.0 (`ddaec93`), monero_wallet_backend 0.1.0 (`7690984`), monero_wallet_cli 0.1.0 (`9f5958f`), monero_wallet_core_module 0.1.0 (`7fc923d`), monero_wallet_ui 0.1.0 (`345fc5d`), monerod_module 0.1.0 (`9ed580d`), monerod_ui 0.1.0 (`10aaf70`).
+**Pinned at:** Basecamp 0.3.2 (`f2fae63`); monero_node_module 0.1.1 (`787cff1`), monero_wallet_backend 0.1.1 (`a17d0df`), monero_wallet_cli 0.1.1 (`fa4b388`), monero_wallet_core_module 0.1.1 (`c513e58`), monero_wallet_ui 0.1.1 (`b2e3c6a`), monerod_module 0.1.1 (`246ff75`), monerod_ui 0.1.1 (`634637d`).
 
-Seven catalog packages (none bundled in Basecamp 0.3.1), all `0.1.0`, all published 2026-09-28..30.
-Source read at the commits pinned in `data/catalog-pins.tsv`:
+Seven catalog packages (none bundled in Basecamp 0.3.2), all `0.1.1`, all published 2026-10-07
+(0.1.0 was published 2026-09-28..30). The 0.1.0 → 0.1.1 release changed no Rust/C++ logic
+(the core only bumped its `MONERO_C_VERSION` constant and a comment) and, in QML, only removed one
+monerod_ui form field (§7): the contracts, interfaces, gate and send flow are identical;
+what changed is the bundled Monero (v0.18.4.6 → v0.18.5.3, via monero_c and logos-monero-nix) and
+`metadata.json` dependency entries, which now carry version ranges (§2). This doc was written
+against 0.1.0 and re-read at the 0.1.1 commits; the source is the commits in `registry.json` (the
+earlier frozen `data/catalog-pins.tsv` snapshot of 2026-10-01 is no longer the reference):
 
 | catalog name | repo @ pinned commit |
 |---|---|
-| `monero_wallet_core_module` | [logos-monero-wallet-core-module@7fc923d](https://github.com/logos-co/logos-monero-wallet-core-module/tree/7fc923dcce9ac5d40db8dd30f658eb63849e7212) |
-| `monero_wallet_backend` | [logos-monero-wallet-backend@7690984](https://github.com/logos-co/logos-monero-wallet-backend/tree/769098441db339f7541ba8804722ae3f20614309) |
-| `monero_node_module` | [logos-monero-node-module@ddaec93](https://github.com/logos-co/logos-monero-node-module/tree/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f) |
-| `monerod_module` | [logos-monerod-module@9ed580d](https://github.com/logos-co/logos-monerod-module/tree/9ed580d1423f3415f5934a18faddf022b616cb86) |
-| `monerod_ui` | [logos-monerod-ui@10aaf70](https://github.com/logos-co/logos-monerod-ui/tree/10aaf706751d4133bebe7fae42db21611f0704d9) |
-| `monero_wallet_ui` | [logos-monero-wallet-ui@345fc5d](https://github.com/logos-co/logos-monero-wallet-ui/tree/345fc5deb3ac61844dc27bb396bd77087e89c05c) |
-| `monero_wallet_cli` | [logos-monero-wallet-cli@9f5958f](https://github.com/logos-co/logos-monero-wallet-cli/tree/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905) |
-| (build input) | [logos-monero-nix@e2f5703](https://github.com/logos-co/logos-monero-nix/tree/e2f570312db09c46ffe13f12050e98a26b945e8c) (monerod_module's pin; wallet core pins `f981568`) |
+| `monero_wallet_core_module` | [logos-monero-wallet-core-module@c513e58](https://github.com/logos-co/logos-monero-wallet-core-module/tree/c513e58d05a08abfdb789e82c94bab052f3eb7e5) |
+| `monero_wallet_backend` | [logos-monero-wallet-backend@a17d0df](https://github.com/logos-co/logos-monero-wallet-backend/tree/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a) |
+| `monero_node_module` | [logos-monero-node-module@787cff1](https://github.com/logos-co/logos-monero-node-module/tree/787cff16dad4b077e4601415a706874bbf168458) |
+| `monerod_module` | [logos-monerod-module@246ff75](https://github.com/logos-co/logos-monerod-module/tree/246ff75bb1253478516bb47b041c47638c268a7d) |
+| `monerod_ui` | [logos-monerod-ui@634637d](https://github.com/logos-co/logos-monerod-ui/tree/634637ddf8daed02f13172bfa68dbde5bbcd9c0a) |
+| `monero_wallet_ui` | [logos-monero-wallet-ui@b2e3c6a](https://github.com/logos-co/logos-monero-wallet-ui/tree/b2e3c6a697751337bcc51a0965a23199ffee6730) |
+| `monero_wallet_cli` | [logos-monero-wallet-cli@fa4b388](https://github.com/logos-co/logos-monero-wallet-cli/tree/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369) |
+| (build input) | [logos-monero-nix@5f7ee44](https://github.com/logos-co/logos-monero-nix/tree/5f7ee441d0e3b823b423117d18750352ab68b0ff) (pinned by both monerod_module and wallet core; 0.1.0 had them on `e2f5703` and `f981568`) |
 
 ## 1. Design in one paragraph
 
 `monero_wallet_core_module` (C++) wraps monero_c, the C ABI of Monero's own `wallet2_api.h`
-(monero_c `v0.18.4.6-RC2`, built from source by logos-monero-nix, LGPL-3.0, dynamically linked),
+(monero_c `v0.18.5.3-RC1` on Monero v0.18.5.3 — 0.1.0 shipped `v0.18.4.6-RC2` — built from source by logos-monero-nix, LGPL-3.0, dynamically linked),
 and is the only process that holds a wallet password, seed or key. It holds **exactly one open
 wallet per instance**; every long wallet2 call (open/create/restore/close/rescan/build/commit/
 change password) is a **ticket** (`startJob` → `jobStatus` → `jobResult` → `ackJob`) served by
 one worker thread, while reads answer directly
-([README L8-19](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/README.md#L8-L19)).
+([README L8-19](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/README.md#L8-L19)).
 `monero_wallet_backend` (Rust) is the coordinator every surface is meant to use: wallet registry,
 sync/balance poller turned into events, history normalisation, and a **build → review →
 broadcast** send state machine, behind a role gate (custodian / approver)
-([README](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/README.md#L3-L19)).
+([README](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/README.md#L3-L19)).
 `monero_node_module` (Rust) owns per-network daemon endpoint + proxy policy (fail-closed when a
 proxy is required) and never runs a node; `monerod_module` runs monerod in-process via
 `libmonerod_c`. Two surfaces sit on the backend: `monero_wallet_ui` (GUI, holds both roles by
@@ -39,16 +45,19 @@ default) and `monero_wallet_cli` (headless relay for `logosctl`). The review ste
 
 | module | type / interface | role | holds key material? | depends on (metadata.json) |
 |---|---|---|---|---|
-| `monero_wallet_core_module` | core / universal (C++) | wallet2 engine, tickets, reads, seed/view-key reveal | **Yes** — password (transiently), keys in wallet2, wallet files | `monero_node_module` |
-| `monero_wallet_backend` | core / cdylib (Rust) | registry, roles gate, poller → events, send state machine | No (passwords pass through as call args, not stored) | `monero_wallet_core_module`, `monero_node_module` |
-| `monero_node_module` | core / cdylib (Rust) | per-network endpoint/proxy config, monerod JSON-RPC client | No (but stores daemon RPC username/password in plaintext) | none; optional `monerod_module` |
+| `monero_wallet_core_module` | core / universal (C++) | wallet2 engine, tickets, reads, seed/view-key reveal | **Yes** — password (transiently), keys in wallet2, wallet files | `monero_node_module ~0.1.0` |
+| `monero_wallet_backend` | core / cdylib (Rust) | registry, roles gate, poller → events, send state machine | No (passwords pass through as call args, not stored) | `monero_wallet_core_module ~0.1.1`, `monero_node_module ~0.1.0` |
+| `monero_node_module` | core / cdylib (Rust) | per-network endpoint/proxy config, monerod JSON-RPC client | No (but stores daemon RPC username/password in plaintext) | none; optional `monerod_module ~0.1.0` |
 | `monerod_module` | core / universal (C++) | in-process monerod, per-network config, start/stop/status/log | No | none |
-| `monero_wallet_ui` | ui_qml | the wallet GUI; default custodian + approver; provides `monero.wallet.unlock`, `monero.accounts.manage` | No (password is a SLOT arg; seed a SLOT return) | backend, core, node (calls only the backend) |
-| `monerod_ui` | ui_qml | local node manager; provides `monero.node.configure` (handoff) | No | `monerod_module` |
-| `monero_wallet_cli` | core / cdylib (Rust) | headless relay of backend methods for `logosctl`; needs both roles enrolled | No (passwords via `@file`, scrubbed after use) | `monero_wallet_backend` |
+| `monero_wallet_ui` | ui_qml | the wallet GUI; default custodian + approver; provides `monero.wallet.unlock`, `monero.accounts.manage` | No (password is a SLOT arg; seed a SLOT return) | backend, core, node, each `~0.1.0` (calls only the backend) |
+| `monerod_ui` | ui_qml | local node manager; provides `monero.node.configure` (handoff) | No | `monerod_module ~0.1.0` |
+| `monero_wallet_cli` | core / cdylib (Rust) | headless relay of backend methods for `logosctl`; needs both roles enrolled | No (passwords via `@file`, scrubbed after use) | `monero_wallet_backend ~0.1.0` |
 
 Canonical contracts: `modules/<name>/<name>.lidl`. Note the derived `.lidl` of the three Rust
-modules prints `depends []` even though `metadata.json` declares dependencies.
+modules prints `depends []` even though `metadata.json` declares dependencies. As of 0.1.1 every
+dependency entry in `metadata.json` is an object `{"name", "version": "~0.1.x"}` (0.1.0 used bare
+name strings); the ranges are "the oldest version that works", and Basecamp refuses to load a module
+against an installed dependency outside its range. Note the backend 0.1.1 needs core `>=0.1.1`.
 
 ## 3. Dependencies and call direction
 
@@ -76,27 +85,27 @@ endpoint (and does its own health/RPC calls). Local vs remote is the node config
 
 **Who holds secrets.** Password: typed into `monero_wallet_ui` (or a CLI `@file`), passed as a
 string argument UI → backend → core, used by wallet2, never stored or cached
-([core impl.h L20-22](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/monero_wallet_core_impl.h#L20-L22)).
+([core impl.h L20-22](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/monero_wallet_core_impl.h#L20-L22)).
 Seed/view key leave only via `revealSeed(password)` / `revealViewKey(password)`, which re-verify
 the password against the `.keys` file
-([wallet_runtime.cpp L652-667](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L652-L667)).
+([wallet_runtime.cpp L652-667](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L652-L667)).
 No method returns the spend key. Wallet files are chmod 0600 in a 0700 dir
-([L397-400](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L397-L400)).
+([L397-400](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L397-L400)).
 The daemon RPC password lives in plaintext in the node module's `monero_nodes.json`;
 `monero_node_module.get_node_config` returns it unredacted to any caller — only the backend's
 `node_config` redacts it to `hasPassword`
-([backend glue.rs L702-722](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L702-L722)).
+([backend glue.rs L702-722](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L702-L722)).
 
 **Caller identity.** The backend reads the host-pushed caller (`logos_rust_sdk::current_caller()`:
 `Unknown | HostAnchor | Module{name} | Derived{parent,leaf} | Operator{name}`) and only a plain
 `Module(name)` can hold a role or request a send; the host anchor (shell, `logoscore`/`logosctl`
 CLI tokens) is always refused
-([glue.rs L168-179](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L168-L179),
-[gate.rs L99-132](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/gate.rs#L99-L132)).
+([glue.rs L168-179](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L168-L179),
+[gate.rs L99-132](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/gate.rs#L99-L132)).
 `caller_identity()` reports what you authenticated as. Neither the core, node, monerod nor CLI
 module checks its caller at all.
 
-**Backend role gate** ([gate.rs L8-17, L99-132](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/gate.rs#L8-L132)):
+**Backend role gate** ([gate.rs L8-17, L99-132](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/gate.rs#L8-L132)):
 
 | gate | methods | default holders |
 |---|---|---|
@@ -109,23 +118,23 @@ module checks its caller at all.
 Refusals are the opaque `{"ok":false,"error":"not authorized"}`.
 
 **`configure` is ungated** — "any caller can name itself custodian. Protecting it is deferred,
-not refuted" ([glue.rs L22-30](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L22-L30)).
+not refuted" ([glue.rs L22-30](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L22-L30)).
 It is TOTAL (a role not named is held by nobody) and in-memory only; persistent roles come from
 `roles.json` in the backend's instance dir, read once at load (absent → defaults; unreadable →
-both roles empty) ([L467-477](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L467-L477)).
+both roles empty) ([L467-477](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L467-L477)).
 
 **Receipts.** Core tickets return `{jobId:"jN", receipt:<32 hex>}`; the receipt gates only
 `jobStatus/jobResult/ackJob/cancelJob` of that ticket, so a job id seen on the event plane is
-useless alone ([wallet_runtime.cpp L153-214](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L153-L214)).
+useless alone ([wallet_runtime.cpp L153-214](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L153-L214)).
 It does **not** gate wallet operations: `commit_transaction` takes only `txHandle`, which is
 sequential (`tx1`, `tx2`, …) and not bound to the creating ticket
-([L469, L481-499](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L469-L499)).
+([L469, L481-499](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L469-L499)).
 The backend hides core receipts and exposes its own `bN` job ids and `sN` send ids, both readable
 by anyone.
 
 **Inter-module access.** Basecamp's `--access-policy` is **off by default**: any loaded module may
 call any other. With `enforce`, a module may call only what its `metadata.json` declares
-([Basecamp README L212-258](https://github.com/logos-co/logos-basecamp/blob/a4b952280b8fb3f256f4b1f9174dda19a2cad5d9/README.md#L212-L258)).
+([Basecamp README L212-258](https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/README.md#L212-L258)).
 
 **What a malicious (or buggy) loaded module can do today** (default policy, or enforce + it
 declares the module it calls):
@@ -138,7 +147,7 @@ declares the module it calls):
 - Via the node module: `set_node_config` (bypasses the backend's custodian gate) to point the next
   wallet open at an attacker's daemon or drop `proxyRequired`; read the stored RPC password.
 - Via `monero_wallet_cli` once enrolled: it is a confused deputy — it relays custodian/approver
-  calls for **whoever calls it** (no caller check; [glue.rs L182-280](https://github.com/logos-co/logos-monero-wallet-cli/blob/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905/rust-lib/src/glue.rs#L182-L280)).
+  calls for **whoever calls it** (no caller check; [glue.rs L182-280](https://github.com/logos-co/logos-monero-wallet-cli/blob/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369/rust-lib/src/glue.rs#L182-L280)).
 - Guess the wallet password through `revealSeed`; no attempt limit was found (unverified beyond
   reading `verifyPassword`).
 
@@ -149,12 +158,12 @@ So the role gate separates the honest surfaces; it is not a boundary against co-
 All backend methods return a **JSON string** `{ "ok": true, … }` / `{ "ok": false, "error" }`
 (`address_valid` returns a bool). Amounts are **decimal strings of atomic units** (1 XMR = 1e12);
 `format_xmr` / `parse_xmr` are exact and `parse_xmr` refuses >12 decimals
-([model.rs L33-59](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/model.rs#L33-L59)).
-Full signatures: [glue.rs trait L21-116](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L21-L116).
+([model.rs L33-59](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/model.rs#L33-L59)).
+Full signatures: [glue.rs trait L21-116](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L21-L116).
 
 **Networks.** `list_networks()` → `{networks:["mainnet","stagenet","testnet","regtest"], active}`.
 The backend's active network **defaults to `stagenet`**
-([L156](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L156));
+([L156](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L156));
 `set_active_network(n)` is custodian-only and refused while a wallet is open or a send is in flight.
 
 **Create / restore** (custodian; all start a job and return `{ok, jobId:"bN"}`):
@@ -162,13 +171,13 @@ The backend's active network **defaults to `stagenet`**
 - `restore_from_seed('{"name","password","seed":"<25 words>","restoreHeight":<number>,"seedOffset"?,"label"?}')`
 - `restore_from_keys('{"name","password","address","viewKey","spendKey"?,"restoreHeight":<number>,"label"?}')` — omit/empty `spendKey` ⇒ view-only.
 - `restoreHeight` must be a JSON **number** (`as_u64`; anything else becomes 0 = scan from genesis,
-  hours) ([L567-594](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L567-L594)).
+  hours) ([L567-594](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L567-L594)).
 - Names may not contain `/` or `..`; create/restore fail if the name exists. A created/restored
   wallet is left **open**.
 
 **Open / close.** `open_wallet(name, password)` (custodian) → job. The registry refuses a wallet
 known to belong to another network; the core then checks wallet2's nettype after decrypting
-([wallet_runtime.cpp L347-354](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L347-L354)).
+([wallet_runtime.cpp L347-354](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L347-L354)).
 Refused with "a wallet is already open; close it first" if any wallet is open.
 `close_wallet()` (either role) → job; stores, closes, drops pending transactions.
 `job_status("bN")` → `{ok, jobId, kind, state: queued|running|done|failed, result?, error?}`;
@@ -180,20 +189,20 @@ never opened show `network:""`).
 `{state: no_wallet|opening|syncing|ready|closing|failed, wallet, network, address, connected,
 synchronized, walletHeight, daemonHeight, watchOnly, lastError, libraryVersion}` + `syncPercent`,
 `activeNetwork`, `meta`. While a build holds the wallet (~15 s) it answers `busy:true` with **no**
-chain fields ([wallet_runtime.cpp L535-552](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L535-L552)).
+chain fields ([wallet_runtime.cpp L535-552](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L535-L552)).
 Rescan exists only as the core ticket `rescan`; the backend does not expose it.
 
 **Balances.** `balances(account_index)` → `{ok, balance, unlocked, balanceXmr, unlockedXmr}`, or
 `{ok:false, busy:true}` during a build. With **no wallet open it answers `"0"`**, so gate on
-`wallet_status().state` first ([L646-660](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L646-L660)).
+`wallet_status().state` first ([L646-660](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L646-L660)).
 
 **Subaddresses.** `receive_info(account)` → `{ok, address, subaddresses:[{index, address, label}]}`;
 `create_subaddress(account, label)` → `{ok, index, address}` (stored immediately);
 `set_subaddress_label(account, index, label)` → `{ok, index, label}`. No method creates a new
 *account*; the GUI only ever uses account 0.
 
-**Send** ([prepare/confirm/cancel L762-837](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L762-L837),
-[state machine model.rs L178-283](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/model.rs#L178-L283)):
+**Send** ([prepare/confirm/cancel L762-837](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L762-L837),
+[state machine model.rs L178-283](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/model.rs#L178-L283)):
 1. `prepare_send('{"address":"…","amountXmr":"0.5"}')` or `"amount":"500000000000"` (strings;
    `amountXmr` wins), optional `"priority"` (number 0-3) and `"accountIndex"` (number) →
    `{ok, requestId:"sN"}`. Address validated against the current network. **One non-terminal send
@@ -212,8 +221,8 @@ States: `preparing | previewed | committing | sent | failed | cancelled | unknow
 `txid, direction ("in"|"out"), amount, amountXmr, fee, feeXmr, height, confirmations, timestamp,
 pending, failed, unlockTime, account, paymentId, description, subaddrIndex, coinbase, destinations`.
 `subaddrIndex` is a **comma-joined string** (e.g. `"3"` or `"1,4"`); `destinations` is filled only
-for outgoing transfers ([model.rs L142-176](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/model.rs#L142-L176),
-[core L608-646](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L608-L646)).
+for outgoing transfers ([model.rs L142-176](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/model.rs#L142-L176),
+[core L608-646](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L608-L646)).
 
 **Secrets.** `reveal_seed(password)` → `{ok, seed}` (fails "this wallet has no seed" for key
 restores); `reveal_view_key(password)` → `{ok, viewKey, address}`; `change_password(old, new)` → job.
@@ -227,10 +236,10 @@ cold-signing workflow.
 json)`, or backend `set_node_config(json)` for the active network, custodian, refused while a
 wallet is open): `{url, username?, password?, proxy?, proxyRequired?, timeoutSecs?(8), trusted?,
 mode?: "remote"|"local"}`; a full replace, so omit `mode` ⇒ remote
-([node.rs L44-68](https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/rust-lib/src/node.rs#L44-L68)).
+([node.rs L44-68](https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/rust-lib/src/node.rs#L44-L68)).
 In local mode `effective_node` returns monerod_module's `http://127.0.0.1:<rpcBindPort>`, trusted,
 unproxied, and **never falls back to remote**; absent monerod_module fails within 1.5 s; refused on
-regtest ([node.rs L220-238](https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/rust-lib/src/node.rs#L220-L238)).
+regtest ([node.rs L220-238](https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/rust-lib/src/node.rs#L220-L238)).
 The node must be **started before** the wallet opens (`monerod_ui`, or
 `monerod_module.start(network)`); wallet2 binds its daemon at init. `local_node()` says whether
 local mode can be offered; `node_health()` → `{reachable, height, targetHeight, synced,
@@ -247,7 +256,7 @@ take/return `tstr`, so a JSON document arrives **double-encoded**: unwrap the JS
 it. Example args: `prepare_send` → `["{\"address\":\"5…\",\"amountXmr\":\"0.01\"}"]`;
 `create_subaddress` → `[0, "muster:req-42"]`. Core methods returning `result` apparently arrive as a
 `{success, value, error}` envelope (inferred: the backend's `unwrap_result` accepts that or `{ok, result}`,
-[glue.rs L186-197](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L186-L197)).
+[glue.rs L186-197](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L186-L197)).
 Do not call from your context-ready hook: the backend and CLI both note that calls made there
 arrive before the token handshake settles and are rejected; defer to a timer/first use.
 Verify identity once with `caller_identity()` → must show `kind:"module"`, else `prepare_send`
@@ -258,8 +267,8 @@ is refused.
 its password sheet, and answers `ok:true` only when *that* wallet ends up open; `data` is `{}`;
 "another wallet is already open", "a different wallet was opened", wrong password and similar
 provider errors reach you as `failed`; no wallet app installed ⇒ `unavailable`
-([QML L50-65, L137-148](https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/qml/MoneroWalletView.qml#L50-L148),
-[intent error codes](https://github.com/logos-co/logos-basecamp/blob/a4b952280b8fb3f256f4b1f9174dda19a2cad5d9/docs/app-to-app-intents.md#L161-L180)).
+([QML L50-65, L137-148](https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/qml/MoneroWalletView.qml#L50-L148),
+[intent error codes](https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L161-L180)).
 Requires `"uses": [{"intent": "monero.wallet.unlock"}]` (objects, not strings) in the ui_qml
 `metadata.json`. Get wallet names from `list_wallets()`. Intents are ui_qml↔ui_qml only.
 `monero.accounts.manage` (handoff) just brings wallet management up.
@@ -273,13 +282,13 @@ grants `reveal_seed` and node reconfiguration — far more than a payments featu
 expect, `watchOnly`). Then `receive_info(0)` for the primary/subaddresses, or
 `create_subaddress(0, label)` → `{index, address}` to mint one per payment request (ungated). These
 calls take the wallet lock without the 750 ms read deadline, so they can stall up to ~15 s behind
-a build ([core L572-594](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L572-L594)).
+a build ([core L572-594](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L572-L594)).
 
 **(b) Build and send.** `prepare_send` → wait for `previewed` (poll `send_status` every ~0.7 s or
 subscribe `send_status_changed`) → somebody with the approver role calls `confirm_send`. **There is
 no human review for a send another module prepares in the default configuration:** the GUI is the
 only approver and only tracks the `requestId` it created itself
-([ui backend L338-373](https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/src/monero_wallet_ui_backend.cpp#L338-L373)),
+([ui backend L338-373](https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/src/monero_wallet_ui_backend.cpp#L338-L373)),
 and no intent exists for "review and send". A third-party preview therefore sits unseen, blocks
 every other send (including the user's), and expires after 120 s. Options:
 1. Enrol yourself as approver and **draw the review yourself** (destination, amountXmr, feeXmr,
@@ -288,7 +297,7 @@ every other send (including the user's), and expires after 120 s. Options:
    in-memory only; use `roles.json` to persist. Then you can also confirm the GUI's previews.
 2. Headless: enrol `monero_wallet_cli`; an operator runs `logosctl call monero_wallet_cli confirm sN`
    (it also emits `prompt` events for previews built by other modules,
-   [CLI README L58-62](https://github.com/logos-co/logos-monero-wallet-cli/blob/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905/README.md#L58-L62)).
+   [CLI README L58-62](https://github.com/logos-co/logos-monero-wallet-cli/blob/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369/README.md#L58-L62)).
 Handle `unknown` as "possibly broadcast" (re-read `history`, never auto-retry), and expect
 "a send is already in flight" when the user is mid-send.
 
@@ -303,17 +312,19 @@ Handle `unknown` as "possibly broadcast" (re-read `history`, never auto-retry), 
 `{walletHeight, daemonHeight, percent, synchronized}`, `balance_changed(payload)` `{balance,
 unlocked}` (account 0), `send_status_changed(request_id, state)`, `job_finished(job_id, state)`.
 They come from a 1 s reactor; status/sync/balance on every 3rd tick
-([L305-450](https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L305-L450)).
+([L305-450](https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L305-L450)).
 Core events are camelCase (`walletStateChanged`, `jobFinished`). Keep a polling backstop: UI
 plugins report subscriptions refused when armed before the registry handshake settles.
 
 **Timeouts.** lp default deadline 20 s. Core reads wait ≤750 ms then answer busy/empty
-([L71-74](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L71-L74));
+([L71-74](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L71-L74));
 build ≈15 s; open against a remote node ≈2.6 s, first scan minutes; required-proxy connect check up
 to 10 s; node RPC timeout 8 s; local-node lookups 1.5 s; preview TTL 120 s; the backend fails a job
 after ~5 s of an unreachable engine (a commit becomes `unknown`).
 
-**metadata.json.** Core module: `"dependencies": ["monero_wallet_backend"]` (pulls core + node).
+**metadata.json.** Core module: `"dependencies": [{"name": "monero_wallet_backend", "version": "~0.1.0"}]`
+(pulls core + node; the official modules themselves moved to this object form with ranges in 0.1.1,
+see §2 and [guides/calling-official-modules.md](../guides/calling-official-modules.md)).
 Add `monero_wallet_core_module` / `monero_node_module` only if you call them directly (required
 under `--access-policy enforce`). The backend does **not** pull `monero_wallet_ui`; without it the
 default roles name an absent module and nobody can open a wallet or approve until `configure`.
@@ -331,30 +342,30 @@ switching wallets ends your session, and you see what they opened (check `wallet
   when the node registry is `unconfigured`): mainnet `http://node.monerodevs.org:18089`, stagenet
   `http://node2.monerodevs.org:38089`, testnet `http://node.monerodevs.org:28089`, regtest
   `http://127.0.0.1:18081` (trusted). Deliberately no automatic failover
-  ([node.rs L402-418](https://github.com/logos-co/logos-monero-node-module/blob/ddaec9337b4d1c4d1ccc4cea6fdd4163b2dd6e0f/rust-lib/src/node.rs#L402-L418)).
+  ([node.rs L402-418](https://github.com/logos-co/logos-monero-node-module/blob/787cff16dad4b077e4601415a706874bbf168458/rust-lib/src/node.rs#L402-L418)).
 - **Proxy:** node module accepts `socks5h|socks5|http|https`; `proxyRequired` with none ⇒ refuse.
   The core hands wallet2 the proxy as `host:port` (scheme stripped) and, when proxied, fails the open
   if wallet2 is still disconnected after 10 s under `proxyRequired`
-  ([L302-310, L369-382](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L302-L382)).
+  ([L302-310, L369-382](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L302-L382)).
 - **Trusted daemon:** set only when config says `trusted` **and** the URL is loopback.
 - **Auth:** node module supports none or HTTP Basic; monerod `--rpc-login` (Digest) errors.
 - **monerod_module config** (`configure(network, {…})` merges; unknown keys refused):
   `dataDir` (`<instance>/chain`), `rpcBindPort` 18081/38081/28081, `p2pBindPort` 18080/38080/28080,
   `pruneBlockchain` (true on mainnet, ~60 GB vs ~250 GB), `outPeers/inPeers/limitRateUp/limitRateDown`
-  (-1 = monerod default), `noIgd` true, `offline` false, `logLevel` 0, `proxy` (P2P). RPC always
+  (-1 = monerod default), `noIgd` true (still passed as `--no-igd`; Monero removed UPnP in v0.18.5.0, so it should now do nothing (inferred) and monerod_ui 0.1.1 dropped its checkbox), `offline` false, `logLevel` 0, `proxy` (P2P). RPC always
   binds `127.0.0.1`; `--no-zmq --check-updates=disabled`; one node at a time
-  ([impl.cpp L139-238](https://github.com/logos-co/logos-monerod-module/blob/9ed580d1423f3415f5934a18faddf022b616cb86/src/monerod_module_impl.cpp#L139-L238)).
+  ([impl.cpp L139-238](https://github.com/logos-co/logos-monerod-module/blob/246ff75bb1253478516bb47b041c47638c268a7d/src/monerod_module_impl.cpp#L139-L238)).
   `status()` adds `tipAgeSecs` because monerod's `synchronized` stays true with zero peers.
 - **Files** (each under that module's instance persistence path, inside Basecamp's
   `module_data/` — `~/.local/share/Logos/LogosBasecamp[Dev]/module_data/…` on Linux; exact subpath
   unverified): core `wallets/<name>`, `<name>.keys`, `<name>.address.txt`; backend `wallets.json`
   (registry, never secrets), `settings.json`, optional `roles.json`; node `monero_nodes.json`
   (includes RPC password); monerod `monerod.json`, `chain/`, `monerod-<network>.log`, `unload.log`.
-- **Build:** logos-monero-nix builds Monero (`dbcc7d21` + monero_c's 21 patches) once into
+- **Build:** logos-monero-nix builds Monero v0.18.5.3 (`22578c3f` + monero_c `v0.18.5.3-RC1`'s 21 patches; 0.1.0 had `dbcc7d21` + `v0.18.4.6-RC2`) once into
   `libmonero_wallet2_api_c` (wallet) and `libmonerod_c` (daemon, C ABI in
-  [shim/monerod_c.h](https://github.com/logos-co/logos-monero-nix/blob/e2f570312db09c46ffe13f12050e98a26b945e8c/shim/monerod_c.h#L31-L46));
+  [shim/monerod_c.h](https://github.com/logos-co/logos-monero-nix/blob/5f7ee441d0e3b823b423117d18750352ab68b0ff/shim/monerod_c.h#L31-L46));
   consensus code is asserted vanilla
-  ([README L1-36](https://github.com/logos-co/logos-monero-nix/blob/e2f570312db09c46ffe13f12050e98a26b945e8c/README.md#L1-L36)).
+  ([README L1-36](https://github.com/logos-co/logos-monero-nix/blob/5f7ee441d0e3b823b423117d18750352ab68b0ff/README.md#L1-L36)).
 
 ## 8. Gotchas and open questions
 
@@ -372,7 +383,7 @@ switching wallets ends your session, and you see what they opened (check `wallet
 - From reading (untested): the core calls `MONERO_Wallet_init` with empty daemon username/password
   and `use_ssl=false` on a scheme-stripped `host:port`, so Basic-auth or `https://` remote nodes
   that the node module can reach may not work for the wallet itself
-  ([L360](https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L360)).
+  ([L360](https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L360)).
 - `balances` = `"0"` with no wallet open; `""`/`busy` during builds. Never read busy as zero.
 - `restoreHeight` must be a number; numbers in `priority`/`accountIndex`, strings for amounts.
 - Default network is **stagenet**; mainnet requires a custodian `set_active_network("mainnet")`.
@@ -381,9 +392,9 @@ switching wallets ends your session, and you see what they opened (check `wallet
   `create_transaction` but the backend's `prepare_send` does not forward it.
 - `logosctl` daemon publishes every method reply on the module's channel — a `reveal_seed` reply is
   the seed; watch `monero_wallet_cli` only with `--event prompt`
-  ([CLI README L91-93](https://github.com/logos-co/logos-monero-wallet-cli/blob/9f5958f7172a2f12c7fa16996da1ea3fdf1a7905/README.md#L91-L93)).
+  ([CLI README L91-93](https://github.com/logos-co/logos-monero-wallet-cli/blob/fa4b388dd9d0dce63bb218cb5ea42f3fedf39369/README.md#L91-L93)).
 - The "no secret in a `.rep` PROP" rule for `monero_wallet_ui` is agreed but **not enforced** yet
-  ([README L28-33](https://github.com/logos-co/logos-monero-wallet-ui/blob/345fc5deb3ac61844dc27bb396bd77087e89c05c/README.md#L28-L33)).
+  ([README L28-33](https://github.com/logos-co/logos-monero-wallet-ui/blob/b2e3c6a697751337bcc51a0965a23199ffee6730/README.md#L28-L33)).
 - Core doc comments under-document `history()` (it also returns `coinbase`, `description`,
   `subaddrIndex`, `destinations`, `account`) and `subaddresses()` (also `label`).
 - `monerod_module.rpcEndpoint(network)` returns the configured loopback URL whether or not the

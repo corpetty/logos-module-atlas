@@ -1,13 +1,15 @@
 # Storage stack
 
-**Pinned at:** storage_module 3.0.0 (`a9c14b8`), storage_ui 3.0.0 (`63e9cb1`); Basecamp 0.3.1
-(`aeb8192`).
+**Pinned at:** storage_module 3.0.2 (`7548f41`), storage_ui 3.0.2 (`7b89afe`); Basecamp 0.3.2
+(`f2fae63`).
 
-Scope: Logos Basecamp 0.3.1 (2026-10-01). `storage_module` 3.0.0 is **bundled** in Basecamp
-(flake input `logos-storage-module` v3.0.0, consumed by the bundled package downloader —
-[basecamp flake.nix L37-L38](https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/flake.nix#L37-L38))
-and is also in the default catalog at the same version; `storage_ui` 3.0.0 comes from the
-catalog. Sources read at the commits in `data/catalog-pins.tsv`; links are commit-pinned.
+Scope: Logos Basecamp 0.3.2 (2026-10-06). `storage_module` 3.0.2 is **bundled** in Basecamp
+(flake input `logos-storage-module` v3.0.2, locked to `7548f41`, consumed by the bundled package downloader —
+[basecamp flake.nix L37-L38](https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/flake.nix#L37-L38))
+and is also in the default catalog at the same version and commit; `storage_ui` 3.0.2 comes from the
+catalog. 3.0.2 changes no `src/` file in either repo and the regenerated contract is identical to
+3.0.0: the module bumps libstorage `v0.5.0` → `v0.5.3` and refreshes the compiled-in Mix relay
+lists, and the UI repo changes only CI, flake and metadata. Sources read at the commits in `registry.json`; links are commit-pinned.
 "Unverified" = read in code/docs, not exercised at runtime.
 
 ## Summary
@@ -19,29 +21,34 @@ CID, which also replicates it. Lifecycle is `init(cfg)` → `start()` → … �
 `destroy()`; uploads, downloads, manifest fetches and removals complete asynchronously through
 nine events whose single argument is a JSON string. Mix (privacy routing for DHT lookups and
 downloads) is built in. Config and data live under **`$HOME/.logos_storage/`**, not the host's
-per-instance directory, and the node is shared: Basecamp's package downloader starts it, and
-`storage_ui` attaches to that node. The catalog's `urls` include entries of the form
-`logos:logos.dev:zDvZ…` next to the GitHub URL, which appear to be storage CIDs on `logos.dev`
-used by the downloader (resolution path unverified — the downloader repo was not read).
+per-instance directory, and the node is shared: Basecamp's package downloader starts it (since
+Basecamp 0.3.2 Basecamp calls the downloader's `start()` as soon as the module is loaded, so the
+node comes up at launch, [#474](https://github.com/logos-co/logos-basecamp/commit/14899f0b699731736f19620731032a40c7743641)),
+and `storage_ui` attaches to that node. The catalog's `urls` include entries of the form
+`logos:logos.dev:zDvZ…` next to the GitHub URL: `logos:<network>:<cid>`, a storage download the
+downloader takes only when the node is running **and** its `network()` equals `<network>`;
+otherwise it skips the entry (logging to stderr) and uses the HTTPS URL
+([storage_fetcher.cpp L177-L187](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/src/storage_fetcher.cpp#L177-L187),
+the downloader commit Basecamp 0.3.2 locks).
 
 ## Modules
 
 | module | type / interface | role | depends on | catalog version | pinned source |
 |---|---|---|---|---|---|
-| [`storage_module`](../modules/storage_module/README.md) | core / universal (C++ header codegen; `impl_header: storage_module_plugin.h`) | libstorage node: upload/download by CID, manifests, quota, Mix | none (ships `libstorage.{so,dylib,dll}`) | 3.0.0 (also bundled) | logos-storage-module `a9c14b8` (tag v3.0.0) |
-| [`storage_ui`](../modules/storage_ui/README.md) | ui_qml (C++ `StorageBackend` + QML, `.rep`) | file-sharing app: onboarding, upload, fetch manifest, download, delete | `storage_module` | 3.0.0 | logos-storage-ui `63e9cb1` (tag v3.0.0) |
+| [`storage_module`](../modules/storage_module/README.md) | core / universal (C++ header codegen; `impl_header: storage_module_plugin.h`) | libstorage node: upload/download by CID, manifests, quota, Mix | none (ships `libstorage.{so,dylib,dll}`) | 3.0.2 (also bundled) | logos-storage-module `7548f41` (tag v3.0.2) |
+| [`storage_ui`](../modules/storage_ui/README.md) | ui_qml (C++ `StorageBackend` + QML, `.rep`) | file-sharing app: onboarding, upload, fetch manifest, download, delete | `storage_module` | 3.0.2 | logos-storage-ui `7b89afe` (tag v3.0.2) |
 
 Platforms: darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 for both. Repos carry a
-`CLAUDE.md` ([storage-module](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/CLAUDE.md),
-[storage-ui](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/CLAUDE.md))
-and Sphinx docs ([docs/index.rst](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/docs/index.rst)).
+`CLAUDE.md` ([storage-module](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/CLAUDE.md),
+[storage-ui](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/CLAUDE.md))
+and Sphinx docs ([docs/index.rst](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/index.rst)).
 
 ## Dependency / call direction
 
 ```mermaid
 graph LR
   storage_ui -->|init/start/uploadUrl/downloadToUrl…| storage_module
-  downloader["package_downloader_module (bundled in Basecamp)"] -->|"starts node; fetches .lgx by CID - detail unverified"| storage_module
+  downloader["package_downloader_module (bundled in Basecamp)"] -->|"starts node; fetches .lgx by logos:<network>:<cid>, HTTPS fallback"| storage_module
   other["your module"] --> storage_module
   storage_module -->|in-process C FFI, async callbacks| libstorage[(libstorage)]
   libstorage -->|libp2p TCP listen-port, DHT, Mix| net((logos.test / logos.dev storage network))
@@ -50,8 +57,8 @@ graph LR
 
 ## API (generated contract)
 
-From `nix build github:logos-co/logos-storage-module/a9c14b8c977da51310361b03fe4d9efd763ae926#lidl`;
-doc comments in [storage_module_plugin.h](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.h).
+From `nix build github:logos-co/logos-storage-module/7548f41ae189917d58c37f0fb6d3a2700b99f59b#lidl`;
+doc comments in [storage_module_plugin.h](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h).
 
 | group | methods | sync? |
 |---|---|---|
@@ -66,18 +73,18 @@ doc comments in [storage_module_plugin.h](https://github.com/logos-co/logos-stor
 
 Return convention: `init`/`start`/`isRunning` return a bare `bool` (no error string — reasons
 only on the module's stderr); everything else `StdLogosResult {success, value, error}`
-([CLAUDE.md](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/CLAUDE.md)).
+([CLAUDE.md](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/CLAUDE.md)).
 Default `chunkSize` is 65536.
 
 ## Key flows
 
-**Node lifecycle** ([plugin.h L28-L144](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.h#L28-L144)):
+**Node lifecycle** ([plugin.h L28-L144](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h#L28-L144)):
 1. `cfg = loadConfigOrDefault()` — saved config migrated to `config-version` 3, or a default.
 2. `init(cfg)` — creates the libstorage context; **once per context** (a second call returns
-   `false`, [cpp L824-L874](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.cpp#L824-L874)).
+   `false`, [cpp L824-L874](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.cpp#L824-L874)).
    On success the config is written to `~/.logos_storage/config.json`.
 3. `start()` → event `storageStart {success, message}`. Already running → succeeds and emits
-   immediately; starting/stopping → returns `false` ([cpp L876-L931](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.cpp#L876-L931)).
+   immediately; starting/stopping → returns `false` ([cpp L876-L931](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.cpp#L876-L931)).
 4. `stop()` → `storageStop {success, message}`; can restart. `destroy()` frees the context —
    stop first (destroy on a running node is documented as undefined behaviour). To apply a new
    config: `stop` → `destroy` → `init(newCfg)` → `start`. `aboutToUnload` stops and destroys on
@@ -103,7 +110,7 @@ per chunk (not throttled). `local=true` reads only the local repo.
 **CIDs**: manifest CID like `zDvZRwzm…` (what you share); `treeCid` like `zDzS…`. A download
 replicates the dataset and (with `advertise=true`) serves it onward.
 
-All event payloads: one `tstr` holding JSON ([plugin.h L440-L545](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.h#L440-L545));
+All event payloads: one `tstr` holding JSON ([plugin.h L440-L545](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h#L440-L545));
 parse `data[0]`.
 
 ## Events
@@ -125,26 +132,26 @@ package downloader or `storage_ui`. Correlate by `sessionId` / `cid`.
 ## Configuration & presets
 
 `init` takes a JSON object; every key optional (full example in
-[plugin.h L41-L99](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.h#L41-L99);
+[plugin.h L41-L99](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h#L41-L99);
 names mirror `conf.nim` in logos-storage-nim, the source of truth per CLAUDE.md).
 
 | key | default | notes |
 |---|---|---|
-| `network` | `logos.test` | presets `logos.test`, `logos.dev`, `codex.dev` (deprecated); any `bootstrap-node` overrides ([index.rst L145-L175](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/docs/index.rst#L145-L175)) |
+| `network` | `logos.test` | presets `logos.test`, `logos.dev`, `codex.dev` (deprecated); any `bootstrap-node` overrides ([index.rst L145-L175](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/index.rst#L145-L175)) |
 | `bootstrap-node` / `no-bootstrap-node` | `[]` / `false` | own network: first node `no-bootstrap-node: true`, others bootstrap from its `spr()` |
-| `data-dir` | module fills `$HOME/.logos_storage/data` when absent | docs table still says `.cache/storage` — the code wins ([cpp L791-L812](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.cpp#L791-L812)) |
+| `data-dir` | module fills `$HOME/.logos_storage/data` when absent | docs table still says `.cache/storage` — the code wins ([cpp L791-L812](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.cpp#L791-L812)) |
 | `listen-port` | `0` (random) | TCP; also carries peer discovery since config v3 (no UDP disc port) |
 | `nat` | `auto` | or `extip:<IP>`; legacy values are dropped on migration |
 | `storage-quota` | 21474836480 (20 GiB) | |
 | `mix-enabled` | `false` per docs; `true` from `loadConfigOrDefault()` | see below |
-| `dht-mix-proxy`, `mix-pool`, `mix-pool-json` | filled from preset when Mix on | per-network relay lists compiled in from [mix-config.json](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/mix-config.json) |
+| `dht-mix-proxy`, `mix-pool`, `mix-pool-json` | filled from preset when Mix on | per-network relay lists compiled in from [mix-config.json](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/mix-config.json); 3.0.2 refreshed them (4 relays each for `logos.test` and `logos.dev`; 3.0.0 had 6 each) |
 | `log-level`, `log-file`, `metrics*`, `max-peers`, `block-ttl` (30d), `nat-*` tuning | see header | `nat-schedule-interval` migrated to `60s` |
 
 Mix: when `mix-enabled` is true and no custom bootstrap is set, `init`/`loadConfigOrDefault`
 overwrite `dht-mix-proxy` + `mix-pool-json` from the network preset
-([cpp L764-L789](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.cpp#L764-L789)).
+([cpp L764-L789](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.cpp#L764-L789)).
 `isPrivate=true` tunnels downloads/DHT lookups over Mix (KB/s speeds); full privacy also needs
-`advertise=false` ([index.rst L276-L330](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/docs/index.rst#L276-L330)).
+`advertise=false` ([index.rst L276-L330](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/index.rst#L276-L330)).
 Reading of the migration code: a missing config file migrates `{}` from version 0, which sets
 `mix-enabled: true` and `nat-schedule-interval: "60s"`, so `loadConfigOrDefault()` with no saved
 file returns Mix on with `logos.test` relays (code-derived, unverified at runtime).
@@ -152,7 +159,7 @@ file returns Mix on with `logos.test` relays (code-derived, unverified at runtim
 ## Persistence
 
 - `~/.logos_storage/config.json` — last successful `init` config (`HOME`, or `USERPROFILE` on
-  Windows) ([cpp L567-L629](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.cpp#L567-L629)).
+  Windows) ([cpp L567-L629](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.cpp#L567-L629)).
 - `~/.logos_storage/data` — default block repository (`repo-kind: fs`).
 - Both are per OS user, **not** per Logos instance: Basecamp, `logoscore`, and standalone apps on
   one account share them unless the caller passes `data-dir` (config.json is always shared).
@@ -161,22 +168,22 @@ file returns Mix on with `logos.test` relays (code-derived, unverified at runtim
 
 ## storage_ui
 
-Backend contract [StorageBackend.rep](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.rep):
+Backend contract [StorageBackend.rep](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.rep):
 slots `init(configJson)`, `start/stop/destroy`, `uploadFile(QUrl)`, `downloadFile(cid, QUrl,
 totalBytes, isPrivate)`, `downloadManifest(cid, isPrivate)`, `downloadManifests()`, `exists`,
 `remove`, `fetch`, `refreshSpace`, `updateUserConfig/getUserConfig`, debug loggers; props
 `status` (Stopped/Starting/Running/Stopping/Destroyed), `natReachability`, `mixRunning`.
-Defaults it shows ([StorageBackend.cpp L670-L682](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.cpp#L670-L682)):
+Defaults it shows ([StorageBackend.cpp L670-L682](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.cpp#L670-L682)):
 `data-dir ~/.logos_storage/data`, `listen-port 8500`, `nat-schedule-interval 60s`,
 `mix-enabled true`. Uploads use `uploadUrl(path, 65536, advertise=true)`; downloads pass
 `advertise = !isPrivate`.
 
-Attach logic ([L79-L130](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.cpp#L79-L130),
-[L299-L345](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.cpp#L299-L345)):
+Attach logic ([L79-L130](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.cpp#L79-L130),
+[L299-L345](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.cpp#L299-L345)):
 `init()` returning false while `libstorageVersion().success` is true means "a node another
 consumer (the package downloader) already initialised" → attach; `isRunning()` true → treat as
 started. On `storageStop` success it immediately calls `destroy()`
-([L160-L188](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/src/StorageBackend.cpp#L160-L188)).
+([L160-L188](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.cpp#L160-L188)).
 
 ## Using storage_module from another module
 
@@ -203,18 +210,32 @@ started. On `storageStop` success it immediately calls `destroy()`
 
 - Shared global state: one node per host plus one `~/.logos_storage` per OS user. Your config is
   ignored if the downloader already ran `init`; your `init` rewrites `config.json` for everyone.
-- `storage_ui` "Stop" destroys the shared context; whether that breaks a later package download
-  until restart is unverified.
+- `storage_ui` "Stop" destroys the shared context. Per the #473 doctest the package then installs
+  over HTTPS (doctest-derived, not run here); whether the downloader later restarts the node on its
+  own is unverified.
 - `uploadChunk(sessionId, chunk: tstr)` declares the chunk as text in the contract; whether
   arbitrary binary survives IPC intact is unverified — prefer `uploadUrl` for binary data.
 - `fetch` has no completion event; poll `exists(cid)`.
 - `init`/`start` return bare `bool`; read the module's stderr / host log for the reason.
 - `storage_ui/docs/ui-guide.md` still tells users to forward UDP `9090` for discovery
-  ([L9](https://github.com/logos-co/logos-storage-ui/blob/63e9cb1755e48bd36bc0e29192e8c861ebf02fb6/docs/ui-guide.md#L9));
+  ([L9](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/docs/ui-guide.md#L9));
   config v3 removed the discovery UDP port (`disc-port` dropped on migration,
-  [cpp L734-L739](https://github.com/logos-co/logos-storage-module/blob/a9c14b8c977da51310361b03fe4d9efd763ae926/src/storage_module_plugin.cpp#L734-L739)).
+  [cpp L734-L739](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.cpp#L734-L739)).
   Only TCP `listen-port` matters.
-- Basecamp 0.3.1's commit title says "pin logos-storage-module to 0.3.0 (#454)" but the flake pins
-  `v3.0.0`; the flake is authoritative.
-- Open: how the downloader turns catalog `logos:logos.dev:<CID>` URLs into downloads (network
-  choice, fallback to the GitHub URL) — read `logos-package-downloader-module` to confirm.
+- Basecamp 0.3.2's flake pins `logos-storage-module/v3.0.2` and `flake.lock` resolves it to
+  `7548f41`, equal to the catalog's commit, so bundled and catalog copies are the same build
+  ([flake.nix L37-L38](https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/flake.nix#L37-L38),
+  [9697d11](https://github.com/logos-co/logos-basecamp/commit/9697d11084b9538fdfdd373b611f05a5680a2c30)).
+  The release notes list two pins: #454 "pin logos-storage-module to 0.3.0" (title says 0.3.0; it
+  pinned flake tag `v3.0.0`, [a4b9522](https://github.com/logos-co/logos-basecamp/commit/a4b952280b8fb3f256f4b1f9174dda19a2cad5d9),
+  not in 0.3.1) and the later bump to `v3.0.2` (#481, 9697d11). The flake is authoritative; the
+  title's "0.3.0" is not the module version.
+- Node ownership when the node is stopped (Basecamp doctest
+  [basecamp-storage-download](https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/doctests/basecamp-storage-download.test.yaml),
+  #473, tests only): with the node stopped from the Storage UI, a package installs over HTTPS and
+  nothing but the Storage UI starts the node again; the reinstalled Storage UI starts it when its
+  view is created. The same spec says the node now rewrites `config.json` as compact JSON, so
+  parse it (`jq`) rather than grep (**unverified**: not checked in code; `src/` is unchanged).
+- Open: whether `storage_ui` "Stop" then breaks a later *storage-sourced* download beyond falling
+  back to HTTPS; the downloader's `start()` is idempotent and re-brings up a stopped node
+  ([impl.h L85-L94](https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/src/package_downloader_impl.h#L85-L94)).

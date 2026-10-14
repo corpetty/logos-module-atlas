@@ -1,8 +1,8 @@
 # Calling an official module from your own module
 
-How a third-party Logos module depends on, and calls, a module from the Basecamp 0.3.1 catalog: what to declare, how to get the contract, the call and event patterns in each SDK, what the callee learns about you, and when to hand the user to another app's UI instead. It ends with Muster as a worked example.
+How a third-party Logos module depends on, and calls, a module from the Basecamp 0.3.2 catalog: what to declare, how to get the contract, the call and event patterns in each SDK, what the callee learns about you, and when to hand the user to another app's UI instead. It ends with Muster as a worked example.
 
-**Verified against** (2026-10-01): Basecamp `0.3.1` ([aeb8192][bc]), logos-module-builder `0.3.1`/`0.3.2` (`16e2f6bd`/`4b799827`), logos-cpp-sdk `c24c4ab9`, logos-rust-sdk `569ecc5e`, logos-protocol `0.9.0` (`8bbc027c`), corpetty/logos-nim-sdk `6077eb7`, capability_module `1a1b8b5a`, keystore_module `2318c679`. Everything marked **unverified** was not checked.
+**Verified against** (2026-10-14): Basecamp `0.3.2` ([f2fae63][bc]), logos-module-builder `0.3.3` (`3a64943f`, which builds Basecamp 0.3.2's bundled package_downloader; its package-manager-ui and modules_state build from the pre-tag commits `fc31329d`/`3818566d`; 0.3.2 → 0.3.3 is lock-only), logos-cpp-sdk `3bf5365c`, logos-rust-sdk `040e94e8`, logos-protocol `0.9.0` (`9d59f5de`), liblogos `00f19ef8`, corpetty/logos-nim-sdk `6077eb7`, capability_module `1a1b8b5a` (unchanged), keystore_module `2318c679` (unchanged). Everything marked **unverified** was not checked. First written 2026-10-01 against Basecamp 0.3.1 (`aeb8192`).
 
 Related pages:
 
@@ -31,7 +31,7 @@ Field reference: [builder `docs/configuration.md`][cfg]. Parsing: [`lib/parseMet
 | `dependencies` | Generates a typed `modules().<name>` wrapper from the dep's published `.lidl`. The dep is auto-loaded before you. If it fails to load, you fail to load ([cfg][cfg-deps]) | Entries are `"name"` or `{name, version?, signer?}`. The flake input passed in `flakeInputs` must be keyed by the **module name**, e.g. `keystore_module = inputs.logos-evm-keystore-module`. Every dep must publish `packages.<sys>.lidl`, or the build refuses it by name ([common.nix][common-deps]) |
 | `version` (in a dep entry) | npm-style range, e.g. `"~0.1.0"`. **liblogos refuses to load you** if the installed dep does not satisfy it ([dependency_gate.h][dep-gate]) | Fails closed. Supports `^ ~ x * comparator-sets`. Hyphen ranges and prereleases (`1.0.0-dev` against a caret range) are refused. An unversioned dep is not gated at all |
 | `signer` (in a dep entry) | A `did:jwk:` publisher pin. Carried into the manifest, checked by lgpm (`SignerMismatch`/`SignerUnknown`) | **Not enforced at load** ([dependency_gate.h][dep-gate]). The catalog has zero signatures today ([intents doc §6][int-limits]) |
-| `optional_dependencies` | Same typed wrapper. Never auto-loaded, never fails your load, not bundled ([cfg][cfg-optdeps]) | Bound calls: a call to a module that is not running waits the full deadline. Check for `object_unavailable` |
+| `optional_dependencies` | Same typed wrapper ([cfg][cfg-optdeps]). Never fails your load. **Loaded with you when it is installed**: both hosts load a module's installed optional deps along with it ([liblogos `LOGOS_LOAD_REQUIRED_AND_OPTIONAL`][ll-loaddeps], measured in [#6][a6]). `logosctl package install` does not install it, but Basecamp's install dialog offers it pre-ticked | This row used to say "never auto-loaded". That was wrong on 0.3.1 as well. See "Optional dependencies at install and load" below. Bound calls: a call to a module that is installed but not loaded waits the caller's full deadline, then fails. Check for `object_unavailable` |
 | `interface_dependencies` | Code against a contract shape and bind the provider at runtime (`bind_<iface>(name)`) | Objects only: `{name, file, input?, impl_class?}` |
 | `dependency_overrides` | `{ "<dep>": { file, input?, impl_class? } }` forces the contract source, e.g. a vendored `.lidl` ([parse][parse-overrides]) | Satisfies the "must publish a `.lidl`" check. Bundling the dep into a standalone runner still needs its flake input |
 | `include` | Extra files staged into the package (licenses, side libraries) from the build's `lib/`. Can be overlaid per platform ([cfg §platforms][cfg-platforms]) | Keep the base `[]` and put per-OS files in `platforms` overlays |
@@ -44,12 +44,38 @@ Field reference: [builder `docs/configuration.md`][cfg]. Parsing: [`lib/parseMet
 ### How a dependency gets installed
 
 1. **Bundle time.** `nix build .#lgx` copies `dependencies` (with `version`/`signer`) into the signed `manifest.json`. The catalog index carries it, e.g. `tx_sender_module` depends on `keystore_module ~0.1.0` in [`data/catalog-index.snapshot.json`](../data/catalog-index.snapshot.json).
-2. **Catalog install (Package Manager UI).** `package_downloader.resolveDependencies` and `downloadResolvedDependencies` resolve the manifest list against the merged catalog. An installed dep that satisfies the range is kept. Otherwise the newest matching version is used ([downloader impl.h][dl-resolve]). Basecamp shows `basecamp.packages.confirm_install`, then installs in dependency order.
-3. **Local `.lgx` install (PMUI file picker).** This installs **only that file**. Dependencies are not resolved ([PMUI performInstall][pmui-local]). Install the deps first, from the catalog or from local files.
-4. **Load.** liblogos loads the deps first and applies the protocol-major gate and the version-range gate ([module_manager.cpp][ll-gate]). A missing dep surfaces as Basecamp's "Missing Dependencies" dialog.
+2. **Catalog install (Package Manager UI).** `package_downloader.resolveDependencies` and `downloadResolvedDependencies` resolve the manifest list against the merged catalog. Given the installed list, an installed dep that satisfies the range is kept; otherwise the newest matching version is used ([downloader impl.h][dl-resolve]). Basecamp shows `basecamp.packages.confirm_install` (the "Install Package?" dialog), then installs in dependency order. What Basecamp 0.3.2 adds to this:
+   - **Optional packages are offered, pre-ticked.** The dialog lists the subject's optional dependencies, transitively. An available one is ticked by default on a fresh install, and an unavailable one is unticked and disabled ([#452][bc-452], [#453][bc-453], [OptionalDependencyPreview.h][bc-optsel]). The 0.3.1 release branch already carried #452 and #453; this guide missed them. New in 0.3.2: an installed optional that no catalog lists shows as installed, not unavailable ([#455][bc-455]). So a default Basecamp install **does** install optional dependencies. Installing `monero_wallet_backend` this way took 4 packages, `monerod_module` included ([#6][a6]).
+   - **A dependency only Basecamp ships.** The App Manager dialog resolves against the catalog alone, then skips what is already on disk. A dependency that no enabled catalog lists used to fail that resolve (`no candidate matches`) even when it was installed and in range. It now falls back to the installed copy ([#472][bc-472]). The install gate (an install another app asks for) already resolved against the full installed list.
+   - **`package_downloader` must be started.** It does nothing on load, and every method except `start()` answers "not started" until a consumer calls `start()` ([downloader impl.h][dl-start]). Basecamp starts it as soon as it loads, and again before each operation ([#469][bc-469], [#474][bc-474]). A module that calls `package_downloader` itself should call `start()` first; it is idempotent.
+3. **Local `.lgx` install (PMUI file picker).** This still installs **only that file** at 0.3.2. Dependencies are not resolved ([PMUI performInstall][pmui-local]). Install the deps first, from the catalog or from local files.
+4. **Load.** liblogos loads the deps first and applies the protocol-major gate and the version-range gate ([module_manager.cpp][ll-gate]). A missing dep surfaces as Basecamp's "Missing Dependencies" dialog. Since 0.3.2 the newest version wins: when Basecamp's bundle carries a newer version of a module than the user's copy, the bundled one loads, and installing a version older than the bundled one succeeds but has no effect ([#479][bc-479]).
 5. **Variants.** The catalog publishes only portable variants: `darwin-arm64`, `linux-amd64`, `linux-arm64`, and `windows-x86_64` for most packages. See [`compatibility.md` §4](compatibility.md#4-variants-portable-vs-dev).
 
-> **Pin a range on anything you call through raw lp.** An unversioned dep resolves to the newest catalog version. On 2026-10-01 that is `delivery_module 0.3.0` and `lez_core 0.5.0`, and nothing type-checks a raw `lp_invoke` against the new contract. delivery `0.3.0` added a `source` field before `timestamp` in `messageReceived` ([muster delivery.nim][m-deliv-hdr]).
+**Nothing loads a core module after it is installed** ([#6][a6]). Not the install, not a Basecamp restart, and not a call to it. Basecamp loads core modules when a `ui_qml` app that depends on them opens. The Modules tab also has a manual load. [`../stacks/platform.md`](../stacks/platform.md) covers the lifecycle.
+
+### Optional dependencies at install and load
+
+Measured on Basecamp 0.3.2 and logosctl 0.3.0 ([#6][a6]). The source agrees, and it was the same at 0.3.1.
+
+| Step | What happens to an optional dependency |
+|---|---|
+| `logosctl package install` | Not installed |
+| Basecamp "Install Package?" | Offered, and ticked by default when available (above) |
+| Load, logosctl | Loaded if installed, transitively. `module load monero_wallet_backend` printed "Dependencies loaded: monero_wallet_core_module, monero_node_module, monerod_module". `monerod_module` is an optional dependency of `monero_node_module` |
+| Load, Basecamp | `CoreModuleManager::loadModule` uses `LoadPolicy::RequiredAndOptional` ([CoreModuleManager.cpp][bc-loadpolicy]). Opening a `ui_qml` app runs `PluginLoader::loadCoreDependencies`: required dependencies, then the installed optional ones ([PluginLoader.cpp][bc-coredeps]) |
+| Load fails or dep is absent | Logged and skipped. Your load still succeeds. An optional dep is admitted only if all of its own required deps are installed ([liblogos `LogosLoadDeps`][ll-loaddeps]) |
+
+### When the callee is not loaded
+
+Measured on Basecamp 0.3.2 ([#6][a6]):
+
+- **A module-to-module lp call** to a module that is installed but not loaded blocks for the **caller's** timeout, then fails with `object_unavailable`. At the default it took 19.97 s. Under a 1.5 s budget it took 1.47 s. Pass a short timeout on any call to a dependency that may not be up.
+- **`logosctl call`** instead fails fast with `MODULE_NOT_LOADED` (0.04 s), because the daemon checks first. CLI timing does not predict module-to-module timing.
+- **`lp_get_methods` takes no deadline.** In a standalone runner it blocked about 20 s on a module the host did not have.
+- **Unverified:** logos-protocol [`0ec3cbe`][lp-absent] makes a QtRO acquire for a module that nothing listens for give up after a 1 s grace instead of the full budget. Each module embeds the protocol its builder pinned, and builder 0.3.3 pins one that carries this fix (`9d59f5de`). [#6][a6] does not record which protocol the measuring caller embedded. Whether a caller built with builder 0.3.3 fails in about 1 s was not measured.
+
+> **Pin a range on anything you call through raw lp.** An unversioned dep resolves to the newest catalog version. On 2026-10-14 that is `delivery_module 0.3.2` and `lez_core 0.5.1`, and nothing type-checks a raw `lp_invoke` against the new contract. delivery `0.3.0` added a `source` field before `timestamp` in `messageReceived` ([muster delivery.nim][m-deliv-hdr]). The field is still there at `0.3.2` ([`delivery_module.lidl`](../modules/delivery_module/delivery_module.lidl)). A range does not protect you from a breaking patch release. `lez_core 0.5.1` dropped `statistics_path` from `create_new` and `open`, and removed `token_elf`, `amm_elf` and `ata_elf`, so `~0.5.0` admits it (`git diff 335c097 HEAD -- modules/lez_core/`).
 
 ---
 
@@ -68,9 +94,9 @@ cat result/keystore_module.lidl          # → 36 methods, 3 events (verified 20
   - contract-first `cdylib` modules: the committed `codegen.lidl`, normalised.
   - rust-first modules: derived from the trait.
   - Current bundlers also ship it as a root asset of the `.lgx`: `lgx extract X.lgx --assets-only` gives `assets/lidl/<name>.lidl` ([lgx README][lgx-readme]). Muster's July-generation `.lgx` (manifest `0.3.0`) carries no assets (checked).
-- **This repo vendors them** at `modules/<name>/<name>.lidl`, generated from the pins in [`data/catalog-pins.tsv`](../data/catalog-pins.tsv). Use these to read a contract, or as a `dependency_overrides.file`.
+- **This repo vendors them** at `modules/<name>/<name>.lidl`, built from each module's pin in `registry.json` (`.modules[].source.commit`, stamped in `modules/<name>/.contract-commit`). [`data/catalog-pins.tsv`](../data/catalog-pins.tsv) is the 2026-10-01 snapshot, not the current pins. Use these to read a contract, or as a `dependency_overrides.file`.
 - **Inspect a built plugin.** `nix build github:logos-co/logos-module#lm`, then `lm methods <plugin.so> --json` or `lm metadata <plugin.so> --json` ([logos-module README][lm]).
-- **Parser skew.** Your builder parses every dep's `.lidl`, even deps you only call raw. `optional_depends` entered logos-lidl on 2026-09-07 ([c0d9f9c][lidl-optdeps]). An older builder cannot read a contract that uses it, so Muster strips the line with `sed` ([muster module/flake.nix][m-flake-sed]). The keystore, monero-core, monero-backend and tx_sender contracts parse with the June frontend (`logos-lidl@8c95d4f`) that Muster's builder resolves. This was checked by running the Nim generator linked against that build.
+- **Parser skew.** Your builder parses every dep's `.lidl`, even deps you only call raw. `optional_depends` entered logos-lidl on 2026-09-07 ([c0d9f9c][lidl-optdeps]). An older builder cannot read a contract that uses it, so Muster strips the line with `sed` ([muster module/flake.nix][m-flake-sed]). The keystore, monero-core, monero-backend and tx_sender contracts parse with the June frontend (`logos-lidl@8c95d4f`) that Muster's builder resolves. This was checked on 2026-10-01 by running the Nim generator linked against that build. The monero `0.1.1` contracts differ from `0.1.0` only in their `version` line, so this carries over (not re-run).
 
 ---
 
@@ -91,6 +117,7 @@ modules().keystore_module.request_approvalAsyncResult(intentJson,
 ```
 
 - There are three entry points per method: `foo(…, CallError* = nullptr, timeout)`, `fooAsync(…, cb)` and `fooAsyncResult(…, cb)` ([README][cpp-surfaces]). Prefer `AsyncResult`, because `fooAsync` cannot tell a failure from a legitimate zero value.
+- **`unknown_method` is now real.** A provider refuses a call by returning `{code, message, origin}` as its result, and the generated wrappers fold the closed set `dispatch_failed`, `invalid_args` and `unknown_method` into `CallError` ([generator_lib.cpp][cpp-reject]). Until the 0.3.2 relock no provider emitted `unknown_method`. A call to a method the target lacks returned a bare null, which a typed caller read as the return type's default with an ok `CallError`. Providers built on cpp-sdk `3bf5365c`, rust-sdk `040e94e8` or the matching plugin-qt now refuse an unknown name ([Basecamp #462][bc-462], [logos_module_impl.h][abi-dispatch]). A provider built on an older builder still answers null. Basecamp 0.3.2's bundled capability_module, package_manager and storage_module are among these ([#462][bc-462]).
 - **Untyped escape hatch:** `modules().dynamic("x")` returns `logos::LpClient`. Use `nlohmann::json invoke(method, args, CallError*, int timeout_ms)` ([logos_lp_client.h][cpp-lpclient]).
 - **Who called you:** `logos::currentCaller()` returns a `LogosCaller` with `isHost()` and `isModule(name)` ([logos_caller.h][cpp-caller]).
 - The snake_case wrapper names (`request_approvalAsyncResult`) follow the README's `fooAsyncResult` rule. Not compiled here, so **unverified** for snake_case contracts.
@@ -107,6 +134,7 @@ modules().keystore_module.request_approval_async(&intent, |res| { /* Result<Stri
 ```
 
 - The twins are `_async`, `_with_timeout` and `_async_with_timeout`, with a 20 s default deadline ([README][rs-modules]).
+- A provider's refusal reaches you as `Err(LogosError::PluginCallFailed)` ([plugin.rs][rs-fold]). The SDK's closed set is `dispatch_failed`, `invalid_args` and `unknown_method`, and a Rust provider now answers an unknown name with `unknown_method` ([args.rs][rs-reject]). The caveat about older providers in the C++ section applies here too.
 - To depend on a module whose contract you hold as a file, use `dependency_overrides: {"keystore_module": {"file": "contracts/keystore_module.lidl"}}`. Pass the flake input as well if a standalone runner must bundle it.
 - **Origin is automatic.** The scaffold bakes `LOGOS_MODULE_NAME` from the contract ([README "announced origin"][rs-origin]). Before that fix the Rust SDK announced `"core"`, which made a module look like the host anchor.
 - **Who called you:** `logos_rust_sdk::current_caller()` returns `Unknown | HostAnchor | Module{name, instance} | Derived | Operator` ([README][rs-caller]).
@@ -138,7 +166,7 @@ let ks = newKeystoreClient(origin = "muster_module")   # NEVER rely on the defau
 let reply = ks.request_approvalOrRaise($intent)        # raising twin; request_approval() is lenient ("" on failure)
 ```
 
-**Verified 2026-10-01** with `nim check` against the SDK at `6077eb7`:
+**Verified 2026-10-01** with `nim check` against the SDK at `6077eb7`. The SDK has not moved since. On 2026-10-14 the keystore and tx_sender contracts are unchanged, and the monero `0.1.1` contracts differ only in their `version` line, so the results stand (not re-run):
 
 | Contract | Result |
 |---|---|
@@ -149,7 +177,7 @@ let reply = ks.request_approvalOrRaise($intent)        # raising twin; request_a
 
 Gaps to know about:
 
-- **The default origin is `"core"`** in both `newPluginProxy` and every generated `new<X>Client` ([plugin.nim][nim-plugin], [gen.nim][nim-gen-client]). The Rust SDK had the same default before its fix, and its README says such a module "authorizes as the host at every callee" ([rust-sdk README][rs-origin]). The keystore and monero backend refuse the host anchor (§5). Always pass `origin = "<your module name>"`. What the 0.3.1 runtime does with a Nim module's `"core"` origin was not tested here.
+- **The default origin is `"core"`** in both `newPluginProxy` and every generated `new<X>Client` ([plugin.nim][nim-plugin], [gen.nim][nim-gen-client]). The Rust SDK had the same default before its fix, and its README says such a module "authorizes as the host at every callee" ([rust-sdk README][rs-origin]). The keystore and monero backend refuse the host anchor (§5). Always pass `origin = "<your module name>"`. What the 0.3.2 runtime does with a Nim module's `"core"` origin was not tested here.
 - The generated client has **no typed events and no async wrappers**. Use `proxy.subscribe` and `callAsync`, or the raw `lp_*` calls.
 - The provider surface exports only the protocol-0.2 module-impl ABI (7 symbols) and hard-codes `logos_module_get_protocol_version` to `"0.1.0"` ([gen.nim][nim-gen-provider]). This is the root of the Nim SDK skew in [`compatibility.md` §2](compatibility.md#2-the-unload-callback-crash-what-actually-happened).
 - There is no `current_caller()` in Nim, because `logos_module_set_call_caller` is not exported. A Nim provider cannot tell who is calling it.
@@ -158,7 +186,7 @@ Gaps to know about:
 
 | Shape | Call | Notes |
 |---|---|---|
-| QML only | `logos.callModuleAsync("keystore_module", "list_accounts", [], function(json) {...}, 30000)` | Holds the call until the module appears, and the deadline also bounds that wait. The callback receives a JSON **string**. `logos.callModule(...)` is the synchronous form: avoid it at startup ([LogosQmlBridge.h][qml-call]) |
+| QML only | `logos.callModuleAsync("keystore_module", "list_accounts", [], function(json) {...}, 30000)` | Holds the call until the module appears, and the deadline also bounds that wait. The callback receives a JSON **string**. `logos.callModule(...)` is the synchronous form: avoid it at startup ([LogosQmlBridge.h][qml-call]). Since 0.3.2 a provider's refusal comes back as the bridge's error payload, not as a value: "Method not found" for `unknown_method`, "Call refused" for `invalid_args`/`dispatch_failed` ([LogosQmlBridge.cpp][qml-refusal]) |
 | C++ backend (`interface: "universal"` + `codegen.rep`) | `modules().keystore_module.list_accounts()` | Qt-typed (`QString`, `qlonglong`). The dep must be in **the UI's** `dependencies` and flake inputs. Muster's backend does this for `muster_module` ([muster_ui_backend.cpp][m-ui-backend]) |
 
 A view's bridge calls out "as an ADMITTED consumer, not as its host", under the view's own identity ([LogosQmlBridge.h][qml-consumer]). This is why `evm_signer_ui` can hold the keystore's approver role by name.
@@ -180,7 +208,7 @@ The event plane carries **no auth token**, so payloads must not hold secrets. Th
 
 ## 5. Caller identity, `capability_module`, and permissions
 
-### How a call gets attributed (Basecamp 0.3.1)
+### How a call gets attributed (Basecamp 0.3.2)
 
 1. **Anchor token.** The host loads your module and seeds its own token through `logos_module_accept_token`. In Nim this is `saveToken` → `lp_token_save`. If you drop this step, every outbound call is rejected ([nim-sdk CLAUDE.md][nim-claude]).
 2. **First call to a target.** Your lp client asks `capability_module.requestModule(fromModuleName, target)`. capability_module then works through these checks ([impl.cpp][cap-impl]):
@@ -193,7 +221,7 @@ The event plane carries **no auth token**, so payloads must not hold secrets. Th
 
 The `caller_json` arms are `unknown`, `host`, `module{name, instance?}`, `derived{parent, leaf}` and `operator{name}`. An unrecognised arm reads as `unknown`. The ABI itself says "Nothing here is spelled 'verified'". A module name is **token-bound**, and the name is self-declared in unsigned metadata.
 
-**Access policy.** Basecamp 0.3.1 installs **none** by default, so enforcement is off. `--access-policy enforce` (or `LOGOS_ACCESS_POLICY=enforce`) is deny-by-default: a module may only call the modules it declares as dependencies ([main.cpp][bc-policy]). capability_module's own gate is still fail-open for a target with no registered restriction. Declare every module you call in `dependencies`, or your module breaks under `enforce`. Whether `optional_dependencies` count as declared for `enforce` is **unverified**.
+**Access policy.** Basecamp 0.3.2 installs **none** by default, so enforcement is off. `--access-policy enforce` (or `LOGOS_ACCESS_POLICY=enforce`) is deny-by-default: a module may only call the modules it declares as dependencies ([main.cpp][bc-policy]). capability_module's own gate is still fail-open for a target with no registered restriction. Declare every module you call in `dependencies`, or your module breaks under `enforce`. `optional_dependencies` count as declared: under `enforce`, liblogos allows each target's loaded direct dependents to call it, optional dependents included ([module_manager.cpp][ll-derived]). That was read from the source and not exercised here. Since 0.3.2 liblogos registers a module's token before the module holds it, and counts a dependent that is still loading. Before that, a call a module made from its own init could be refused until a token re-exchange won a race ([liblogos 7d372f5][ll-inflight]).
 
 ### What the official wallet modules do with the caller
 
@@ -216,7 +244,7 @@ The `caller_json` arms are `unknown`, `host`, `module{name, instance?}`, `derive
 
 ## 6. App-to-app intents (handing the user to another app)
 
-Sources: [`docs/app-to-app-intents.md` @ 0.3.1][int] and the Basecamp `CLAUDE.md` "App-to-app intents" section.
+Sources: [`docs/app-to-app-intents.md` @ 0.3.2][int] (unchanged since 0.3.1) and the Basecamp `CLAUDE.md` "App-to-app intents" section.
 
 ```json
 "uses": [ { "intent": "evm.signing.approve" } ]
@@ -241,7 +269,7 @@ logos.request("evm.signing.approve", { handle: h }, function (res) {
 - **Params:** the provider's `params` are enforced just before dispatch (`bad_request`). Extra fields pass through.
 - **Not signed.** A name is a claim, and the provider renders what is signed ([§6 limits][int-limits]).
 
-**Wallet intents in the 0.3.1 catalog** (from each pinned `metadata.json`):
+**Wallet intents in the 0.3.2 catalog** (from each pinned `metadata.json`, via `registry.json` on 2026-10-14):
 
 | Intent | Provider | Params | Handoff | Used today by |
 |---|---|---|---|---|
@@ -250,7 +278,7 @@ logos.request("evm.signing.approve", { handle: h }, function (res) {
 | `evm.accounts.manage` | `evm_keystore_ui` | — | yes | `eth_wallet_ui`, `uniswap_ui` |
 | `monero.wallet.unlock` | `monero_wallet_ui` | `wallet` | no | — |
 | `monero.accounts.manage` | `monero_wallet_ui` | — | yes | — |
-| `monero.node.configure` / `evm.rpc.configure` / `evm.token_lists.configure` / `evm.verified_routing.operate` | `monerod_ui` / `eth_rpc_ui` / `token_list_ui` / `verified_proxy_ui` | — / — / — / — | yes | wallet UIs |
+| `monero.node.configure` / `evm.rpc.configure` / `evm.token_lists.configure` / `evm.verified_routing.operate` | `monerod_ui` / `eth_rpc_ui` / `token_list_ui` / `verified_proxy_ui` | `network?` / — / — / — | yes | wallet UIs (and `eth_rpc_ui` for verified routing) |
 
 The copyable pattern is **backend requests, UI escorts**: the backend calls `request_approval` (or `tx_sender.send`), receives a `handle`, and the UI raises `evm.signing.approve {handle}`. If the user ignores the escort, `evm_signer_ui` still lists the request through `pending` and `approval_offered`.
 
@@ -306,7 +334,7 @@ These steps edit files in the Muster repo. Do them there, not here.
 
 ### 7.3 Sketch: Monero
 
-- **Go through `monero_wallet_backend`, not the core.** Add `{"name":"monero_wallet_backend","version":"~0.1.0"}`. Its manifest pulls `monero_wallet_core_module` and `monero_node_module`. Its Nim client compiles (§3).
+- **Go through `monero_wallet_backend`, not the core.** Add `{"name":"monero_wallet_backend","version":"~0.1.0"}` (the catalog has `0.1.1`, which `~0.1.0` admits). Its `0.1.1` manifest pulls `monero_wallet_core_module ~0.1.1` and `monero_node_module ~0.1.0`. `monero_node_module` names `monerod_module` as an optional dependency, which Basecamp offers pre-ticked and both hosts load when it is installed (§1). Its Nim client compiles (§3).
 - **Calls:**
   - Reads (open to any caller): `wallet_status`, `balances(account)`, `receive_info(account)`.
   - Spend: `prepare_send({address, amountXmr, accountIndex?})` returns `{ok, requestId}`. Poll `send_status(requestId)` until it reaches `previewed`.
@@ -320,53 +348,75 @@ These steps edit files in the Muster repo. Do them there, not here.
 
 ---
 
-[bc]: https://github.com/logos-co/logos-basecamp/tree/aeb819216c1a54563d758e82fb2264359987dd2c
-[int]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/docs/app-to-app-intents.md
-[int-providers]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/docs/app-to-app-intents.md#L52
-[int-limits]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/docs/app-to-app-intents.md#L203-L217
-[bc-policy]: https://github.com/logos-co/logos-basecamp/blob/aeb819216c1a54563d758e82fb2264359987dd2c/app/main.cpp#L165-L216
-[cfg]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md
-[cfg-interface]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L88-L115
-[cfg-codegen]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L117-L149
-[cfg-conc]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L151-L212
-[cfg-deps]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L273-L310
-[cfg-optdeps]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L311-L365
-[cfg-provides]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L367-L481
-[cfg-platforms]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/docs/configuration.md#L683-L720
-[parse]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/lib/parseMetadata.nix
-[parse-overrides]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/lib/parseMetadata.nix#L295-L314
-[parse-hostsvc]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/lib/parseMetadata.nix#L368-L400
-[common-deps]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/lib/common.nix#L167-L200
-[mk-nim]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/lib/mkLogosModule.nix#L647-L692
-[mk-lidl]: https://github.com/logos-co/logos-module-builder/blob/4b7998272c5ec014bcac4bf1c7dbe7602c63a3c1/lib/mkLogosModule.nix#L958-L985
+[bc]: https://github.com/logos-co/logos-basecamp/tree/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9
+[int]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md
+[int-providers]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L52
+[int-limits]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L203-L217
+[bc-policy]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/main.cpp#L165-L216
+[cfg]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md
+[cfg-interface]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L88-L115
+[cfg-codegen]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L117-L149
+[cfg-conc]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L151-L212
+[cfg-deps]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L273-L310
+[cfg-optdeps]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L311-L365
+[cfg-provides]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L367-L481
+[cfg-platforms]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/docs/configuration.md#L683-L720
+[parse]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/parseMetadata.nix
+[parse-overrides]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/parseMetadata.nix#L295-L314
+[parse-hostsvc]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/parseMetadata.nix#L368-L400
+[common-deps]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/common.nix#L167-L200
+[mk-nim]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/mkLogosModule.nix#L647-L692
+[mk-lidl]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/mkLogosModule.nix#L958-L985
 [pr226]: https://github.com/logos-co/logos-module-builder/pull/226
-[dep-gate]: https://github.com/logos-co/logos-liblogos/blob/db45024f5c45ce5fc00ab76a6921985839ad7355/src/logos_core/dependency_gate.h#L8-L24
-[ll-gate]: https://github.com/logos-co/logos-liblogos/blob/db45024f5c45ce5fc00ab76a6921985839ad7355/src/logos_core/module_manager.cpp#L807-L840
-[dl-resolve]: https://github.com/logos-co/logos-package-downloader-module/blob/d40d4ab906e4e093c43c69c374ca1b6ec9e85ab8/src/package_downloader_impl.h#L63-L81
-[pmui-local]: https://github.com/logos-co/logos-package-manager-ui/blob/3174edd016f8464c6bbdb667db54d0f7b117a62c/src/PackageManagerBackend.cpp#L1230-L1244
+[dep-gate]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/dependency_gate.h#L8-L24
+[ll-gate]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/module_manager.cpp#L838-L898
+[ll-derived]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/module_manager.cpp#L466-L504
+[ll-inflight]: https://github.com/logos-co/logos-liblogos/commit/7d372f567f69e1946668966cd759e473fd15117a
+[ll-loaddeps]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/logos_core.h#L72-L94
+[bc-loadpolicy]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/CoreModuleManager.cpp#L92-L98
+[bc-coredeps]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/PluginLoader.cpp#L137-L222
+[bc-optsel]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/OptionalDependencyPreview.h#L215-L220
+[bc-452]: https://github.com/logos-co/logos-basecamp/pull/452
+[bc-453]: https://github.com/logos-co/logos-basecamp/pull/453
+[bc-455]: https://github.com/logos-co/logos-basecamp/pull/455
+[bc-462]: https://github.com/logos-co/logos-basecamp/pull/462
+[bc-469]: https://github.com/logos-co/logos-basecamp/pull/469
+[bc-472]: https://github.com/logos-co/logos-basecamp/pull/472
+[bc-474]: https://github.com/logos-co/logos-basecamp/pull/474
+[bc-479]: https://github.com/logos-co/logos-basecamp/pull/479
+[a6]: https://github.com/corpetty/logos-module-atlas/issues/6
+[dl-resolve]: https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/src/package_downloader_impl.h#L64-L83
+[dl-start]: https://github.com/logos-co/logos-package-downloader-module/blob/7b0ca8b74acde01c277431a1372092980a3f31df/src/package_downloader_impl.h#L85-L94
+[pmui-local]: https://github.com/logos-co/logos-package-manager-ui/blob/8b67bf0213596e021d441e5d1d43f857142003b6/src/PackageManagerBackend.cpp#L1243-L1262
 [lidl-readme]: https://github.com/logos-co/logos-lidl/blob/2043d8bf94c6bfee3781f96ad088e8c13ec36038/README.md
 [lidl-optdeps]: https://github.com/logos-co/logos-lidl/commit/c0d9f9c
 [lm]: https://github.com/logos-co/logos-module/blob/f71d16ddc5779b50b188b3a3928a37c9ce90b2a1/README.md
-[lgx-readme]: https://github.com/logos-co/logos-package/blob/d759f34b095db14945ab0a38f6e1e924eafc3758/README.md
-[cpp-surfaces]: https://github.com/logos-co/logos-cpp-sdk/blob/c24c4ab9ab35c34959238eb7968c0b4f87fae1a4/README.md#L273-L345
-[cpp-universal]: https://github.com/logos-co/logos-cpp-sdk/blob/c24c4ab9ab35c34959238eb7968c0b4f87fae1a4/README.md#L347-L427
-[cpp-events]: https://github.com/logos-co/logos-cpp-sdk/blob/c24c4ab9ab35c34959238eb7968c0b4f87fae1a4/README.md#L477-L508
-[cpp-lpclient]: https://github.com/logos-co/logos-cpp-sdk/blob/c24c4ab9ab35c34959238eb7968c0b4f87fae1a4/cpp/logos_lp_client.h#L268-L299
-[cpp-lpsub]: https://github.com/logos-co/logos-cpp-sdk/blob/c24c4ab9ab35c34959238eb7968c0b4f87fae1a4/cpp/logos_lp_client.h#L376-L415
-[cpp-caller]: https://github.com/logos-co/logos-cpp-sdk/blob/c24c4ab9ab35c34959238eb7968c0b4f87fae1a4/cpp/logos_caller.h#L86-L110
-[rs-modules]: https://github.com/logos-co/logos-rust-sdk/blob/569ecc5e39edb4a5966224ee465f1cc7f5344844/README.md#L40-L125
-[rs-events]: https://github.com/logos-co/logos-rust-sdk/blob/569ecc5e39edb4a5966224ee465f1cc7f5344844/README.md#L127-L142
-[rs-caller]: https://github.com/logos-co/logos-rust-sdk/blob/569ecc5e39edb4a5966224ee465f1cc7f5344844/README.md#L162-L189
-[rs-origin]: https://github.com/logos-co/logos-rust-sdk/blob/569ecc5e39edb4a5966224ee465f1cc7f5344844/README.md#L191-L216
+[lgx-readme]: https://github.com/logos-co/logos-package/blob/c25a1167578aef5cbd9a9b6f822ffe2ae4fd6a89/README.md
+[cpp-surfaces]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/README.md#L273-L345
+[cpp-universal]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/README.md#L347-L427
+[cpp-events]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/README.md#L477-L508
+[cpp-lpclient]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/cpp/logos_lp_client.h#L268-L299
+[cpp-lpsub]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/cpp/logos_lp_client.h#L376-L415
+[cpp-caller]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/cpp/logos_caller.h#L86-L110
+[cpp-reject]: https://github.com/logos-co/logos-cpp-sdk/blob/3bf5365c5412f89bbbf30e3f46237cd68cff0599/cpp-generator/generator_lib.cpp#L840-L896
+[rs-modules]: https://github.com/logos-co/logos-rust-sdk/blob/040e94e83873249dc5f27da8c2a01c3dcaaa630d/README.md#L40-L125
+[rs-events]: https://github.com/logos-co/logos-rust-sdk/blob/040e94e83873249dc5f27da8c2a01c3dcaaa630d/README.md#L127-L142
+[rs-caller]: https://github.com/logos-co/logos-rust-sdk/blob/040e94e83873249dc5f27da8c2a01c3dcaaa630d/README.md#L162-L189
+[rs-origin]: https://github.com/logos-co/logos-rust-sdk/blob/040e94e83873249dc5f27da8c2a01c3dcaaa630d/README.md#L191-L216
+[rs-reject]: https://github.com/logos-co/logos-rust-sdk/blob/040e94e83873249dc5f27da8c2a01c3dcaaa630d/src/args.rs#L270-L306
+[rs-fold]: https://github.com/logos-co/logos-rust-sdk/blob/040e94e83873249dc5f27da8c2a01c3dcaaa630d/src/plugin.rs#L554-L566
 [nim-ffi]: https://github.com/corpetty/logos-nim-sdk/blob/6077eb70a8709dccf3d60601121dbf66e794b89c/src/logos_sdk/ffi.nim
 [nim-plugin]: https://github.com/corpetty/logos-nim-sdk/blob/6077eb70a8709dccf3d60601121dbf66e794b89c/src/logos_sdk/plugin.nim#L54-L148
 [nim-gen-provider]: https://github.com/corpetty/logos-nim-sdk/blob/6077eb70a8709dccf3d60601121dbf66e794b89c/lidl-gen/gen.nim#L135-L180
 [nim-gen-client]: https://github.com/corpetty/logos-nim-sdk/blob/6077eb70a8709dccf3d60601121dbf66e794b89c/lidl-gen/gen.nim#L253-L290
 [nim-claude]: https://github.com/corpetty/logos-nim-sdk/blob/6077eb70a8709dccf3d60601121dbf66e794b89c/CLAUDE.md
-[qml-call]: https://github.com/logos-co/logos-view-module-runtime/blob/91dc59b32d4be9230bd8473719a26661867c682e/include/LogosQmlBridge.h#L153-L181
-[qml-consumer]: https://github.com/logos-co/logos-view-module-runtime/blob/91dc59b32d4be9230bd8473719a26661867c682e/include/LogosQmlBridge.h#L108-L135
-[qml-events]: https://github.com/logos-co/logos-view-module-runtime/blob/91dc59b32d4be9230bd8473719a26661867c682e/include/LogosQmlBridge.h#L320-L362
-[abi-caller]: https://github.com/logos-co/logos-protocol/blob/8bbc027c99505c3c2f043265f8c1ae8ff899bdff/cpp/logos_module_impl.h#L190-L288
+[qml-call]: https://github.com/logos-co/logos-view-module-runtime/blob/4c4297239f876802ae02e7810fe956967ea75a39/include/LogosQmlBridge.h#L153-L181
+[qml-consumer]: https://github.com/logos-co/logos-view-module-runtime/blob/4c4297239f876802ae02e7810fe956967ea75a39/include/LogosQmlBridge.h#L108-L135
+[qml-events]: https://github.com/logos-co/logos-view-module-runtime/blob/4c4297239f876802ae02e7810fe956967ea75a39/include/LogosQmlBridge.h#L320-L362
+[qml-refusal]: https://github.com/logos-co/logos-view-module-runtime/blob/4c4297239f876802ae02e7810fe956967ea75a39/src/LogosQmlBridge.cpp#L71-L96
+[abi-caller]: https://github.com/logos-co/logos-protocol/blob/9d59f5de526624b120d42f4c422a3d83c0b9d64f/cpp/logos_module_impl.h#L192-L290
+[abi-dispatch]: https://github.com/logos-co/logos-protocol/blob/9d59f5de526624b120d42f4c422a3d83c0b9d64f/cpp/logos_module_impl.h#L61-L66
+[lp-absent]: https://github.com/logos-co/logos-protocol/commit/0ec3cbef39d7eda31543a7c40f9e6fb1faee61a7
 [cap-impl]: https://github.com/logos-co/logos-capability-module/blob/1a1b8b5a1167931afbf41ebaafbe76034e6357a0/src/capability_module_impl.cpp#L60-L168
 [ks-tiers]: https://github.com/logos-co/logos-evm-keystore-module/blob/2318c679e2b7176967bd45052f3d64b2a8b06931/docs/specs.md#L1064-L1107
 [ks-caller]: https://github.com/logos-co/logos-evm-keystore-module/blob/2318c679e2b7176967bd45052f3d64b2a8b06931/docs/specs.md#L1109-L1150
@@ -374,10 +424,10 @@ These steps edit files in the Muster repo. Do them there, not here.
 [ks-events]: https://github.com/logos-co/logos-evm-keystore-module/blob/2318c679e2b7176967bd45052f3d64b2a8b06931/docs/specs.md#L1479-L1520
 [txs-send]: https://github.com/logos-co/logos-evm-tx-sender-module/blob/7cd2fead60a78ac9ac8a4337fd9f01e1ab5515e2/rust-lib/src/glue.rs#L60-L80
 [txs-caller]: https://github.com/logos-co/logos-evm-tx-sender-module/blob/7cd2fead60a78ac9ac8a4337fd9f01e1ab5515e2/rust-lib/src/glue.rs#L271-L283
-[xmrb-gate]: https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/gate.rs#L102-L131
-[xmrb-send]: https://github.com/logos-co/logos-monero-wallet-backend/blob/769098441db339f7541ba8804722ae3f20614309/rust-lib/src/glue.rs#L88-L99
-[xmrc-jobs]: https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L153-L156
-[xmrc-one]: https://github.com/logos-co/logos-monero-wallet-core-module/blob/7fc923dcce9ac5d40db8dd30f658eb63849e7212/src/wallet_runtime.cpp#L314
+[xmrb-gate]: https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/gate.rs#L102-L131
+[xmrb-send]: https://github.com/logos-co/logos-monero-wallet-backend/blob/a17d0df6e7c89bb5a82ae196e7eb2f02599ae29a/rust-lib/src/glue.rs#L88-L99
+[xmrc-jobs]: https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L153-L156
+[xmrc-one]: https://github.com/logos-co/logos-monero-wallet-core-module/blob/c513e58d05a08abfdb789e82c94bab052f3eb7e5/src/wallet_runtime.cpp#L314
 [m]: https://github.com/corpetty/muster/tree/fff01afa45c5a0ff1bd18a533e0a7bd90f51b65a
 [m-meta]: https://github.com/corpetty/muster/blob/fff01afa45c5a0ff1bd18a533e0a7bd90f51b65a/module/metadata.json#L1-L35
 [m-flake]: https://github.com/corpetty/muster/blob/fff01afa45c5a0ff1bd18a533e0a7bd90f51b65a/module/flake.nix#L22-L86

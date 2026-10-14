@@ -1,6 +1,6 @@
 # Key custody across chains
 
-Pinned at Basecamp **0.3.1**, catalog index 2026-10-01. This page summarizes the
+Pinned at Basecamp **0.3.2**, catalog index 2026-10-14. This page summarizes the
 evidence in [evm-wallet.md](evm-wallet.md), [monero-wallet.md](monero-wallet.md) and
 [blockchain-lez.md](blockchain-lez.md). Those pages carry the permalinks, so follow
 them before relying on a detail.
@@ -10,7 +10,7 @@ another module (the motivating case is Muster).
 
 ## What exists
 
-| Chain | Key holder (the only module with secrets) | Coordinator a caller should use | Human approval surface | Headless approval | Ships in 0.3.1 |
+| Chain | Key holder (the only module with secrets) | Coordinator a caller should use | Human approval surface | Headless approval | Ships in 0.3.2 |
 |---|---|---|---|---|---|
 | Ethereum / EVM | [`keystore_module`](../modules/keystore_module/README.md): scrypt vaults, BIP39/32 HD, secp256k1 | [`tx_sender_module`](../modules/tx_sender_module/README.md) for transactions; `keystore_module.request_approval` for messages, EIP-712 and digests | [`evm_signer_ui`](../modules/evm_signer_ui/README.md) (intent `evm.signing.approve`) | [`evm_signer_cli`](../modules/evm_signer_cli/README.md) + an operator | catalog |
 | Monero | [`monero_wallet_core_module`](../modules/monero_wallet_core_module/README.md): wallet2 via monero_c | [`monero_wallet_backend`](../modules/monero_wallet_backend/README.md) (`prepare_send` → `confirm_send`) | [`monero_wallet_ui`](../modules/monero_wallet_ui/README.md) (default approver; no "review this send" intent) | [`monero_wallet_cli`](../modules/monero_wallet_cli/README.md) | catalog |
@@ -84,7 +84,7 @@ else's wallet. Proving calls take minutes, so use `lp_invoke_async` rather than 
 The role gates separate the **honest** surfaces. They are **not a boundary against
 other loaded modules**:
 
-- Basecamp 0.3.1 runs with `--access-policy` **off by default**, so any loaded module
+- Basecamp 0.3.2 runs with `--access-policy` **off by default**, so any loaded module
   can call any other. `--access-policy enforce` limits each module to its declared
   `metadata.json` dependencies. It is off by default because `ui_qml` callers are not
   yet in the derived allow-list (Basecamp README, "Inter-module access enforcement").
