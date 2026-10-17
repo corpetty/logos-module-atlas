@@ -8,7 +8,7 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.5.1** (released 2026-10-12) · all: 0.5.1, 0.5.0, 0.4.2, 0.4.1, 0.4.0 |
+| Catalog version | **0.5.1** (released 2026-10-12) · all: 0.5.1, 0.5.0, 0.4.3, 0.4.2, 0.4.1, 0.4.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [lez_core-v0.5.1](https://github.com/logos-co/logos-modules-release/releases/download/lez_core-v0.5.1/lez_core-0.5.1.lgx) · sha256 `1f19bbb1ee8e6420…` |
 | Source | [logos-blockchain/logos-execution-zone-module@51a6fee](https://github.com/logos-blockchain/logos-execution-zone-module/tree/51a6fee385eedfdc65ba71f01447c5411a54bdf7) |
