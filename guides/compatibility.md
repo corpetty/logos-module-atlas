@@ -2,7 +2,7 @@
 
 What has to line up for your module to build, load and be callable in **Logos Basecamp 0.3.2** (tag `0.3.2` = [`f2fae63`][bc], released 2026-10-06) alongside the six bundled modules and the 46 catalog packages. It also covers how to check what generation a module was built on, how to pin one, and how to install a local build for testing.
 
-Companion guide: [`calling-official-modules.md`](calling-official-modules.md), which covers how to call a module once it loads. All facts were checked on 2026-10-14 against the commits linked here, unless marked **unverified**. The Muster observations (§2, §3, §6) date from 2026-10-01 and were not re-checked. This guide was first written against the 0.3.1 release (`aeb8192`); where 0.3.2 changed something, the text says so.
+Companion guide: [`calling-official-modules.md`](calling-official-modules.md), which covers how to call a module once it loads. All facts were checked on 2026-10-14 against the commits linked here, unless marked **unverified**. The Muster observations (§2, §3, §6) date from 2026-10-01 and were not re-checked. The macOS observations (§3, §4, §5) were made on 2026-10-15 with the 0.3.2 DMG on macOS 26.5 (Apple Silicon). This guide was first written against the 0.3.1 release (`aeb8192`); where 0.3.2 changed something, the text says so.
 
 ---
 
@@ -162,6 +162,16 @@ nm -D --undefined-only <plugin.so> | grep logos_module_           # MUST print n
 nm <plugin.so> | grep -c ' [Tt] logos_module_'                    # 7 = 0.2 set, 10 = 0.5, 12 = 0.8+ (static symtab; not present if stripped)
 ```
 
+**From a built plugin, on macOS.** Mach-O symbol names carry a leading underscore and there is no `nm -D`. The undefined-export check matters more here, because macOS will not refuse the load (rule 2):
+
+```bash
+nm -u <plugin.dylib> | grep _logos_module_                 # MUST print nothing
+nm <plugin.dylib> | grep -c ' [Tt] _logos_module_'          # same counts as above; a Nim plugin also has a local _logos_module_ctor
+otool -L <plugin.dylib>                                     # portable: every non-system library is @loader_path/… or @rpath/…
+```
+
+In a portable build, `nix-bundle-dir` places the plugin's own libraries beside it as `@loader_path/./lib….dylib`. It leaves the Qt frameworks and `libintl.8.dylib` on `@rpath`, and Basecamp provides those through `Contents/lib → Frameworks` in its app bundle. The catalog's `blockchain_module` 0.3.2 and a third-party build (Muster, below) link the same way.
+
 **Authoritative export list for a protocol revision** (Basecamp 0.3.2's):
 
 ```bash
@@ -175,6 +185,8 @@ cat result/version result/exports.txt   # 0.9.0 + the 12 names; result/bin/logos
 |---|---|---|
 | Muster's `muster_module_plugin.so` (Sept 4 build) | `0.2.0` | 7 (`t`, local) |
 | The `package_manager_plugin.so` baked into the Sept 4 Basecamp | `0.5.0` | 10 (`T`) |
+| Muster's `muster_module_plugin.dylib`, darwin-arm64 (2026-10-15 build of muster `15f7dc2`) | `0.2.0` | 7 (`t`, local) + `_logos_module_ctor`; none undefined |
+| The catalog's `blockchain_module_plugin.dylib` 0.3.2, darwin-arm64 | `0.9.0` | 12 (`T`); none undefined |
 
 ---
 
@@ -205,6 +217,16 @@ Ship and test against the AppImage with **`.#lgx-portable`**. Test against a nix
 - New in 0.3.2: Basecamp's UI doc-tests have Windows legs (#470, #471), and `ui-host` dies with the app on Windows (#467).
 - Whether a third-party module's `windows-x86_64` variant installs and loads in the Windows build is **unverified**.
 
+**macOS (Apple Silicon).**
+
+- On `aarch64-darwin`, `.#lgx-portable` gives the `darwin-arm64` variant, which the 0.3.2 DMG installs and loads.
+- Checked with Muster 0.3.0, a third-party Nim `cdylib` core module on the protocol-0.2 builder (`corpetty/logos-module-builder@c10a94c`, §2), with its `ui_qml` view on builder `4717b9af`:
+  - Both built on macOS from the Linux sources, unchanged.
+  - The core module loaded with its catalog dependencies in logosctl 0.3.2's `aarch64-macos` build (§5), and `health` answered `ok`.
+  - Installed with the macOS lgpm 0.3.1 release into a `--user-dir` profile, Muster ran in the DMG: its view rendered, a room opened live, and a message sent.
+- Its dependencies came from the catalog's own `darwin-arm64` variants. 45 of the 46 catalog packages ship one at their newest version; `logos_execution_zone` 1.0.0 does not (index of 2026-10-16).
+- An Intel Mac (`darwin-amd64`) is **unverified**, and no catalog package ships that variant.
+
 ---
 
 ## 5. `.lgx` packaging and installing a local package
@@ -213,6 +235,7 @@ Ship and test against the AppImage with **`.#lgx-portable`**. Test against a nix
   - `nix build .#lgx-portable` (or `.#lgx`).
   - `nix build github:logos-co/logos-package#lgx` provides the CLI. `lgx manifest X.lgx` prints name, version, manifest version, **variants** and dependencies. `lgx extract X.lgx --assets-only` gives `assets/lidl/<name>.lidl` on current bundlers ([lgx README][lgx-readme]).
   - Example check of Muster's portable `.lgx` (built 2026-09-23): manifest `0.3.0`, variant `linux-amd64`, deps `delivery_module`, `lez_core`, unsigned, no root assets. Of the catalog's 46 current releases, 42 are manifest `0.6.0`. amm module+ui are `0.3.0`, and lez_indexer_module and logos_execution_zone are `0.2.0`.
+  - **One host builds one variant.** A multi-platform package is several per-platform `.lgx-portable` builds joined with `lgx merge a.lgx b.lgx -o <name>-<version>.lgx`, which is how the catalog's release action does it ([release.yml][mra-merge]). `lgx merge` needs at least two inputs, refuses manifests that differ in anything but `main`, and refuses a variant given twice. Splitting the catalog's `amm_module` 0.1.0 with `lgx remove` and merging the three parts back reproduced its `rootHash`, whatever the input order.
 - **Install into Basecamp, GUI (release AppImage or dev build):**
   1. Install every dependency first, from the catalog. **A local `.lgx` install does not resolve dependencies** ([PMUI][pmui-local]).
   2. In Package Manager, use the "install local" action. It opens a file dialog titled "Select LGX Package to Install" ([PackageManager.qml][pmui-dialog]).
@@ -220,7 +243,7 @@ Ship and test against the AppImage with **`.#lgx-portable`**. Test against a nix
   4. Basecamp confirms, then installs.
 - **A dependency only Basecamp ships.** If your package is in a catalog and depends on a bundled module, such as storage_module, that no enabled catalog lists, 0.3.2's App Manager keeps the installed copy if it satisfies the range ([#472][bc-472]). In 0.3.1 the install could not start, with "no candidate matches '<dependency>'".
 - **Version decides which copy loads.** Since 0.3.2, when the same package name is in the app's embedded directory and the user directory, the scan keeps the **newest version**, and takes the user copy only on a tie ([package_manager_lib.cpp][lgpm-scan], #479). In 0.3.1 the user copy always won. A local build that replaces a bundled module therefore needs a version at least as high as the bundled one, for example storage_module ≥ 3.0.2.
-- **Install into Basecamp, CLI:** run lgpm against the session directories. On Linux these are `~/.local/share/Logos/LogosBasecamp/{modules,plugins}`. A dev build adds a `Dev` suffix, and `--user-dir` or `LOGOS_USER_DIR` moves them ([README][bc-dirs]).
+- **Install into Basecamp, CLI:** run lgpm against the session directories. On Linux these are `~/.local/share/Logos/LogosBasecamp/{modules,plugins}`, and on macOS `~/Library/Application Support/Logos/LogosBasecamp/{modules,plugins}`. A dev build adds a `Dev` suffix, and `--user-dir` or `LOGOS_USER_DIR` moves them ([README][bc-dirs]).
   ```bash
   lgpm --modules-dir ~/.local/share/Logos/LogosBasecamp/modules \
        --ui-plugins-dir ~/.local/share/Logos/LogosBasecamp/plugins install --file ./muster-module.lgx
@@ -230,6 +253,19 @@ Ship and test against the AppImage with **`.#lgx-portable`**. Test against a nix
   - `--allow-unsigned` silences the unsigned-package warning, and nothing in the catalog is signed.
   - Whether a running Basecamp picks up a CLI install without a restart is **unverified**. Restart it.
 - **Isolated test instance:** `LogosBasecamp --user-dir /tmp/bc-a` gives an instance with its own `plugins/`, `modules/`, `module_data/` and `logs/`. Logs go to `<session>/logs/`.
+  - On macOS, run the binary inside the app, `/Applications/LogosBasecamp.app/Contents/MacOS/LogosBasecamp --user-dir /tmp/bc-a`, beside a running default instance.
+  - Observed with another instance already running: the second instance's `storage_module` failed to start ("Failed to create Storage: Should create metadata store!"). The cause was not investigated. Modules that do not call storage were unaffected.
+- **Headless check without Basecamp:** logosctl 0.3.2 ships an `aarch64-macos` build next to the Linux ones ([release][logosctl-rel]). In a throwaway session:
+  ```bash
+  export LOGOSCTL_CONFIG_DIR=$(mktemp -d)
+  printf '{}\n' | logosctl daemon config set -
+  logosctl daemon start --detach && logosctl catalog refresh
+  logosctl package install ./my_module.lgx --yes          # a local file: no dependency resolution
+  logosctl package install <dependency> --version <v> --yes
+  logosctl module load my_module && logosctl call my_module health
+  ```
+  - Installing a package by name takes the catalog's newest version, not the range a dependent declares. For Muster's `~0.3.2` it took `delivery_module` 0.4.0, so pass `--version`.
+  - `module load` loads the module's dependencies first and reports `optional_skipped` for optional ones that are not installed.
 - **Baking into a Basecamp build (dev only):** add the module's flake as an input and put its `.install` output (dev set) or `.install-portable` output (AppImage set) into `installedDev` or `installedDistributed`. Pair each module's `.install` with the dev set and `.install-portable` with the AppImage set. Mixing them gives the variant rejection above. Keep such bakes out of upstream commits.
 
 ---
@@ -302,6 +338,8 @@ Staying on builder `0.3.1` or `0.3.2` still loads in 0.3.2: the protocol and exp
 [lgpm-mismatch]: https://github.com/logos-co/logos-package-manager/blob/4771a648952c8e3b991ed800ba551c6d72d6650b/src/package_manager_lib.cpp#L1544-L1569
 [lgpm-scan]: https://github.com/logos-co/logos-package-manager/blob/4771a648952c8e3b991ed800ba551c6d72d6650b/src/package_manager_lib.cpp#L742-L809
 [lgpm-rel]: https://github.com/logos-co/logos-package-manager/releases/tag/0.3.1
+[logosctl-rel]: https://github.com/logos-co/logos-logoscore-cli/releases/tag/0.3.2
+[mra-merge]: https://github.com/logos-co/logos-modules-release-action/blob/e822d092aae367c2a0dc05cab64d87cbf00f2085/.github/workflows/release.yml#L583-L615
 [lgx-readme]: https://github.com/logos-co/logos-package/blob/c25a1167578aef5cbd9a9b6f822ffe2ae4fd6a89/README.md
 [pmui-local]: https://github.com/logos-co/logos-package-manager-ui/blob/8b67bf0213596e021d441e5d1d43f857142003b6/src/PackageManagerBackend.cpp#L1242-L1256
 [pmui-dialog]: https://github.com/logos-co/logos-package-manager-ui/blob/8b67bf0213596e021d441e5d1d43f857142003b6/src/qml/PackageManager.qml#L302-L311
