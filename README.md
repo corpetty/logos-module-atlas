@@ -122,7 +122,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-17 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-17T06:39)._
+_Generated 2026-10-26 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-26T07:28)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
@@ -143,7 +143,7 @@ _Generated 2026-10-17 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
 | [`eth_rpc_module`](modules/eth_rpc_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/eth_rpc_module/eth_rpc_module.lidl) | Proxyable, fail-closed Ethereum JSON-RPC client. Per-chain config (endpoint + proxy); RPC calls keyed by chainId. socks5h/Tor-ready. |
-| [`eth_rpc_ui`](modules/eth_rpc_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device. |
+| [`eth_rpc_ui`](modules/eth_rpc_ui/README.md) | ui_qml | 0.1.1 | catalog | — | Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device. |
 | [`eth_wallet_backend`](modules/eth_wallet_backend/README.md) | core | 0.1.0 | catalog | [lidl](modules/eth_wallet_backend/eth_wallet_backend.lidl) | EVM wallet composer over reusable chain, asset, token, account, fee, and transaction-sender modules, with multi-chain balances and activity. |
 | [`eth_wallet_ui`](modules/eth_wallet_ui/README.md) | ui_qml | 0.1.0 | catalog | — | View EVM assets and activity across enabled networks, and send on an explicitly selected chain. Holds no key material. |
 | [`evm_assets_module`](modules/evm_assets_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/evm_assets_module/evm_assets_module.lidl) | Reusable native and ERC-20 asset rows, balances, transfer building, and transaction-history decoration. |

@@ -42,7 +42,7 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 - [eth_rpc_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_module/README.md): core 0.1.0 — Proxyable, fail-closed Ethereum JSON-RPC client. Per-chain config (endpoint + proxy); RPC calls keyed by chainId. socks5h/Tor-ready.
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_module/eth_rpc_module.lidl
-- [eth_rpc_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_ui/README.md): ui_qml 0.1.0 — Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device.
+- [eth_rpc_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_ui/README.md): ui_qml 0.1.1 — Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device.
 - [eth_wallet_backend](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_backend/README.md): core 0.1.0 — EVM wallet composer over reusable chain, asset, token, account, fee, and transaction-sender modules, with multi-chain balances and activity.
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_backend/eth_wallet_backend.lidl
 - [eth_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_ui/README.md): ui_qml 0.1.0 — View EVM assets and activity across enabled networks, and send on an explicitly selected chain. Holds no key material.

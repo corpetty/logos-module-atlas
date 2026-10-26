@@ -8,19 +8,19 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [evm-wallet](../../stacks/evm-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-28) · all: 0.1.0 |
-| Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [eth_rpc_ui-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.0/eth_rpc_ui-0.1.0.lgx) · sha256 `aaad7c8e2971e5d6…` |
-| Source | [logos-co/logos-eth-rpc-ui@d670fdf](https://github.com/logos-co/logos-eth-rpc-ui/tree/d670fdf03597a06450b50668d1284b9f11f33aec) |
-| Pinned by | logos-co/logos-modules-release@ecc846005308 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.0) |
+| Catalog version | **0.1.1** (released 2026-10-26) · all: 0.1.1, 0.1.0 |
+| Platforms | darwin-arm64, linux-amd64, linux-arm64 |
+| Package | [eth_rpc_ui-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.1/eth_rpc_ui-0.1.1.lgx) · sha256 `7c4508eeb5734c0e…` |
+| Source | [logos-co/logos-eth-rpc-ui@4be64d6](https://github.com/logos-co/logos-eth-rpc-ui/tree/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b) |
+| Pinned by | logos-co/logos-modules-release@b1684f4ec140 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.1) |
 | Depends on | [`eth_rpc_module`](../eth_rpc_module/README.md) `~0.1.0` |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/eth_rpc_ui.rep`](https://github.com/logos-co/logos-eth-rpc-ui/blob/d670fdf03597a06450b50668d1284b9f11f33aec/src/eth_rpc_ui.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/eth_rpc_ui.rep`](https://github.com/logos-co/logos-eth-rpc-ui/blob/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b/src/eth_rpc_ui.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/evm-wallet.md](../../stacks/evm-wallet.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-eth-rpc-ui/blob/d670fdf03597a06450b50668d1284b9f11f33aec/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-eth-rpc-ui/blob/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b/README.md)
 
 ## API at a glance
 
@@ -30,12 +30,15 @@
 | `lastError` | `lastError: QString` | property (read-only) |
 | `busy` | `busy: bool` | property (read-only) |
 | `chainsJson` | `chainsJson: QString` | property (read-only) |
+| `networkScope` | `networkScope: QString` | property (read-only) |
 | `selectedChainId` | `selectedChainId: int` | property (read-only) |
 | `verdictJson` | `verdictJson: QString` | property (read-only) |
 | `probeJson` | `probeJson: QString` | property (read-only) |
 | `refresh` | `refresh()` | slot |
 | `selectChain` | `selectChain(int chainId)` | slot |
 | `setEndpoint` | `setEndpoint(int chainId, QString url)` | slot |
+| `setChainEnabled` | `setChainEnabled(int chainId, bool enabled)` | slot |
+| `changeNetworkScope` | `changeNetworkScope(QString scope)` | slot |
 | `setVerifiedProxyMode` | `setVerifiedProxyMode(int chainId, QString mode)` | slot |
 | `setTimeouts` | `setTimeouts(int chainId, int timeoutSecs, int verifiedTimeoutSecs)` | slot |
 | `removeChain` | `removeChain(int chainId)` | slot |
@@ -49,5 +52,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-co/logos-eth-rpc-ui/d670fdf03597a06450b50668d1284b9f11f33aec#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install eth_rpc_ui --version 0.1.0`
+- Contract from source: `nix build 'github:logos-co/logos-eth-rpc-ui/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install eth_rpc_ui --version 0.1.1`

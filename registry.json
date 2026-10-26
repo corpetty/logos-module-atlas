@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T10:40:06+00:00",
+  "generatedAt": "2026-10-26T12:56:23+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-17T06:39:08Z",
+      "indexGeneratedAt": "2026-10-26T07:28:25Z",
       "packageCount": 46
     }
   ],
@@ -2355,29 +2355,29 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.1.1",
         "versions": [
+          "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-28T23:34:12Z",
-        "publisherRef": "eth_rpc_ui-v0.1.0",
-        "catalogCommit": "ecc8460053082f03a87fa5d4d7ddd71fed09eead",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.0/eth_rpc_ui-0.1.0.lgx",
-        "sha256": "aaad7c8e2971e5d6a7c76d2dc76fad71f516ec2d6ae2c44361f7bcf3ca5bb2c3",
-        "size": 14417818,
+        "releasedAt": "2026-10-26T07:26:51Z",
+        "publisherRef": "eth_rpc_ui-v0.1.1",
+        "catalogCommit": "b1684f4ec140bbdec9979e0868f402740e20b6a9",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.1/eth_rpc_ui-0.1.1.lgx",
+        "sha256": "7c4508eeb5734c0e2527b8f3b006bebae405b2daeaf5c69aa93292c077ffe9bd",
+        "size": 12281655,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
-          "linux-arm64",
-          "windows-x86_64"
+          "linux-arm64"
         ]
       },
       "source": {
         "repo": "logos-co/logos-eth-rpc-ui",
-        "commit": "d670fdf03597a06450b50668d1284b9f11f33aec",
+        "commit": "4be64d6cab6a1a5715ab3f4f32a20ef933058c4b",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@ecc846005308 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.0)",
-        "url": "https://github.com/logos-co/logos-eth-rpc-ui/tree/d670fdf03597a06450b50668d1284b9f11f33aec"
+        "pinnedBy": "logos-co/logos-modules-release@b1684f4ec140 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.1)",
+        "url": "https://github.com/logos-co/logos-eth-rpc-ui/tree/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b"
       },
       "dependencies": [
         {
@@ -2404,13 +2404,13 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/eth_rpc_ui.rep",
-        "url": "https://github.com/logos-co/logos-eth-rpc-ui/blob/d670fdf03597a06450b50668d1284b9f11f33aec/src/eth_rpc_ui.rep",
+        "url": "https://github.com/logos-co/logos-eth-rpc-ui/blob/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b/src/eth_rpc_ui.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-eth-rpc-ui/blob/d670fdf03597a06450b50668d1284b9f11f33aec/README.md"
+          "url": "https://github.com/logos-co/logos-eth-rpc-ui/blob/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b/README.md"
         }
       ],
       "qmlView": null,
@@ -2434,6 +2434,11 @@
           {
             "name": "chainsJson",
             "signature": "chainsJson: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "networkScope",
+            "signature": "networkScope: QString",
             "summary": "property (read-only)"
           },
           {
@@ -2464,6 +2469,16 @@
           {
             "name": "setEndpoint",
             "signature": "setEndpoint(int chainId, QString url)",
+            "summary": "slot"
+          },
+          {
+            "name": "setChainEnabled",
+            "signature": "setChainEnabled(int chainId, bool enabled)",
+            "summary": "slot"
+          },
+          {
+            "name": "changeNetworkScope",
+            "signature": "changeNetworkScope(QString scope)",
             "summary": "slot"
           },
           {
