@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T12:56:23+00:00",
+  "generatedAt": "2026-10-30T12:50:21+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-26T07:28:25Z",
+      "indexGeneratedAt": "2026-10-30T12:31:42Z",
       "packageCount": 46
     }
   ],
@@ -2360,23 +2360,24 @@
           "0.1.1",
           "0.1.0"
         ],
-        "releasedAt": "2026-10-26T07:26:51Z",
+        "releasedAt": "2026-10-30T10:15:40Z",
         "publisherRef": "eth_rpc_ui-v0.1.1",
-        "catalogCommit": "b1684f4ec140bbdec9979e0868f402740e20b6a9",
+        "catalogCommit": "547dbbbb23a67a0271301cac74ed9a3ea9409ac1",
         "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.1/eth_rpc_ui-0.1.1.lgx",
-        "sha256": "7c4508eeb5734c0e2527b8f3b006bebae405b2daeaf5c69aa93292c077ffe9bd",
-        "size": 12281655,
+        "sha256": "f822d6b1dfe1b70e9a4b898f645edaae044e3869f1b7188f85c80607ab580a0d",
+        "size": 14473309,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
-          "linux-arm64"
+          "linux-arm64",
+          "windows-x86_64"
         ]
       },
       "source": {
         "repo": "logos-co/logos-eth-rpc-ui",
         "commit": "4be64d6cab6a1a5715ab3f4f32a20ef933058c4b",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@b1684f4ec140 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.1)",
+        "pinnedBy": "logos-co/logos-modules-release@547dbbbb23a6 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.1)",
         "url": "https://github.com/logos-co/logos-eth-rpc-ui/tree/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b"
       },
       "dependencies": [

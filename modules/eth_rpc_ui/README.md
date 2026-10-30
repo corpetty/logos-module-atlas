@@ -8,11 +8,11 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [evm-wallet](../../stacks/evm-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.1** (released 2026-10-26) · all: 0.1.1, 0.1.0 |
-| Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [eth_rpc_ui-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.1/eth_rpc_ui-0.1.1.lgx) · sha256 `7c4508eeb5734c0e…` |
+| Catalog version | **0.1.1** (released 2026-10-30) · all: 0.1.1, 0.1.0 |
+| Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
+| Package | [eth_rpc_ui-v0.1.1](https://github.com/logos-co/logos-modules-release/releases/download/eth_rpc_ui-v0.1.1/eth_rpc_ui-0.1.1.lgx) · sha256 `f822d6b1dfe1b70e…` |
 | Source | [logos-co/logos-eth-rpc-ui@4be64d6](https://github.com/logos-co/logos-eth-rpc-ui/tree/4be64d6cab6a1a5715ab3f4f32a20ef933058c4b) |
-| Pinned by | logos-co/logos-modules-release@b1684f4ec140 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.1) |
+| Pinned by | logos-co/logos-modules-release@547dbbbb23a6 submodules/logos-eth-rpc-ui (tag eth_rpc_ui-v0.1.1) |
 | Depends on | [`eth_rpc_module`](../eth_rpc_module/README.md) `~0.1.0` |
 | Required by | — |
 
