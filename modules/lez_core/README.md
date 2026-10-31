@@ -14,7 +14,7 @@
 | Source | [logos-blockchain/logos-execution-zone-module@51a6fee](https://github.com/logos-blockchain/logos-execution-zone-module/tree/51a6fee385eedfdc65ba71f01447c5411a54bdf7) |
 | Pinned by | logos-co/logos-modules-release@95e08eb5e38d submodules/logos-execution-zone-module (tag lez_core-v0.5.1) |
 | Depends on | — |
-| Required by | [`amm_module`](../amm_module/README.md), [`amm_ui`](../amm_ui/README.md), [`lez_wallet_ui`](../lez_wallet_ui/README.md) |
+| Required by | [`amm_module`](../amm_module/README.md), [`amm_ui`](../amm_ui/README.md), [`lez_wallet_ui`](../lez_wallet_ui/README.md), [`oracle_module`](../oracle_module/README.md), [`token_module`](../token_module/README.md), [`token_ui`](../token_ui/README.md) |
 
 ## Read these first
 

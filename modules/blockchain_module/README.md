@@ -8,20 +8,20 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.3.2** (released 2026-10-13) · all: 0.3.2, 0.3.1, 0.3.0, 0.2.4, 0.2.3, 0.2.2, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
+| Catalog version | **0.3.4** (released 2026-10-30) · all: 0.3.4, 0.3.2, 0.3.1, 0.3.0, 0.2.4, 0.2.3, 0.2.2, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [blockchain_module-v0.3.2](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.2/blockchain_module-0.3.2.lgx) · sha256 `08f6a5e7a3ad45fb…` |
-| Source | [logos-blockchain/logos-blockchain-module@559b421](https://github.com/logos-blockchain/logos-blockchain-module/tree/559b421e81b9a53f90d9e0976cf63d20307b4473) |
-| Pinned by | logos-co/logos-modules-release@6944e0e173ab submodules/logos-blockchain-module (tag blockchain_module-v0.3.2) |
+| Package | [blockchain_module-v0.3.4](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.4/blockchain_module-0.3.4.lgx) · sha256 `0e1312ed4a14cd20…` |
+| Source | [logos-blockchain/logos-blockchain-module@b1eed59](https://github.com/logos-blockchain/logos-blockchain-module/tree/b1eed5994eb289d0021c15e183cd170601334603) |
+| Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-blockchain-module (tag blockchain_module-v0.3.4) |
 | Depends on | — |
 | Required by | [`blockchain_ui`](../blockchain_ui/README.md) |
 
 ## Read these first
 
 1. **Contract** — [`blockchain_module.lidl`](blockchain_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`blockchain_module.lidl`](https://github.com/logos-blockchain/logos-blockchain-module/blob/559b421e81b9a53f90d9e0976cf63d20307b4473/blockchain_module.lidl). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`blockchain_module.lidl`](https://github.com/logos-blockchain/logos-blockchain-module/blob/b1eed5994eb289d0021c15e183cd170601334603/blockchain_module.lidl). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-module/blob/559b421e81b9a53f90d9e0976cf63d20307b4473/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-module/blob/b1eed5994eb289d0021c15e183cd170601334603/README.md)
 
 ## API at a glance
 
@@ -35,14 +35,10 @@
 | `does_state_exist` | `does_state_exist() -> result` |  |
 | `purge_state` | `purge_state() -> result` |  |
 | `generate_user_config` | `generate_user_config(json_args: tstr) -> result` |  |
-| `update_user_config` | `update_user_config(user_config_path: tstr, keystore_path: tstr) -> result` |  |
-| `migrate_user_config` | `migrate_user_config(output_path: tstr, keystore_path: tstr) -> result` |  |
-| `migrate_user_config_0_1_2` | `migrate_user_config_0_1_2(new_config_path: tstr, old_config_path: tstr, keystore_path: tstr) -> result` |  |
-| `merge_user_config` | `merge_user_config(source_path: tstr, destination_path: tstr, extra_yaml: tstr, source_insert_missing: bool, extra_insert_missing: bool) -> result` |  |
-| `participate` | `participate(config_path: tstr, keystore_path: tstr, output_dir: tstr, external_address: tstr) -> result` |  |
-| `generate_key` | `generate_key(user_config_path: tstr, keystore_path: tstr, key_type: tstr, key_title: tstr) -> result` |  |
-| `add_key` | `add_key(user_config_path: tstr, keystore_path: tstr, key_type: tstr, key_hex: tstr, key_title: tstr) -> result` |  |
-| `remove_key` | `remove_key(user_config_path: tstr, keystore_path: tstr, key_title: tstr) -> result` |  |
+| `participate` | `participate(config_path: tstr, output_dir: tstr, external_address: tstr) -> result` |  |
+| `generate_key` | `generate_key(keystore_path: tstr, key_type: tstr, key_title: tstr) -> result` |  |
+| `add_key` | `add_key(keystore_path: tstr, key_type: tstr, key_hex: tstr, key_title: tstr) -> result` |  |
+| `remove_key` | `remove_key(keystore_path: tstr, key_title: tstr) -> result` |  |
 | `get_peer_id` | `get_peer_id(config_path: tstr) -> result` |  |
 | `wallet_get_balance` | `wallet_get_balance(address_hex: tstr) -> result` |  |
 | `wallet_transfer_funds` | `wallet_transfer_funds(change_public_key: tstr, sender_addresses: [tstr], recipient_address: tstr, amount: tstr, optional_tip_hex: tstr) -> result` |  |
@@ -87,5 +83,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["blockchain_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-module/559b421e81b9a53f90d9e0976cf63d20307b4473#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install blockchain_module --version 0.3.2`
+- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-module/b1eed5994eb289d0021c15e183cd170601334603#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install blockchain_module --version 0.3.4`

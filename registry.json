@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-30T12:50:21+00:00",
+  "generatedAt": "2026-10-31T12:23:05+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,8 +18,8 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-10-30T12:31:42Z",
-      "packageCount": 46
+      "indexGeneratedAt": "2026-10-31T06:26:38Z",
+      "packageCount": 49
     }
   ],
   "stacks": {
@@ -66,16 +66,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.3.0",
         "versions": [
+          "0.3.0",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-03T11:11:56Z",
-        "publisherRef": "amm_module-v0.1.0",
-        "catalogCommit": "58b6d9e7b1d8c5dfbcb92285afc379bc3ebea702",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/amm_module-v0.1.0/amm_module-0.1.0.lgx",
-        "sha256": "3fc3070cff978765c30948f2c600833b14822e7d85a1b0a8477762a78bdae72e",
-        "size": 13453926,
+        "releasedAt": "2026-10-30T13:48:33Z",
+        "publisherRef": "amm_module-v0.3.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/amm_module-v0.3.0/amm_module-0.3.0.lgx",
+        "sha256": "284b5a208fe799122b6f9c4bd30c3ec300b0a98130c84a96f5f2d70485369925",
+        "size": 14448204,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -84,15 +85,15 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-amm-module",
-        "commit": "145a2acaa65e83650bc7fb35415b3da08baac6ca",
+        "commit": "0efc26a6012e86f252c1b99a4964aac4a96d96c9",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@58b6d9e7b1d8 submodules/logos-amm-module (tag amm_module-v0.1.0)",
-        "url": "https://github.com/logos-blockchain/logos-amm-module/tree/145a2acaa65e83650bc7fb35415b3da08baac6ca"
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-module (tag amm_module-v0.3.0)",
+        "url": "https://github.com/logos-blockchain/logos-amm-module/tree/0efc26a6012e86f252c1b99a4964aac4a96d96c9"
       },
       "dependencies": [
         {
           "name": "lez_core",
-          "version": null
+          "version": "0.4.3"
         }
       ],
       "requiredBy": [
@@ -125,16 +126,17 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
+        "latest": "0.3.0",
         "versions": [
+          "0.3.0",
           "0.1.0"
         ],
-        "releasedAt": "2026-09-03T11:04:28Z",
-        "publisherRef": "amm_ui-v0.1.0",
-        "catalogCommit": "58b6d9e7b1d8c5dfbcb92285afc379bc3ebea702",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/amm_ui-v0.1.0/amm_ui-0.1.0.lgx",
-        "sha256": "d5cf35f953b67f0007749a28b4f686c7544630257ef3dfb86b9d4b4c01f4fb47",
-        "size": 12676732,
+        "releasedAt": "2026-10-30T13:48:52Z",
+        "publisherRef": "amm_ui-v0.3.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/amm_ui-v0.3.0/amm_ui-0.3.0.lgx",
+        "sha256": "e1904cc34d5dd5efc02f4553a9bae0973343ace762df4069e8ad46f6dcc751d2",
+        "size": 13864724,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -143,15 +145,15 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-amm-ui-module",
-        "commit": "41d8c3821c04365e173ae2a772b086cb191a41ad",
+        "commit": "31cfedc37a24dd3f6e58677a7a4cca385e1fcefa",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@58b6d9e7b1d8 submodules/logos-amm-ui-module (tag amm_ui-v0.1.0)",
-        "url": "https://github.com/logos-blockchain/logos-amm-ui-module/tree/41d8c3821c04365e173ae2a772b086cb191a41ad"
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-ui-module (tag amm_ui-v0.3.0)",
+        "url": "https://github.com/logos-blockchain/logos-amm-ui-module/tree/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa"
       },
       "dependencies": [
         {
           "name": "lez_core",
-          "version": null
+          "version": "0.4.3"
         },
         {
           "name": "amm_module",
@@ -186,8 +188,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.3.2",
+        "latest": "0.3.4",
         "versions": [
+          "0.3.4",
           "0.3.2",
           "0.3.1",
           "0.3.0",
@@ -200,12 +203,12 @@
           "0.1.3-rc.13",
           "0.0.999"
         ],
-        "releasedAt": "2026-10-13T10:58:53Z",
-        "publisherRef": "blockchain_module-v0.3.2",
-        "catalogCommit": "6944e0e173ab517a2e9be2beb8d0472f37f66cc5",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.2/blockchain_module-0.3.2.lgx",
-        "sha256": "08f6a5e7a3ad45fbcd6ba6262c4b84ca5be5325376d273fd7fb0143bcab02d41",
-        "size": 151927077,
+        "releasedAt": "2026-10-30T13:49:18Z",
+        "publisherRef": "blockchain_module-v0.3.4",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.4/blockchain_module-0.3.4.lgx",
+        "sha256": "0e1312ed4a14cd2052772022c570919804759700ba3ea066e2a1400a1aff6ca8",
+        "size": 145282056,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -214,10 +217,10 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-blockchain-module",
-        "commit": "559b421e81b9a53f90d9e0976cf63d20307b4473",
+        "commit": "b1eed5994eb289d0021c15e183cd170601334603",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@6944e0e173ab submodules/logos-blockchain-module (tag blockchain_module-v0.3.2)",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-module/tree/559b421e81b9a53f90d9e0976cf63d20307b4473"
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-blockchain-module (tag blockchain_module-v0.3.4)",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-module/tree/b1eed5994eb289d0021c15e183cd170601334603"
       },
       "dependencies": [],
       "requiredBy": [
@@ -231,19 +234,19 @@
       "interfaceSource": {
         "file": "interface.lidl",
         "from": "blockchain_module.lidl",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/559b421e81b9a53f90d9e0976cf63d20307b4473/blockchain_module.lidl",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/b1eed5994eb289d0021c15e183cd170601334603/blockchain_module.lidl",
         "lang": "lidl"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/559b421e81b9a53f90d9e0976cf63d20307b4473/README.md"
+          "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/b1eed5994eb289d0021c15e183cd170601334603/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "blockchain_module.lidl",
-        "builtFrom": "559b421e81b9a53f90d9e0976cf63d20307b4473",
+        "builtFrom": "b1eed5994eb289d0021c15e183cd170601334603",
         "stale": false
       },
       "api": {
@@ -289,43 +292,23 @@
             "summary": ""
           },
           {
-            "name": "update_user_config",
-            "signature": "update_user_config(user_config_path: tstr, keystore_path: tstr) -> result",
-            "summary": ""
-          },
-          {
-            "name": "migrate_user_config",
-            "signature": "migrate_user_config(output_path: tstr, keystore_path: tstr) -> result",
-            "summary": ""
-          },
-          {
-            "name": "migrate_user_config_0_1_2",
-            "signature": "migrate_user_config_0_1_2(new_config_path: tstr, old_config_path: tstr, keystore_path: tstr) -> result",
-            "summary": ""
-          },
-          {
-            "name": "merge_user_config",
-            "signature": "merge_user_config(source_path: tstr, destination_path: tstr, extra_yaml: tstr, source_insert_missing: bool, extra_insert_missing: bool) -> result",
-            "summary": ""
-          },
-          {
             "name": "participate",
-            "signature": "participate(config_path: tstr, keystore_path: tstr, output_dir: tstr, external_address: tstr) -> result",
+            "signature": "participate(config_path: tstr, output_dir: tstr, external_address: tstr) -> result",
             "summary": ""
           },
           {
             "name": "generate_key",
-            "signature": "generate_key(user_config_path: tstr, keystore_path: tstr, key_type: tstr, key_title: tstr) -> result",
+            "signature": "generate_key(keystore_path: tstr, key_type: tstr, key_title: tstr) -> result",
             "summary": ""
           },
           {
             "name": "add_key",
-            "signature": "add_key(user_config_path: tstr, keystore_path: tstr, key_type: tstr, key_hex: tstr, key_title: tstr) -> result",
+            "signature": "add_key(keystore_path: tstr, key_type: tstr, key_hex: tstr, key_title: tstr) -> result",
             "summary": ""
           },
           {
             "name": "remove_key",
-            "signature": "remove_key(user_config_path: tstr, keystore_path: tstr, key_title: tstr) -> result",
+            "signature": "remove_key(keystore_path: tstr, key_title: tstr) -> result",
             "summary": ""
           },
           {
@@ -1123,7 +1106,10 @@
       "requiredBy": [
         "amm_module",
         "amm_ui",
-        "lez_wallet_ui"
+        "lez_wallet_ui",
+        "oracle_module",
+        "token_module",
+        "token_ui"
       ],
       "concurrency": null,
       "capabilities": [],
@@ -9099,6 +9085,183 @@
         ],
         "events": []
       },
+      "notes": false
+    },
+    {
+      "name": "oracle_module",
+      "displayName": null,
+      "description": "Universal Logos core module for canonical oracle prices and TWAP feeds",
+      "type": "core",
+      "interface": "universal",
+      "language": "c++",
+      "category": "oracle",
+      "stack": "other",
+      "availability": {
+        "bundledInBasecamp": false,
+        "bundledVersion": null,
+        "inDefaultCatalog": true
+      },
+      "catalog": {
+        "repository": "Logos Official",
+        "catalogRepo": "logos-co/logos-modules-release",
+        "latest": "0.1.0",
+        "versions": [
+          "0.1.0"
+        ],
+        "releasedAt": "2026-10-30T13:50:15Z",
+        "publisherRef": "oracle_module-v0.1.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/oracle_module-v0.1.0/oracle_module-0.1.0.lgx",
+        "sha256": "2ff2e3b9bc617b987a263f201aedf77abd059dd6e713c5932b06f0cbf28ccd1b",
+        "size": 13761132,
+        "variants": [
+          "darwin-arm64",
+          "linux-amd64",
+          "linux-arm64"
+        ]
+      },
+      "source": {
+        "repo": "logos-blockchain/logos-twap-oracle-module",
+        "commit": "a964dc4d32780adec3e6fa63ee549f151d3871b2",
+        "subdir": "",
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-twap-oracle-module (tag oracle_module-v0.1.0)",
+        "url": "https://github.com/logos-blockchain/logos-twap-oracle-module/tree/a964dc4d32780adec3e6fa63ee549f151d3871b2"
+      },
+      "dependencies": [
+        {
+          "name": "lez_core",
+          "version": "0.4.3"
+        }
+      ],
+      "requiredBy": [],
+      "concurrency": null,
+      "capabilities": [],
+      "provides": [],
+      "uses": [],
+      "card": "modules/oracle_module/README.md",
+      "interfaceSource": null,
+      "docs": [],
+      "qmlView": null,
+      "notes": false
+    },
+    {
+      "name": "token_module",
+      "displayName": null,
+      "description": "Universal Logos core module for LEZ token account reads and transactions",
+      "type": "core",
+      "interface": "universal",
+      "language": "c++",
+      "category": "token",
+      "stack": "other",
+      "availability": {
+        "bundledInBasecamp": false,
+        "bundledVersion": null,
+        "inDefaultCatalog": true
+      },
+      "catalog": {
+        "repository": "Logos Official",
+        "catalogRepo": "logos-co/logos-modules-release",
+        "latest": "0.1.0",
+        "versions": [
+          "0.1.0"
+        ],
+        "releasedAt": "2026-10-30T13:49:38Z",
+        "publisherRef": "token_module-v0.1.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/token_module-v0.1.0/token_module-0.1.0.lgx",
+        "sha256": "c1f5ca9dc942bcb2601264f3ae0cdc5eb927c7cc5d994b552996b92c56757e5e",
+        "size": 14018233,
+        "variants": [
+          "darwin-arm64",
+          "linux-amd64",
+          "linux-arm64"
+        ]
+      },
+      "source": {
+        "repo": "logos-blockchain/logos-token-module",
+        "commit": "2afe8a796a67b1a5ce807851b3f74660114e1ee2",
+        "subdir": "",
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-module (tag token_module-v0.1.0)",
+        "url": "https://github.com/logos-blockchain/logos-token-module/tree/2afe8a796a67b1a5ce807851b3f74660114e1ee2"
+      },
+      "dependencies": [
+        {
+          "name": "lez_core",
+          "version": "0.4.3"
+        }
+      ],
+      "requiredBy": [
+        "token_ui"
+      ],
+      "concurrency": null,
+      "capabilities": [],
+      "provides": [],
+      "uses": [],
+      "card": "modules/token_module/README.md",
+      "interfaceSource": null,
+      "docs": [],
+      "qmlView": null,
+      "notes": false
+    },
+    {
+      "name": "token_ui",
+      "displayName": "Token",
+      "description": "Logos UI module for creating and inspecting Token Program assets",
+      "type": "ui_qml",
+      "interface": null,
+      "language": "qml",
+      "category": "token",
+      "stack": "other",
+      "availability": {
+        "bundledInBasecamp": false,
+        "bundledVersion": null,
+        "inDefaultCatalog": true
+      },
+      "catalog": {
+        "repository": "Logos Official",
+        "catalogRepo": "logos-co/logos-modules-release",
+        "latest": "0.1.0",
+        "versions": [
+          "0.1.0"
+        ],
+        "releasedAt": "2026-10-30T13:49:56Z",
+        "publisherRef": "token_ui-v0.1.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/token_ui-v0.1.0/token_ui-0.1.0.lgx",
+        "sha256": "2ee19fcd14123236c6e06bbfd34b555cb83233f211bf54bab22ed86235bd5e49",
+        "size": 13645297,
+        "variants": [
+          "darwin-arm64",
+          "linux-amd64",
+          "linux-arm64"
+        ]
+      },
+      "source": {
+        "repo": "logos-blockchain/logos-token-ui-module",
+        "commit": "255f0cac9e530dc0e1587f83a4a2d57185b5f5eb",
+        "subdir": "",
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-ui-module (tag token_ui-v0.1.0)",
+        "url": "https://github.com/logos-blockchain/logos-token-ui-module/tree/255f0cac9e530dc0e1587f83a4a2d57185b5f5eb"
+      },
+      "dependencies": [
+        {
+          "name": "lez_core",
+          "version": "0.4.3"
+        },
+        {
+          "name": "token_module",
+          "version": null
+        }
+      ],
+      "requiredBy": [],
+      "concurrency": null,
+      "capabilities": [],
+      "provides": [],
+      "uses": [],
+      "card": "modules/token_ui/README.md",
+      "interfaceSource": null,
+      "docs": [],
+      "qmlView": null,
       "notes": false
     },
     {

@@ -2,14 +2,14 @@
   {
     "name": "amm_module",
     "status": "failed",
-    "ref": "github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca#lidl",
-    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+    "ref": "github:logos-blockchain/logos-amm-module/0efc26a6012e86f252c1b99a4964aac4a96d96c9#lidl",
+    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/0efc26a6012e86f252c1b99a4964aac4a96d96c9' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
   },
   {
     "name": "blockchain_module",
     "status": "ok",
-    "commit": "559b421e81b9a53f90d9e0976cf63d20307b4473",
-    "ref": "github:logos-blockchain/logos-blockchain-module/559b421e81b9a53f90d9e0976cf63d20307b4473#lidl"
+    "commit": "b1eed5994eb289d0021c15e183cd170601334603",
+    "ref": "github:logos-blockchain/logos-blockchain-module/b1eed5994eb289d0021c15e183cd170601334603#lidl"
   },
   {
     "name": "capability_module",
@@ -150,6 +150,12 @@
     "ref": "github:logos-co/openmetrics-module/802012aabbc63e24755251e0b1419769dda68715#lidl"
   },
   {
+    "name": "oracle_module",
+    "status": "failed",
+    "ref": "github:logos-blockchain/logos-twap-oracle-module/a964dc4d32780adec3e6fa63ee549f151d3871b2#lidl",
+    "reason": "error: flake 'github:logos-blockchain/logos-twap-oracle-module/a964dc4d32780adec3e6fa63ee549f151d3871b2' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+  },
+  {
     "name": "package_downloader",
     "status": "ok",
     "commit": "7b0ca8b74acde01c277431a1372092980a3f31df",
@@ -172,6 +178,12 @@
     "status": "ok",
     "commit": "213e62853fe817bad02db8588b8be6ecd1e72211",
     "ref": "github:logos-co/logos-evm-token-list-module/213e62853fe817bad02db8588b8be6ecd1e72211#lidl"
+  },
+  {
+    "name": "token_module",
+    "status": "failed",
+    "ref": "github:logos-blockchain/logos-token-module/2afe8a796a67b1a5ce807851b3f74660114e1ee2#lidl",
+    "reason": "error: flake 'github:logos-blockchain/logos-token-module/2afe8a796a67b1a5ce807851b3f74660114e1ee2' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
   },
   {
     "name": "tx_sender_module",

@@ -8,12 +8,12 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `amm` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-03) · all: 0.1.0 |
+| Catalog version | **0.3.0** (released 2026-10-30) · all: 0.3.0, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [amm_module-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/amm_module-v0.1.0/amm_module-0.1.0.lgx) · sha256 `3fc3070cff978765…` |
-| Source | [logos-blockchain/logos-amm-module@145a2ac](https://github.com/logos-blockchain/logos-amm-module/tree/145a2acaa65e83650bc7fb35415b3da08baac6ca) |
-| Pinned by | logos-co/logos-modules-release@58b6d9e7b1d8 submodules/logos-amm-module (tag amm_module-v0.1.0) |
-| Depends on | [`lez_core`](../lez_core/README.md) |
+| Package | [amm_module-v0.3.0](https://github.com/logos-co/logos-modules-release/releases/download/amm_module-v0.3.0/amm_module-0.3.0.lgx) · sha256 `284b5a208fe79912…` |
+| Source | [logos-blockchain/logos-amm-module@0efc26a](https://github.com/logos-blockchain/logos-amm-module/tree/0efc26a6012e86f252c1b99a4964aac4a96d96c9) |
+| Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-module (tag amm_module-v0.3.0) |
+| Depends on | [`lez_core`](../lez_core/README.md) `0.4.3` |
 | Required by | [`amm_ui`](../amm_ui/README.md) |
 
 ## Read these first
@@ -23,5 +23,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["amm_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install amm_module --version 0.1.0`
+- Contract from source: `nix build 'github:logos-blockchain/logos-amm-module/0efc26a6012e86f252c1b99a4964aac4a96d96c9#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install amm_module --version 0.3.0`
