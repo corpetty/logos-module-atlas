@@ -122,7 +122,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-31 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-31T06:26)._
+_Generated 2026-11-02 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-11-02T12:27)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
@@ -131,7 +131,7 @@ _Generated 2026-10-31 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 | [`amm_module`](modules/amm_module/README.md) | core | 0.3.0 | catalog | — | Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity. |
 | [`amm_ui`](modules/amm_ui/README.md) | ui_qml | 0.3.0 | catalog | — | Trade tokens and provide liquidity on the Logos DEX. |
 | [`blockchain_module`](modules/blockchain_module/README.md) | core | 0.3.4 | catalog | [lidl](modules/blockchain_module/blockchain_module.lidl) | Logos blockchain node for logos-core |
-| [`blockchain_ui`](modules/blockchain_ui/README.md) | ui_qml | 0.3.2 | catalog | — | Blockchain UI module for the Logos application |
+| [`blockchain_ui`](modules/blockchain_ui/README.md) | ui_qml | 0.3.5 | catalog | — | Blockchain UI module for the Logos application |
 | [`lez_core`](modules/lez_core/README.md) | core | 0.5.1 | catalog | [lidl](modules/lez_core/lez_core.lidl) | Logos Execution Zone Core Module for Logos Core |
 | [`lez_explorer_ui`](modules/lez_explorer_ui/README.md) | ui_qml | 1.2.3 | catalog | — | Logos Execution Zone Block Explorer |
 | [`lez_indexer_module`](modules/lez_indexer_module/README.md) | core | 1.2.1 | catalog | [lidl](modules/lez_indexer_module/lez_indexer_module.lidl) | Logos Execution Zone Indexer Module for Logos Core |
