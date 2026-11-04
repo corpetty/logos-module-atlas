@@ -1,5 +1,5 @@
 module blockchain_module {
-  version "0.3.2"
+  version "0.3.4"
   description "Logos blockchain node for logos-core"
   category "blockchain"
   depends []
@@ -12,14 +12,10 @@ module blockchain_module {
   method does_state_exist() -> result
   method purge_state() -> result
   method generate_user_config(json_args: tstr) -> result
-  method update_user_config(user_config_path: tstr, keystore_path: tstr) -> result
-  method migrate_user_config(output_path: tstr, keystore_path: tstr) -> result
-  method migrate_user_config_0_1_2(new_config_path: tstr, old_config_path: tstr, keystore_path: tstr) -> result
-  method merge_user_config(source_path: tstr, destination_path: tstr, extra_yaml: tstr, source_insert_missing: bool, extra_insert_missing: bool) -> result
-  method participate(config_path: tstr, keystore_path: tstr, output_dir: tstr, external_address: tstr) -> result
-  method generate_key(user_config_path: tstr, keystore_path: tstr, key_type: tstr, key_title: tstr) -> result
-  method add_key(user_config_path: tstr, keystore_path: tstr, key_type: tstr, key_hex: tstr, key_title: tstr) -> result
-  method remove_key(user_config_path: tstr, keystore_path: tstr, key_title: tstr) -> result
+  method participate(config_path: tstr, output_dir: tstr, external_address: tstr) -> result
+  method generate_key(keystore_path: tstr, key_type: tstr, key_title: tstr) -> result
+  method add_key(keystore_path: tstr, key_type: tstr, key_hex: tstr, key_title: tstr) -> result
+  method remove_key(keystore_path: tstr, key_title: tstr) -> result
   method get_peer_id(config_path: tstr) -> result
   method wallet_get_balance(address_hex: tstr) -> result
   method wallet_transfer_funds(change_public_key: tstr, sender_addresses: [tstr], recipient_address: tstr, amount: tstr, optional_tip_hex: tstr) -> result

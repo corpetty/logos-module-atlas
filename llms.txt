@@ -1,6 +1,6 @@
 # Logos Module Atlas
 
-> AI-readable registry of every Logos module available in Logos Basecamp 0.3.2 (latest release): 6 bundled in the app, 46 installable from its default catalog. Each module has a card, its canonical LIDL contract, and its annotated interface source, all pinned to the exact source commit that was released.
+> AI-readable registry of every Logos module available in Logos Basecamp 0.3.2 (latest release): 6 bundled in the app, 49 installable from its default catalog. Each module has a card, its canonical LIDL contract, and its annotated interface source, all pinned to the exact source commit that was released.
 
 Start with AGENTS.md for how to use this repo. registry.json is the machine-readable form of everything below.
 
@@ -24,11 +24,11 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 ## Modules: Blockchain & LEZ
 
-- [amm_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_module/README.md): core 0.1.0 — Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity.
-- [amm_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_ui/README.md): ui_qml 0.1.0 — Trade tokens and provide liquidity on the Logos DEX.
-- [blockchain_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/README.md): core 0.3.2 — Logos blockchain node for logos-core
+- [amm_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_module/README.md): core 0.3.0 — Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity.
+- [amm_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/amm_ui/README.md): ui_qml 0.3.0 — Trade tokens and provide liquidity on the Logos DEX.
+- [blockchain_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/README.md): core 0.3.4 — Logos blockchain node for logos-core
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_module/blockchain_module.lidl
-- [blockchain_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_ui/README.md): ui_qml 0.3.2 — Blockchain UI module for the Logos application
+- [blockchain_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/blockchain_ui/README.md): ui_qml 0.3.5 — Blockchain UI module for the Logos application
 - [lez_core](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_core/README.md): core 0.5.1 — Logos Execution Zone Core Module for Logos Core
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_core/lez_core.lidl
 - [lez_explorer_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/lez_explorer_ui/README.md): ui_qml 1.2.3 — Logos Execution Zone Block Explorer
@@ -42,7 +42,7 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 
 - [eth_rpc_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_module/README.md): core 0.1.0 — Proxyable, fail-closed Ethereum JSON-RPC client. Per-chain config (endpoint + proxy); RPC calls keyed by chainId. socks5h/Tor-ready.
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_module/eth_rpc_module.lidl
-- [eth_rpc_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_ui/README.md): ui_qml 0.1.0 — Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device.
+- [eth_rpc_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_rpc_ui/README.md): ui_qml 0.1.1 — Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device.
 - [eth_wallet_backend](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_backend/README.md): core 0.1.0 — EVM wallet composer over reusable chain, asset, token, account, fee, and transaction-sender modules, with multi-chain balances and activity.
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_backend/eth_wallet_backend.lidl
 - [eth_wallet_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/eth_wallet_ui/README.md): ui_qml 0.1.0 — View EVM assets and activity across enabled networks, and send on an explicitly selected chain. Holds no key material.
@@ -68,7 +68,7 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 - [uniswap_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_module/README.md): core 0.1.0 — Uniswap price oracle + swap router: V2/V3/V4 token prices (best-rate, Multicall3-batched) and V2/V3 swap building. Multi-chain, configurable.
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_module/uniswap_module.lidl
 - [uniswap_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/uniswap_ui/README.md): ui_qml 0.1.0 — Swap EVM assets on Uniswap. A view over uniswap_backend, which composes the reusable EVM modules.
-- [verified_proxy_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_module/README.md): core 0.1.3 — Light-client-verified Ethereum JSON-RPC, wrapping nimbus libverifproxy
+- [verified_proxy_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_module/README.md): core 0.1.4 — Light-client-verified Ethereum JSON-RPC, wrapping nimbus libverifproxy
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_module/verified_proxy_module.lidl
 - [verified_proxy_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/verified_proxy_ui/README.md): ui_qml 0.1.0 — Configure and operate the light-client-verified Ethereum proxy
 
@@ -78,11 +78,11 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_module/chat_module.lidl
 - [chat_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/chat_ui/README.md): ui_qml 0.3.0 — Chat App for Logos - Private messaging interface
 - [delivery_demo](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_demo/README.md): ui_qml 0.3.0 — Educational UI demo for logos-delivery-module: subscribe to content topics, send and receive messages, see which delivery_module API calls back each interaction.
-- [delivery_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/README.md): core 0.3.2 — Logos Delivery Module - High-level message-delivery API
+- [delivery_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/README.md): core 0.4.0 — Logos Delivery Module - High-level message-delivery API
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/delivery_module/delivery_module.lidl
-- [liblogos_lez_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/README.md): core 4.2.1 — RLN registry provider (LEZ chain reads + registration/funding txs)
+- [liblogos_lez_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/README.md): core 5.1.0 — RLN registry provider (LEZ chain reads + registration/funding txs)
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_lez_rln_module/liblogos_lez_rln_module.lidl
-- [liblogos_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_rln_module/README.md): core 0.10.0 — Registry-agnostic RLN membership management (RLN-MEMBERSHIP-MANAGEMENT)
+- [liblogos_rln_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_rln_module/README.md): core 0.12.0 — Registry-agnostic RLN membership management (RLN-MEMBERSHIP-MANAGEMENT)
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/liblogos_rln_module/liblogos_rln_module.lidl
 - [libp2p_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/libp2p_module/README.md): core 1.1.0 — Libp2p network protocol module for Logos
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/libp2p_module/libp2p_module.lidl
@@ -101,6 +101,12 @@ Start with AGENTS.md for how to use this repo. registry.json is the machine-read
 - [monerod_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monerod_module/README.md): core 0.1.1 — Runs a Monero node in-process: per-network config, start, stop, status and log tail.
   - contract: https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monerod_module/monerod_module.lidl
 - [monerod_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/monerod_ui/README.md): ui_qml 0.1.1 — Run and manage a local Monero node: sync progress, peers, settings and the node log.
+
+## Modules: other
+
+- [oracle_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/oracle_module/README.md): core 0.1.0 — Universal Logos core module for canonical oracle prices and TWAP feeds
+- [token_module](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/token_module/README.md): core 0.1.0 — Universal Logos core module for LEZ token account reads and transactions
+- [token_ui](https://raw.githubusercontent.com/corpetty/logos-module-atlas/main/modules/token_ui/README.md): ui_qml 0.1.0 — Logos UI module for creating and inspecting Token Program assets
 
 ## Modules: Platform
 

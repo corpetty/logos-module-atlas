@@ -8,11 +8,11 @@
 | Type | `core` · interface `cdylib` · rust |
 | Stack | [messaging](../../stacks/messaging.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.10.0** (released 2026-09-30) · all: 0.10.0 |
+| Catalog version | **0.12.0** (released 2026-10-14) · all: 0.12.0, 0.10.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [liblogos_rln_module-v0.10.0](https://github.com/logos-co/logos-modules-release/releases/download/liblogos_rln_module-v0.10.0/liblogos_rln_module-0.10.0.lgx) · sha256 `5dd755bc1b0977f1…` |
-| Source | [logos-co/logos-rln-modules@eb02da8](https://github.com/logos-co/logos-rln-modules/tree/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module) (`logos-rln-module/`) |
-| Pinned by | logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-rln-modules (tag liblogos_rln_module-v0.10.0) |
+| Package | [liblogos_rln_module-v0.12.0](https://github.com/logos-co/logos-modules-release/releases/download/liblogos_rln_module-v0.12.0/liblogos_rln_module-0.12.0.lgx) · sha256 `fed1bdf371a37e25…` |
+| Source | [logos-co/logos-rln-modules@d9f8b3d](https://github.com/logos-co/logos-rln-modules/tree/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module) (`logos-rln-module/`) |
+| Pinned by | logos-co/logos-modules-release@83ae6cc3ea54 submodules/logos-rln-modules (tag liblogos_rln_module-v0.12.0) |
 | Depends on | [`liblogos_lez_rln_module`](../liblogos_lez_rln_module/README.md) |
 | Required by | [`delivery_demo`](../delivery_demo/README.md) |
 | Concurrency | `multi` |
@@ -20,9 +20,9 @@
 ## Read these first
 
 1. **Contract** — [`liblogos_rln_module.lidl`](liblogos_rln_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`logos-rln-module/rust-lib/liblogos_rln_module.lidl`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/rust-lib/liblogos_rln_module.lidl). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`logos-rln-module/rust-lib/liblogos_rln_module.lidl`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/rust-lib/liblogos_rln_module.lidl). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/messaging.md](../../stacks/messaging.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`logos-rln-module/README.md`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/README.md), [`logos-rln-module/docs/keystore-format.md`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/docs/keystore-format.md), [`logos-rln-module/docs/wire-binding.md`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/docs/wire-binding.md)
+4. **Upstream docs** — [`logos-rln-module/README.md`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/README.md), [`logos-rln-module/docs/keystore-format.md`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/docs/keystore-format.md), [`logos-rln-module/docs/wire-binding.md`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/docs/wire-binding.md)
 
 ## API at a glance
 
@@ -53,5 +53,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["liblogos_rln_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-rln-modules/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0?dir=logos-rln-module#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install liblogos_rln_module --version 0.10.0`
+- Contract from source: `nix build 'github:logos-co/logos-rln-modules/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47?dir=logos-rln-module#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install liblogos_rln_module --version 0.12.0`

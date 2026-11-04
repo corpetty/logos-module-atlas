@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-verified-proxy-module@f0cf1f45def7:src/verified_proxy_impl.h
-// https://github.com/logos-co/logos-verified-proxy-module/blob/f0cf1f45def716515bca735ff04deab565c4a962/src/verified_proxy_impl.h
+// Extracted by logos-module-atlas from logos-co/logos-verified-proxy-module@68a3543192bc:src/verified_proxy_impl.h
+// https://github.com/logos-co/logos-verified-proxy-module/blob/68a3543192bc20cd2e42ed4c1533e4a9dd881eec/src/verified_proxy_impl.h
 
 #pragma once
 

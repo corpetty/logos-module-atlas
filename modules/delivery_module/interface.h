@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-delivery-module@c25b78680999:src/delivery_module_plugin.h
-// https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h
+// Extracted by logos-module-atlas from logos-co/logos-delivery-module@1e1fb56aaf4b:src/delivery_module_plugin.h
+// https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h
 
 #pragma once
 
@@ -22,6 +22,7 @@ class RlnBridge;
 // carried in the config itself.
 struct DeliveryRlnConfig {
     bool enabled = false;
+    bool manageBackend = true;
     std::string registryId;
     std::string rlnIdentifier;
     uint64_t epochSizeSec = 0;
@@ -296,6 +297,8 @@ public:
      * @param nodeInfoId Identifier for the requested node info item.
      * @return JSON data string on success, or error details.
      */
+    StdLogosResult getLocalMixPeerRecord();
+    StdLogosResult addMixPeer(const std::string& recordJson);
     StdLogosResult getNodeInfo(const std::string& nodeInfoId);
 
     /**

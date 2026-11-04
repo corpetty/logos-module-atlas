@@ -122,16 +122,16 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-10-13 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-10-13T12:45)._
+_Generated 2026-11-02 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-11-02T12:27)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
-| [`amm_module`](modules/amm_module/README.md) | core | 0.1.0 | catalog | — | Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity. |
-| [`amm_ui`](modules/amm_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Trade tokens and provide liquidity on the Logos DEX. |
-| [`blockchain_module`](modules/blockchain_module/README.md) | core | 0.3.2 | catalog | [lidl](modules/blockchain_module/blockchain_module.lidl) | Logos blockchain node for logos-core |
-| [`blockchain_ui`](modules/blockchain_ui/README.md) | ui_qml | 0.3.2 | catalog | — | Blockchain UI module for the Logos application |
+| [`amm_module`](modules/amm_module/README.md) | core | 0.3.0 | catalog | — | Core module for the Logos DEX (AMM) — on-chain pool resolution, swaps, and liquidity. |
+| [`amm_ui`](modules/amm_ui/README.md) | ui_qml | 0.3.0 | catalog | — | Trade tokens and provide liquidity on the Logos DEX. |
+| [`blockchain_module`](modules/blockchain_module/README.md) | core | 0.3.4 | catalog | [lidl](modules/blockchain_module/blockchain_module.lidl) | Logos blockchain node for logos-core |
+| [`blockchain_ui`](modules/blockchain_ui/README.md) | ui_qml | 0.3.5 | catalog | — | Blockchain UI module for the Logos application |
 | [`lez_core`](modules/lez_core/README.md) | core | 0.5.1 | catalog | [lidl](modules/lez_core/lez_core.lidl) | Logos Execution Zone Core Module for Logos Core |
 | [`lez_explorer_ui`](modules/lez_explorer_ui/README.md) | ui_qml | 1.2.3 | catalog | — | Logos Execution Zone Block Explorer |
 | [`lez_indexer_module`](modules/lez_indexer_module/README.md) | core | 1.2.1 | catalog | [lidl](modules/lez_indexer_module/lez_indexer_module.lidl) | Logos Execution Zone Indexer Module for Logos Core |
@@ -143,7 +143,7 @@ _Generated 2026-10-13 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
 | [`eth_rpc_module`](modules/eth_rpc_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/eth_rpc_module/eth_rpc_module.lidl) | Proxyable, fail-closed Ethereum JSON-RPC client. Per-chain config (endpoint + proxy); RPC calls keyed by chainId. socks5h/Tor-ready. |
-| [`eth_rpc_ui`](modules/eth_rpc_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device. |
+| [`eth_rpc_ui`](modules/eth_rpc_ui/README.md) | ui_qml | 0.1.1 | catalog | — | Device-wide JSON-RPC endpoints and light-client verified routing, shared by every Logos wallet on this device. |
 | [`eth_wallet_backend`](modules/eth_wallet_backend/README.md) | core | 0.1.0 | catalog | [lidl](modules/eth_wallet_backend/eth_wallet_backend.lidl) | EVM wallet composer over reusable chain, asset, token, account, fee, and transaction-sender modules, with multi-chain balances and activity. |
 | [`eth_wallet_ui`](modules/eth_wallet_ui/README.md) | ui_qml | 0.1.0 | catalog | — | View EVM assets and activity across enabled networks, and send on an explicitly selected chain. Holds no key material. |
 | [`evm_assets_module`](modules/evm_assets_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/evm_assets_module/evm_assets_module.lidl) | Reusable native and ERC-20 asset rows, balances, transfer building, and transaction-history decoration. |
@@ -159,7 +159,7 @@ _Generated 2026-10-13 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 | [`uniswap_backend`](modules/uniswap_backend/README.md) | core | 0.1.0 | catalog | [lidl](modules/uniswap_backend/uniswap_backend.lidl) | The Uniswap app's backend: quotes, swaps and swap history composed from reusable EVM chain, token, asset, account, fee, quote and sender … |
 | [`uniswap_module`](modules/uniswap_module/README.md) | core | 0.1.0 | catalog | [lidl](modules/uniswap_module/uniswap_module.lidl) | Uniswap price oracle + swap router: V2/V3/V4 token prices (best-rate, Multicall3-batched) and V2/V3 swap building. Multi-chain, configura… |
 | [`uniswap_ui`](modules/uniswap_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Swap EVM assets on Uniswap. A view over uniswap_backend, which composes the reusable EVM modules. |
-| [`verified_proxy_module`](modules/verified_proxy_module/README.md) | core | 0.1.3 | catalog | [lidl](modules/verified_proxy_module/verified_proxy_module.lidl) | Light-client-verified Ethereum JSON-RPC, wrapping nimbus libverifproxy |
+| [`verified_proxy_module`](modules/verified_proxy_module/README.md) | core | 0.1.4 | catalog | [lidl](modules/verified_proxy_module/verified_proxy_module.lidl) | Light-client-verified Ethereum JSON-RPC, wrapping nimbus libverifproxy |
 | [`verified_proxy_ui`](modules/verified_proxy_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Configure and operate the light-client-verified Ethereum proxy |
 
 ### [Messaging](stacks/messaging.md)
@@ -169,9 +169,9 @@ _Generated 2026-10-13 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 | [`chat_module`](modules/chat_module/README.md) | core | 0.3.0 | catalog | [lidl](modules/chat_module/chat_module.lidl) | Chat module for Logos |
 | [`chat_ui`](modules/chat_ui/README.md) | ui_qml | 0.3.0 | catalog | — | Chat App for Logos - Private messaging interface |
 | [`delivery_demo`](modules/delivery_demo/README.md) | ui_qml | 0.3.0 | catalog | — | Educational UI demo for logos-delivery-module: subscribe to content topics, send and receive messages, see which delivery_module API call… |
-| [`delivery_module`](modules/delivery_module/README.md) | core | 0.3.2 | catalog | [lidl](modules/delivery_module/delivery_module.lidl) | Logos Delivery Module - High-level message-delivery API |
-| [`liblogos_lez_rln_module`](modules/liblogos_lez_rln_module/README.md) | core | 4.2.1 | catalog | [lidl](modules/liblogos_lez_rln_module/liblogos_lez_rln_module.lidl) | RLN registry provider (LEZ chain reads + registration/funding txs) |
-| [`liblogos_rln_module`](modules/liblogos_rln_module/README.md) | core | 0.10.0 | catalog | [lidl](modules/liblogos_rln_module/liblogos_rln_module.lidl) | Registry-agnostic RLN membership management (RLN-MEMBERSHIP-MANAGEMENT) |
+| [`delivery_module`](modules/delivery_module/README.md) | core | 0.4.0 | catalog | [lidl](modules/delivery_module/delivery_module.lidl) | Logos Delivery Module - High-level message-delivery API |
+| [`liblogos_lez_rln_module`](modules/liblogos_lez_rln_module/README.md) | core | 5.1.0 | catalog | [lidl](modules/liblogos_lez_rln_module/liblogos_lez_rln_module.lidl) | RLN registry provider (LEZ chain reads + registration/funding txs) |
+| [`liblogos_rln_module`](modules/liblogos_rln_module/README.md) | core | 0.12.0 | catalog | [lidl](modules/liblogos_rln_module/liblogos_rln_module.lidl) | Registry-agnostic RLN membership management (RLN-MEMBERSHIP-MANAGEMENT) |
 | [`libp2p_module`](modules/libp2p_module/README.md) | core | 1.1.0 | catalog | [lidl](modules/libp2p_module/libp2p_module.lidl) | Libp2p network protocol module for Logos |
 
 ### [Monero wallet](stacks/monero-wallet.md)
@@ -185,6 +185,14 @@ _Generated 2026-10-13 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 | [`monero_wallet_ui`](modules/monero_wallet_ui/README.md) | ui_qml | 0.1.1 | catalog | — | The Monero wallet: balances, a reviewed send, receive addresses with a QR, activity, and the wallet management (create, restore, open, cl… |
 | [`monerod_module`](modules/monerod_module/README.md) | core | 0.1.1 | catalog | [lidl](modules/monerod_module/monerod_module.lidl) | Runs a Monero node in-process: per-network config, start, stop, status and log tail. |
 | [`monerod_ui`](modules/monerod_ui/README.md) | ui_qml | 0.1.1 | catalog | — | Run and manage a local Monero node: sync progress, peers, settings and the node log. |
+
+### [other](stacks/other.md)
+
+| Module | Type | Version | Where | Contract | Description |
+|---|---|---|---|---|---|
+| [`oracle_module`](modules/oracle_module/README.md) | core | 0.1.0 | catalog | — | Universal Logos core module for canonical oracle prices and TWAP feeds |
+| [`token_module`](modules/token_module/README.md) | core | 0.1.0 | catalog | — | Universal Logos core module for LEZ token account reads and transactions |
+| [`token_ui`](modules/token_ui/README.md) | ui_qml | 0.1.0 | catalog | — | Logos UI module for creating and inspecting Token Program assets |
 
 ### [Platform](stacks/platform.md)
 

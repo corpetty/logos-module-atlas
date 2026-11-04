@@ -1,5 +1,5 @@
 module verified_proxy_module {
-  version "0.1.3"
+  version "0.1.4"
   description "Light-client-verified Ethereum JSON-RPC, wrapping nimbus libverifproxy"
   category "wallet"
   depends []

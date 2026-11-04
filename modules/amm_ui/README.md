@@ -8,12 +8,12 @@
 | Type | `ui_qml` · qml |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `amm` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.0** (released 2026-09-03) · all: 0.1.0 |
+| Catalog version | **0.3.0** (released 2026-10-30) · all: 0.3.0, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [amm_ui-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/amm_ui-v0.1.0/amm_ui-0.1.0.lgx) · sha256 `d5cf35f953b67f00…` |
-| Source | [logos-blockchain/logos-amm-ui-module@41d8c38](https://github.com/logos-blockchain/logos-amm-ui-module/tree/41d8c3821c04365e173ae2a772b086cb191a41ad) |
-| Pinned by | logos-co/logos-modules-release@58b6d9e7b1d8 submodules/logos-amm-ui-module (tag amm_ui-v0.1.0) |
-| Depends on | [`lez_core`](../lez_core/README.md), [`amm_module`](../amm_module/README.md) |
+| Package | [amm_ui-v0.3.0](https://github.com/logos-co/logos-modules-release/releases/download/amm_ui-v0.3.0/amm_ui-0.3.0.lgx) · sha256 `e1904cc34d5dd5ef…` |
+| Source | [logos-blockchain/logos-amm-ui-module@31cfedc](https://github.com/logos-blockchain/logos-amm-ui-module/tree/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa) |
+| Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-ui-module (tag amm_ui-v0.3.0) |
+| Depends on | [`lez_core`](../lez_core/README.md) `0.4.3`, [`amm_module`](../amm_module/README.md) |
 | Required by | — |
 
 ## Read these first
@@ -22,5 +22,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-blockchain/logos-amm-ui-module/41d8c3821c04365e173ae2a772b086cb191a41ad#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install amm_ui --version 0.1.0`
+- Contract from source: `nix build 'github:logos-blockchain/logos-amm-ui-module/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install amm_ui --version 0.3.0`

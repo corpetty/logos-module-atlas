@@ -8,7 +8,7 @@
 | Type | `ui_qml` · qml |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **1.2.2** (released 2026-10-12) · all: 1.2.2, 1.2.1, 1.2.0, 1.1.1, 1.1.0, 1.0.0 |
+| Catalog version | **1.2.2** (released 2026-10-12) · all: 1.2.2, 1.2.1, 1.2.0, 1.1.3, 1.1.1, 1.1.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [lez_wallet_ui-v1.2.2](https://github.com/logos-co/logos-modules-release/releases/download/lez_wallet_ui-v1.2.2/lez_wallet_ui-1.2.2.lgx) · sha256 `12eb2eccfe4d1e70…` |
 | Source | [logos-blockchain/logos-execution-zone-wallet-ui@486379e](https://github.com/logos-blockchain/logos-execution-zone-wallet-ui/tree/486379ec41ea0bd4e59cf3c82632429b0fed393b) |

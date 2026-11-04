@@ -1,5 +1,5 @@
-; Extracted by logos-module-atlas from logos-co/logos-rln-modules@eb02da8f0cbb:logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl
-; https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl
+; Extracted by logos-module-atlas from logos-co/logos-rln-modules@d9f8b3d5ff93:logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl
+; https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl
 
 ; liblogos_lez_rln_module — the LEZ RLN registry provider. The contract is the
 ; surface its two consumers use: the membership module's registry provider
@@ -39,8 +39,10 @@
 ; declared max_fee is only a cap, and what the chain actually holds back is
 ; gas_limit x base fee at the block the tx lands in.
 ; v4.2.1 adds the testnet network (testnet-z1) to the built-in table; data only.
+; v5.1.0 adds check_registry: whether a registry is deployed on the wallet's
+; chain, and why not.
 module liblogos_lez_rln_module {
-  version "4.2.1"
+  version "5.1.0"
   description "RLN registry provider (LEZ chain reads + registration/funding txs)"
   category "blockchain"
 
@@ -71,6 +73,11 @@ module liblogos_lez_rln_module {
   ; pre-4.0.0 (holding signs, LEZ_RLN_PAYER pays) pair. "" selects the
   ; module's own payer; a caller paying on someone else's behalf (a gifter)
   ; names its account, whose key this module's wallet must hold.
+  ; Since 5.1.0 a registration the program would refuse is not submitted:
+  ; {"error":"<kind>: <reason>"} with kind invalid_commitment (zero, or not a BN254
+  ; field element, read little-endian), invalid_rate_limit, registry_full,
+  ; tree_full or insufficient_balance (price + fee reserve at the next base
+  ; fee ceiling). "" stays the answer for a config or chain read that failed.
   method register_member(config_account_id: tstr, payer_account_id: tstr, id_commitment_hex: tstr, rate_limit: int) -> tstr
 
   ; Live NATIVE balance of account_id as a decimal STRING (u128 exceeds JSON
@@ -148,9 +155,21 @@ module liblogos_lez_rln_module {
   ; "next_base_fee_stor_floor":8}. The next_* pair bounds the base fee of the
   ; next block (floor: an empty block, ceiling: a full one).
   ; "" until a network is selected, and on any transport or parse error. Needs
-  ; the wallet's network, not the wallet: it answers during bring-up. Only
-  ; plain-http sequencers are read (the crate carries no TLS stack); an
-  ; https one answers "". Bounded by a 5s connect + 10s read timeout.
+  ; the wallet's network, not the wallet: it answers during bring-up. http
+  ; and https sequencers are both read. Bounded by a 5s connect + 10s read
+  ; timeout.
   method get_fee_state() -> tstr
+
+  ; Whether a registry is usable here, and if not, why — so a caller can say
+  ; "not deployed on this chain" instead of failing on its first read.
+  ; {"status":s,"detail":s?,"registration_program":hex64?,"sequencer":s?,
+  ; "chain_head":N?}. status: "ok" | "not_deployed" (the config account holds
+  ; no program state: a reset network, or a registry that never existed
+  ; there) | "wrong_generation" (a config from another program version) |
+  ; "unexpected_layout" | "network_conflict" (the table places it on another
+  ; network than the wallet's) | "unreachable" (the sequencer gave no usable
+  ; answer) | "invalid" (not an account id). chain_head is the sequencer's last
+  ; block id: a low one next to "not_deployed" points at a reset.
+  method check_registry(config_account_id: tstr) -> tstr
 
 }

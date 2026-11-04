@@ -8,11 +8,11 @@
 | Type | `core` · interface `cdylib` · rust |
 | Stack | [messaging](../../stacks/messaging.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **4.2.1** (released 2026-09-30) · all: 4.2.1 |
+| Catalog version | **5.1.0** (released 2026-10-14) · all: 5.1.0, 4.2.1 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [liblogos_lez_rln_module-v4.2.1](https://github.com/logos-co/logos-modules-release/releases/download/liblogos_lez_rln_module-v4.2.1/liblogos_lez_rln_module-4.2.1.lgx) · sha256 `4d61669f73374007…` |
-| Source | [logos-co/logos-rln-modules@eb02da8](https://github.com/logos-co/logos-rln-modules/tree/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-lez-rln-module) (`logos-lez-rln-module/`) |
-| Pinned by | logos-co/logos-modules-release@34013bd5dfd2 submodules/logos-rln-modules (tag liblogos_lez_rln_module-v4.2.1) |
+| Package | [liblogos_lez_rln_module-v5.1.0](https://github.com/logos-co/logos-modules-release/releases/download/liblogos_lez_rln_module-v5.1.0/liblogos_lez_rln_module-5.1.0.lgx) · sha256 `7317c72e3848549c…` |
+| Source | [logos-co/logos-rln-modules@d9f8b3d](https://github.com/logos-co/logos-rln-modules/tree/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-lez-rln-module) (`logos-lez-rln-module/`) |
+| Pinned by | logos-co/logos-modules-release@83ae6cc3ea54 submodules/logos-rln-modules (tag liblogos_lez_rln_module-v5.1.0) |
 | Depends on | — |
 | Required by | [`liblogos_rln_module`](../liblogos_rln_module/README.md) |
 | Concurrency | `multi` |
@@ -20,9 +20,9 @@
 ## Read these first
 
 1. **Contract** — [`liblogos_lez_rln_module.lidl`](liblogos_lez_rln_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.lidl`](interface.lidl), extracted from [`logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-lez-rln-module/rust-lib/liblogos_lez_rln_module.lidl). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/messaging.md](../../stacks/messaging.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`logos-lez-rln-module/CLAUDE.md`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-lez-rln-module/CLAUDE.md), [`logos-lez-rln-module/README.md`](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-lez-rln-module/README.md)
+4. **Upstream docs** — [`logos-lez-rln-module/CLAUDE.md`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-lez-rln-module/CLAUDE.md), [`logos-lez-rln-module/README.md`](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-lez-rln-module/README.md)
 
 ## API at a glance
 
@@ -37,9 +37,10 @@
 | `wallet_status` | `wallet_status() -> tstr` | Whether this module's wallet is open and usable, and which account it pays with: {"detail":s,"network":s,"payer":hex64,"ready":b, "state":"pending"¦"ready"¦"failed"}. |
 | `use_network` | `use_network(reference: tstr) -> tstr` | Select the network this module's wallet talks to by the CAIP-2 reference of a `logos` registry id (lowercased), or check it against the one already chosen. |
 | `get_fee_state` | `get_fee_state() -> tstr` | Since 4.2.0. |
+| `check_registry` | `check_registry(config_account_id: tstr) -> tstr` | Whether a registry is usable here, and if not, why — so a caller can say "not deployed on this chain" instead of failing on its first read. |
 
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["liblogos_lez_rln_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-rln-modules/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0?dir=logos-lez-rln-module#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install liblogos_lez_rln_module --version 4.2.1`
+- Contract from source: `nix build 'github:logos-co/logos-rln-modules/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47?dir=logos-lez-rln-module#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install liblogos_lez_rln_module --version 5.1.0`

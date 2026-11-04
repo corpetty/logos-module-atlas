@@ -8,19 +8,19 @@
 | Type | `ui_qml` · qml |
 | Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `blockchain` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.3.2** (released 2026-10-09) · all: 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
+| Catalog version | **0.3.5** (released 2026-11-01) · all: 0.3.5, 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.1-rc.3, 0.2.0, 0.1.3-rc.13, 0.0.999 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
-| Package | [blockchain_ui-v0.3.2](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.2/blockchain_ui-0.3.2.lgx) · sha256 `f7300897146809a7…` |
-| Source | [logos-blockchain/logos-blockchain-ui@d445c0f](https://github.com/logos-blockchain/logos-blockchain-ui/tree/d445c0f23c93031c3e8a71cda20a5d0458f90aae) |
-| Pinned by | logos-co/logos-modules-release@3a778be88f56 submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.2) |
-| Depends on | [`blockchain_module`](../blockchain_module/README.md) `>=0.3.0` |
+| Package | [blockchain_ui-v0.3.5](https://github.com/logos-co/logos-modules-release/releases/download/blockchain_ui-v0.3.5/blockchain_ui-0.3.5.lgx) · sha256 `eab341976ac5a6b3…` |
+| Source | [logos-blockchain/logos-blockchain-ui@df4fea7](https://github.com/logos-blockchain/logos-blockchain-ui/tree/df4fea7d4f351a5359321688d9bcf85155f14f10) |
+| Pinned by | logos-co/logos-modules-release@8e5ba345f1ba submodules/logos-blockchain-ui (tag blockchain_ui-v0.3.5) |
+| Depends on | [`blockchain_module`](../blockchain_module/README.md) |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/BlockchainBackend.rep`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/src/BlockchainBackend.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/BlockchainBackend.rep`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/df4fea7d4f351a5359321688d9bcf85155f14f10/src/BlockchainBackend.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/d445c0f23c93031c3e8a71cda20a5d0458f90aae/README.md)
+3. **Upstream docs** — [`README.md`](https://github.com/logos-blockchain/logos-blockchain-ui/blob/df4fea7d4f351a5359321688d9bcf85155f14f10/README.md)
 
 ## API at a glance
 
@@ -33,9 +33,6 @@
 | `useGeneratedConfig` | `useGeneratedConfig: bool` | property |
 | `generatedUserConfigPath` | `generatedUserConfigPath: QString` | property (read-only) |
 | `configState` | `configState: ConfigState` | property (read-only) |
-| `configDropped` | `configDropped: QStringList` | property (read-only) |
-| `configBackupPath` | `configBackupPath: QString` | property (read-only) |
-| `mergeConfigReportPath` | `mergeConfigReportPath: QString` | property (read-only) |
 | `configPowSection` | `configPowSection: QVariantMap` | property (read-only) |
 | `nodeDataDir` | `nodeDataDir: QString` | property (read-only) |
 | `nodeKeystorePath` | `nodeKeystorePath: QString` | property (read-only) |
@@ -102,7 +99,6 @@
 | `getPeerId` | `getPeerId() -> QVariantMap` | slot |
 | `getClaimableVouchers` | `getClaimableVouchers() -> QVariantMap` | slot |
 | `generateConfig` | `generateConfig(QString outputPath, QStringList initialPeers, int netPort, int blendPort, QString httpAddr, QString externalAddress, bool noPublicIpCheck, int deploymentMode, QString deploymentConfigPath, bool newNode) -> QVariantMap` | slot |
-| `upgradeConfig` | `upgradeConfig() -> QVariantMap` | slot |
 | `getNotes` | `getNotes(QString walletAddressHex, QString optionalTipHex) -> QVariantMap` | slot |
 | `channelDepositWithNotes` | `channelDepositWithNotes(QString channelIdHex, QStringList inputNoteIdHexes, QString metadataBase58, QString changePublicKeyHex, QStringList fundingPublicKeyHexes, QString maxTxFee, QString optionalTipHex) -> QVariantMap` | slot |
 | `powStartMining` | `powStartMining() -> QVariantMap` | slot |
@@ -127,5 +123,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-ui/d445c0f23c93031c3e8a71cda20a5d0458f90aae#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install blockchain_ui --version 0.3.2`
+- Contract from source: `nix build 'github:logos-blockchain/logos-blockchain-ui/df4fea7d4f351a5359321688d9bcf85155f14f10#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install blockchain_ui --version 0.3.5`

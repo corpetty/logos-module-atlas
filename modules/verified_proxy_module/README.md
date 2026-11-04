@@ -8,11 +8,11 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [evm-wallet](../../stacks/evm-wallet.md) · category `wallet` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **0.1.3** (released 2026-09-29) · all: 0.1.3 |
+| Catalog version | **0.1.4** (released 2026-10-14) · all: 0.1.4, 0.1.3 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [verified_proxy_module-v0.1.3](https://github.com/logos-co/logos-modules-release/releases/download/verified_proxy_module-v0.1.3/verified_proxy_module-0.1.3.lgx) · sha256 `e61b50a0bdbf6dd8…` |
-| Source | [logos-co/logos-verified-proxy-module@f0cf1f4](https://github.com/logos-co/logos-verified-proxy-module/tree/f0cf1f45def716515bca735ff04deab565c4a962) |
-| Pinned by | logos-co/logos-modules-release@b504625323a0 submodules/logos-verified-proxy-module (tag verified_proxy_module-v0.1.3) |
+| Package | [verified_proxy_module-v0.1.4](https://github.com/logos-co/logos-modules-release/releases/download/verified_proxy_module-v0.1.4/verified_proxy_module-0.1.4.lgx) · sha256 `10e9c5f413b0b14e…` |
+| Source | [logos-co/logos-verified-proxy-module@68a3543](https://github.com/logos-co/logos-verified-proxy-module/tree/68a3543192bc20cd2e42ed4c1533e4a9dd881eec) |
+| Pinned by | logos-co/logos-modules-release@030cde1d2dc9 submodules/logos-verified-proxy-module (tag verified_proxy_module-v0.1.4) |
 | Depends on | — |
 | Required by | [`verified_proxy_ui`](../verified_proxy_ui/README.md) |
 | Concurrency | `multi` |
@@ -20,9 +20,9 @@
 ## Read these first
 
 1. **Contract** — [`verified_proxy_module.lidl`](verified_proxy_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/verified_proxy_impl.h`](https://github.com/logos-co/logos-verified-proxy-module/blob/f0cf1f45def716515bca735ff04deab565c4a962/src/verified_proxy_impl.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/verified_proxy_impl.h`](https://github.com/logos-co/logos-verified-proxy-module/blob/68a3543192bc20cd2e42ed4c1533e4a9dd881eec/src/verified_proxy_impl.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/evm-wallet.md](../../stacks/evm-wallet.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-verified-proxy-module/blob/f0cf1f45def716515bca735ff04deab565c4a962/README.md)
+4. **Upstream docs** — [`README.md`](https://github.com/logos-co/logos-verified-proxy-module/blob/68a3543192bc20cd2e42ed4c1533e4a9dd881eec/README.md)
 
 ## API at a glance
 
@@ -112,5 +112,5 @@
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["verified_proxy_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-verified-proxy-module/f0cf1f45def716515bca735ff04deab565c4a962#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install verified_proxy_module --version 0.1.3`
+- Contract from source: `nix build 'github:logos-co/logos-verified-proxy-module/68a3543192bc20cd2e42ed4c1533e4a9dd881eec#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install verified_proxy_module --version 0.1.4`

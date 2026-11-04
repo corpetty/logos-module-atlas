@@ -2,14 +2,14 @@
   {
     "name": "amm_module",
     "status": "failed",
-    "ref": "github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca#lidl",
-    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/145a2acaa65e83650bc7fb35415b3da08baac6ca' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+    "ref": "github:logos-blockchain/logos-amm-module/0efc26a6012e86f252c1b99a4964aac4a96d96c9#lidl",
+    "reason": "error: flake 'github:logos-blockchain/logos-amm-module/0efc26a6012e86f252c1b99a4964aac4a96d96c9' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
   },
   {
     "name": "blockchain_module",
     "status": "ok",
-    "commit": "559b421e81b9a53f90d9e0976cf63d20307b4473",
-    "ref": "github:logos-blockchain/logos-blockchain-module/559b421e81b9a53f90d9e0976cf63d20307b4473#lidl"
+    "commit": "b1eed5994eb289d0021c15e183cd170601334603",
+    "ref": "github:logos-blockchain/logos-blockchain-module/b1eed5994eb289d0021c15e183cd170601334603#lidl"
   },
   {
     "name": "capability_module",
@@ -26,8 +26,8 @@
   {
     "name": "delivery_module",
     "status": "ok",
-    "commit": "c25b7868099949c375e7affdeb1502b354fd92e3",
-    "ref": "github:logos-co/logos-delivery-module/c25b7868099949c375e7affdeb1502b354fd92e3#lidl"
+    "commit": "1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f",
+    "ref": "github:logos-co/logos-delivery-module/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f#lidl"
   },
   {
     "name": "eth_rpc_module",
@@ -86,14 +86,14 @@
   {
     "name": "liblogos_lez_rln_module",
     "status": "ok",
-    "commit": "eb02da8f0cbbfc892365f32a713087f7cdb9aaa0",
-    "ref": "github:logos-co/logos-rln-modules/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0?dir=logos-lez-rln-module#lidl"
+    "commit": "d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47",
+    "ref": "github:logos-co/logos-rln-modules/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47?dir=logos-lez-rln-module#lidl"
   },
   {
     "name": "liblogos_rln_module",
     "status": "ok",
-    "commit": "eb02da8f0cbbfc892365f32a713087f7cdb9aaa0",
-    "ref": "github:logos-co/logos-rln-modules/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0?dir=logos-rln-module#lidl"
+    "commit": "d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47",
+    "ref": "github:logos-co/logos-rln-modules/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47?dir=logos-rln-module#lidl"
   },
   {
     "name": "libp2p_module",
@@ -150,6 +150,12 @@
     "ref": "github:logos-co/openmetrics-module/802012aabbc63e24755251e0b1419769dda68715#lidl"
   },
   {
+    "name": "oracle_module",
+    "status": "failed",
+    "ref": "github:logos-blockchain/logos-twap-oracle-module/a964dc4d32780adec3e6fa63ee549f151d3871b2#lidl",
+    "reason": "error: flake 'github:logos-blockchain/logos-twap-oracle-module/a964dc4d32780adec3e6fa63ee549f151d3871b2' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+  },
+  {
     "name": "package_downloader",
     "status": "ok",
     "commit": "7b0ca8b74acde01c277431a1372092980a3f31df",
@@ -174,6 +180,12 @@
     "ref": "github:logos-co/logos-evm-token-list-module/213e62853fe817bad02db8588b8be6ecd1e72211#lidl"
   },
   {
+    "name": "token_module",
+    "status": "failed",
+    "ref": "github:logos-blockchain/logos-token-module/2afe8a796a67b1a5ce807851b3f74660114e1ee2#lidl",
+    "reason": "error: flake 'github:logos-blockchain/logos-token-module/2afe8a796a67b1a5ce807851b3f74660114e1ee2' does not provide attribute 'packages.x86_64-linux.lidl', 'defaultPackage.x86_64-linux.lidl', 'legacyPackages.x86_64-linux.lidl' or 'lidl'"
+  },
+  {
     "name": "tx_sender_module",
     "status": "ok",
     "commit": "7cd2fead60a78ac9ac8a4337fd9f01e1ab5515e2",
@@ -194,7 +206,7 @@
   {
     "name": "verified_proxy_module",
     "status": "ok",
-    "commit": "f0cf1f45def716515bca735ff04deab565c4a962",
-    "ref": "github:logos-co/logos-verified-proxy-module/f0cf1f45def716515bca735ff04deab565c4a962#lidl"
+    "commit": "68a3543192bc20cd2e42ed4c1533e4a9dd881eec",
+    "ref": "github:logos-co/logos-verified-proxy-module/68a3543192bc20cd2e42ed4c1533e4a9dd881eec#lidl"
   }
 ]
