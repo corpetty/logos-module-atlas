@@ -1,11 +1,11 @@
 # EVM wallet stack
 
-**Pinned at:** Basecamp 0.3.2 (`f2fae63`); eth_rpc_module 0.1.0 (`42cc465`), eth_rpc_ui 0.1.0 (`d670fdf`), eth_wallet_backend 0.1.0 (`2866409`), eth_wallet_ui 0.1.0 (`81f8676`), evm_assets_module 0.1.0 (`3235e6b`), evm_keystore_cli 0.1.0 (`47554a1`), evm_keystore_ui 0.1.0 (`4460518`), evm_signer_cli 0.1.0 (`861c2ed`), evm_signer_ui 0.1.0 (`62f89d5`), fee_module 0.1.0 (`5bf49b7`), keystore_module 0.1.0 (`2318c67`), token_list_module 0.1.0 (`213e628`), token_list_ui 0.1.0 (`7fc7ba6`), tx_sender_module 0.1.0 (`7cd2fea`), uniswap_backend 0.1.0 (`b561baa`), uniswap_module 0.1.0 (`cc677c3`), uniswap_ui 0.1.0 (`69caca7`), verified_proxy_module 0.1.3 (`f0cf1f4`), verified_proxy_ui 0.1.0 (`28d4cdd`).
+**Pinned at:** Basecamp 0.3.2 (`f2fae63`); eth_rpc_module 0.1.0 (`42cc465`), eth_rpc_ui 0.1.1 (`4be64d6`), eth_wallet_backend 0.1.0 (`2866409`), eth_wallet_ui 0.1.0 (`81f8676`), evm_assets_module 0.1.0 (`3235e6b`), evm_keystore_cli 0.1.0 (`47554a1`), evm_keystore_ui 0.1.0 (`4460518`), evm_signer_cli 0.1.0 (`861c2ed`), evm_signer_ui 0.1.0 (`62f89d5`), fee_module 0.1.0 (`5bf49b7`), keystore_module 0.1.0 (`2318c67`), token_list_module 0.1.0 (`213e628`), token_list_ui 0.1.0 (`7fc7ba6`), tx_sender_module 0.1.0 (`7cd2fea`), uniswap_backend 0.1.0 (`b561baa`), uniswap_module 0.1.0 (`cc677c3`), uniswap_ui 0.1.0 (`69caca7`), verified_proxy_module 0.1.4 (`68a3543`), verified_proxy_ui 0.1.0 (`28d4cdd`).
 
 The Ethereum/EVM wallet that Logos Basecamp 0.3.2 offers through its default catalog
 (`logos-co/logos-modules-release`). None of these modules ships inside the app. Every one comes
-from the catalog: 19 packages, all at `0.1.0` (published 2026-09-28) except `verified_proxy_module`
-`0.1.3` (2026-09-29). Every claim below was read at the commit pinned in
+from the catalog: 19 packages, all at `0.1.0` (published 2026-09-28) except `eth_rpc_ui` `0.1.1`
+(2026-10-30) and `verified_proxy_module` `0.1.4` (2026-10-14). Every claim below was read at the commit pinned in
 `data/catalog-pins.tsv`, not at HEAD. Links go to the source at that commit. The reference list
 is at the bottom. **unverified** marks anything not confirmed in code.
 
@@ -37,7 +37,7 @@ over these reusable modules. [ks-specs-purpose] [tx-readme]
 | [tx_sender_module](../modules/tx_sender_module/README.md) | core | The one sender: nonce ledger, bundle approval, ordered broadcast, history | No | eth_rpc_module, fee_module, keystore_module |
 | [fee_module](../modules/fee_module/README.md) | core | EIP-1559 slow/normal/fast tiers from `eth_feeHistory`; bundle gas estimation with ERC-20 approve overrides | No | eth_rpc_module |
 | [eth_rpc_module](../modules/eth_rpc_module/README.md) | core | Device-wide chain registry plus fail-closed JSON-RPC keyed by `chainId`; socks5h/Tor | No | — ; opt. modules_state, verified_proxy_module |
-| [eth_rpc_ui](../modules/eth_rpc_ui/README.md) | ui_qml | Edits endpoints, scope and verified mode. Provides `evm.rpc.configure` | No | eth_rpc_module |
+| [eth_rpc_ui](../modules/eth_rpc_ui/README.md) | ui_qml | Edits enabled networks and scope, chain metadata, endpoints and verified mode. Provides `evm.rpc.configure` | No | eth_rpc_module |
 | [verified_proxy_module](../modules/verified_proxy_module/README.md) | core (C++) | Nimbus `libverifproxy` light client: proof-checked `eth_*` | No | — |
 | [verified_proxy_ui](../modules/verified_proxy_ui/README.md) | ui_qml | Configures and operates the proxy. Provides `evm.verified_routing.operate` | No | verified_proxy_module |
 | [token_list_module](../modules/token_list_module/README.md) | core | Token catalogue (embedded Uniswap list, URLs, custom) plus the per-device enabled set | No | — |
@@ -469,7 +469,7 @@ for polling. Do not make synchronous calls from inside an event callback: the si
 [rpc-readme-defaults]: https://github.com/logos-co/logos-evm-eth-rpc-module/blob/42cc465e0cbd748117a0af0cf983404348683335/README.md#L55-L91
 [rpc-specs-route]: https://github.com/logos-co/logos-evm-eth-rpc-module/blob/42cc465e0cbd748117a0af0cf983404348683335/docs/specs.md#L299-L316
 [rpc-proxy]: https://github.com/logos-co/logos-evm-eth-rpc-module/blob/42cc465e0cbd748117a0af0cf983404348683335/rust-lib/src/proxy.rs#L1-L75
-[vp-readme]: https://github.com/logos-co/logos-verified-proxy-module/blob/f0cf1f45def716515bca735ff04deab565c4a962/README.md#L1-L181
+[vp-readme]: https://github.com/logos-co/logos-verified-proxy-module/blob/68a3543192bc20cd2e42ed4c1533e4a9dd881eec/README.md#L1-L181
 [bc-intents-providers]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L52
 [bc-intents-calling]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/docs/app-to-app-intents.md#L158-L178
 [bc-main-policy]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/app/main.cpp#L359-L375
@@ -484,5 +484,5 @@ clickable permalink. Tag prefixes map to repositories and commits as follows:
 | tx-* | `logos-co/logos-evm-tx-sender-module@7cd2fea` (`README.md`, `rust-lib/src/{glue,budget}.rs`) |
 | su-* / sc-* / kc-* | `logos-evm-signer-ui@62f89d5`, `logos-evm-signer-cli@861c2ed`, `logos-evm-keystore-cli@47554a1` |
 | wb-* / wui-* | `logos-eth-wallet-backend@2866409`, `logos-eth-wallet-ui@81f8676` |
-| rpc-* / vp-* / as-* / ub-* | `logos-evm-eth-rpc-module@42cc465`, `logos-verified-proxy-module@f0cf1f4`, `logos-evm-assets-module@3235e6b`, `logos-uniswap-backend@b561baa` |
+| rpc-* / vp-* / as-* / ub-* | `logos-evm-eth-rpc-module@42cc465`, `logos-verified-proxy-module@68a3543`, `logos-evm-assets-module@3235e6b`, `logos-uniswap-backend@b561baa` |
 | bc-* | `logos-co/logos-basecamp@f2fae63` (tag `0.3.2`) |

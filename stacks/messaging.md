@@ -1,8 +1,8 @@
 # Messaging stack
 
-**Pinned at:** delivery_module 0.3.2 (`c25b786`), chat_module 0.3.0 (`5053dd5`), chat_ui 0.3.0
+**Pinned at:** delivery_module 0.4.0 (`1e1fb56`), chat_module 0.3.0 (`5053dd5`), chat_ui 0.3.0
 (`15c16ca`), delivery_demo 0.3.0 (`8625dba`), libp2p_module 1.1.0 (`49f7743`),
-liblogos_rln_module 0.10.0 + liblogos_lez_rln_module 4.2.1 (logos-rln-modules `eb02da8`).
+liblogos_rln_module 0.12.0 + liblogos_lez_rln_module 5.1.0 (logos-rln-modules `d9f8b3d`).
 
 Scope: Logos Basecamp 0.3.2 (2026-10-06) default catalog `logos-co/logos-modules-release`. All
 source facts below were read at the commits pinned in `data/catalog-pins.tsv`; links are
@@ -26,13 +26,13 @@ The two RLN modules supply rate-limit proofs: the `logos.test` preset turns RLN 
 
 | module | type / interface | role | depends on (metadata.json) | catalog version | pinned source |
 |---|---|---|---|---|---|
-| [`delivery_module`](../modules/delivery_module/README.md) | core / universal (C++ header codegen) | message transport node (relay/filter/lightpush/store, reliable channels) | none; **optional** `libp2p_module`, `liblogos_rln_module` | 0.3.2 | logos-delivery-module `c25b786` (tag v0.3.2) |
+| [`delivery_module`](../modules/delivery_module/README.md) | core / universal (C++ header codegen) | message transport node (relay/filter/lightpush/store, reliable channels, native Mix) | none; **optional** `libp2p_module`, `liblogos_rln_module` (both unversioned) | 0.4.0 | logos-delivery-module `1e1fb56` (tag v0.4.0) |
 | [`chat_module`](../modules/chat_module/README.md) | core / cdylib (Rust, LIDL) | e2e chat (DirectV1, GroupV2) over delivery | `delivery_module >=0.3.0` | 0.3.0 | logos-chat-module `5053dd5` (v0.3.0) |
 | [`chat_ui`](../modules/chat_ui/README.md) | ui_qml (C++ backend + QML, .rep) | Chat app UI | `chat_module >=0.3.0`, `delivery_module >=0.3.0` | 0.3.0 | logos-chat-ui `15c16ca` (v0.3.0) |
 | [`delivery_demo`](../modules/delivery_demo/README.md) | ui_qml | educational playground for every delivery call | `delivery_module`, `liblogos_rln_module` | 0.3.0 | logos-delivery-demo `8625dbab` (v0.3.0) |
 | [`libp2p_module`](../modules/libp2p_module/README.md) | core / universal | nim-libp2p node: peers, streams, gossipsub, kad DHT, service discovery | none | 1.1.0 | logos-libp2p-module `49f7743` (v1.1.0) |
-| [`liblogos_rln_module`](../modules/liblogos_rln_module/README.md) | core / cdylib (Rust, zerokit) | RLN membership mgmt + proof gen/verify, encrypted keystore | `liblogos_lez_rln_module` | 0.10.0 | logos-rln-modules `eb02da8` (`logos-rln-module/`) |
-| [`liblogos_lez_rln_module`](../modules/liblogos_lez_rln_module/README.md) | core / cdylib (Rust, LEZ wallet) | RLN registry provider: LEZ chain reads, Register tx, own wallet | none | 4.2.1 | logos-rln-modules `eb02da8` (`logos-lez-rln-module/`) |
+| [`liblogos_rln_module`](../modules/liblogos_rln_module/README.md) | core / cdylib (Rust, zerokit) | RLN membership mgmt + proof gen/verify, encrypted keystore | `liblogos_lez_rln_module` | 0.12.0 | logos-rln-modules `d9f8b3d` (`logos-rln-module/`) |
+| [`liblogos_lez_rln_module`](../modules/liblogos_lez_rln_module/README.md) | core / cdylib (Rust, LEZ wallet) | RLN registry provider: LEZ chain reads, Register tx, own wallet | none | 5.1.0 | logos-rln-modules `d9f8b3d` (`logos-lez-rln-module/`) |
 
 Platforms (catalog `main`): `libp2p_module` and `liblogos_lez_rln_module` ship **no
 windows-x86_64** build; the other five do. None of these is bundled in Basecamp 0.3.2; all
@@ -65,13 +65,13 @@ host, regardless of which module made the call.
 ### Lifecycle (one node per host)
 
 Contract: `createNode` exactly once per context, `start` before messaging, `stop` before
-shutdown ([plugin.h L28-L48](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h#L28-L48)).
+shutdown ([plugin.h L29-L49](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h#L29-L49)).
 
 | call | returns | completion |
 |---|---|---|
-| `createNode(cfg: tstr) -> result` | sync; waits up to 30 s for the library callback | second call fails `"Context already initialized"` ([cpp L596-L603](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.cpp#L596-L603)) |
+| `createNode(cfg: tstr) -> result` | sync; waits up to 30 s for the library callback | second call fails `"Context already initialized"` ([cpp L647-L654](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.cpp#L647-L654)) |
 | `start() -> result` | once dispatched | event `nodeStarted(success, message, ts)`; a failed start auto-stops the half-up node |
-| `stop() -> result` | once dispatched | event `nodeStopped(success, message, ts)`; also stops the RLN backend |
+| `stop() -> result` | once dispatched | event `nodeStopped(success, message, ts)`; also stops the RLN backend unless the preset sets `manage-backend: false` (0.4.0) |
 | `getNodeInfo(id)` | sync | ids: `Version`, `Metrics`, `MyMultiaddresses`, `MyENR`, `MyPeerId`, `IsRunning` (`"true"`/`"false"`) — fails `"Context not initialized"` before any `createNode` |
 | `getConnectionStatus()` | sync | `Disconnected` / `PartiallyConnected` / `Connected`; event only fires on transitions |
 
@@ -83,7 +83,7 @@ modules opened.
 
 ### Publish / subscribe / receive (Messaging API — the stable layer)
 
-Signatures from the generated contract (`nix build github:logos-co/logos-delivery-module/c25b7868099949c375e7affdeb1502b354fd92e3#lidl`):
+Signatures from the generated contract (`nix build github:logos-co/logos-delivery-module/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f#lidl`):
 
 ```
 method send(contentTopic: tstr, payload: bstr) -> result        ; value = requestId
@@ -95,16 +95,16 @@ event  messageError(requestId: tstr, messageHash: tstr, error: tstr, timestamp: 
 ```
 
 - `send` base64-wraps the bytes into `{contentTopic, payload, ephemeral:false}` for
-  `logosdelivery_ctx_send` ([cpp L884-L915](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.cpp#L884-L915)).
+  `logosdelivery_ctx_send` ([cpp L945-L976](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.cpp#L945-L976)).
   Outcome is async: `messageQueued` (RLN budget spent, still pending) → `messagePropagated` →
   `messageSent` (validated, terminal success) or `messageError`. Correlate by `requestId`.
 - `subscribe` fails until the node is started (chat queues topics until then —
   [inbound.rs L151-L168](https://github.com/logos-co/logos-chat-module/blob/5053dd5062817f34a93055435781c1c448c7ce6c/rust-lib/src/inbound.rs#L151-L168)).
 - `messageReceived.payload` is raw bytes; `source` is `"live"` or `"history"` (Store backfill at
   startup / after a gap, on by default). Upstream dedupe is in-memory for minutes only: **dedupe
-  by `messageHash` yourself** ([plugin.h L441-L454](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h#L441-L454)).
+  by `messageHash` yourself** ([plugin.h L444-L457](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h#L444-L457)).
 - `messageReceived.timestamp` is the message's own timestamp; all other events carry local
-  emission time; both int64 ns since epoch ([api_reference.rst L23-L29](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/docs/pages/api_reference.rst#L23-L29)).
+  emission time; both int64 ns since epoch ([api_reference.rst L23-L29](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/api_reference.rst#L23-L29)).
 - A relay (`Core`) node sees the whole shard: chat observes `messageReceived` for topics it never
   subscribed to and filters by its topic prefix ([inbound.rs L99-L123](https://github.com/logos-co/logos-chat-module/blob/5053dd5062817f34a93055435781c1c448c7ce6c/rust-lib/src/inbound.rs#L99-L123)). **Always filter on `contentTopic`.**
 - Content topic format: LIP-23 `/{app}/{version}/{name}/{encoding}`; chat uses
@@ -117,21 +117,34 @@ event  messageError(requestId: tstr, messageHash: tstr, error: tstr, timestamp: 
   / `channelSend(channelId, payload: bstr)` → requestId / `channelClose(channelId)`. Events
   `channelMessageReceived(channelId, senderId, payload, ts)`, `channelMessageSent(channelId,
   requestId, ts)`, `channelMessageError(channelId, requestId, error, ts)`. SDS state persists;
-  re-create with the same id restores it ([plugin.h L219-L269](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h#L219-L269)).
+  re-create with the same id restores it ([plugin.h L220-L270](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h#L220-L270)).
   Both peers must `channelCreate` the same `channelId`.
 - `storeQuery(jsonQuery, peerAddr, timeoutMs)` — kernel API, explicitly unstable; query keys
   `requestId, includeData, paginationForward` (required) + `contentTopics, timeStart/End (ns),
-  messageHashes, paginationCursor, paginationLimit` ([plugin.h L181-L217](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h#L181-L217)).
+  messageHashes, paginationCursor, paginationLimit` ([plugin.h L182-L218](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h#L182-L218)).
+- **Native Mix (0.4.0, [#148](https://github.com/logos-co/logos-delivery-module/pull/148))**:
+  `anonymityLevel: "Required"` routes application `send()` through Mix, with no direct-send
+  fallback when Mix is unavailable; set `mix-rln-registry-id`, `mix-rln-identifier-hex`,
+  `mix-rln-metadata-topic` for the shared Mix proof provider, and all Mix peers must use
+  compatible scopes, epochs and proof encoding. New methods `getLocalMixPeerRecord() -> result`
+  (this node's Mix record) and `addMixPeer(recordJson: tstr) -> result` (install another
+  participant's), both failing `"Context not initialized"` before `createNode`
+  ([cpp L1373-L1384](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.cpp#L1373-L1384)); the README says a created
+  node with Mix enabled is required (**unverified** at runtime). The Mix exit must offer Lightpush
+  and connect to Relay. Mix calls `liblogos_rln_module` through the bridge, so shared Mix needs
+  Relay RLN enabled before startup and uses a separate RLN scope from Relay
+  ([README L136-L166](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/README.md#L136-L166)). The two methods' generated `description` is the
+  copy-pasted `getNodeInfo` doc, so ignore it.
 - `collectOpenMetricsText() -> tstr` (Prometheus text for the `openmetrics` module); `getAvailableConfigs()`.
 - `rlnState()` → `{state: Disabled|Initializing|Ready|Failed, message, registryId?, rlnIdentifier?, epochSizeSec?}`;
   event `rlnStateChanged(state, message, ts)`. `rlnRespond(reqId, resultJson)`,
   `rlnBridgeEnable()` and the four `dispatchRln*RequestEvent`s are plumbing; the in-process
-  bridge answers them on RLN presets ([plugin.h L335-L400](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h#L335-L400)).
+  bridge answers them on RLN presets ([plugin.h L338-L403](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h#L338-L403)).
 
 ### Configuration & presets
 
 `createNode` JSON passes through verbatim to logos-delivery (`parseLogosDeliveryConf`).
-App-developer shape ([plugin.h L64-L135](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.h#L64-L135)):
+App-developer shape ([plugin.h L65-L136](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h#L65-L136)):
 
 ```json
 { "mode": "Core", "preset": "logos.test",
@@ -141,7 +154,7 @@ App-developer shape ([plugin.h L64-L135](https://github.com/logos-co/logos-deliv
 - Top level may only hold `entryLayer, mode, preset, kernelConf, messagingOverrides,
   channelsOverrides` (case-insensitive). **Any other top-level key flips to the legacy flat
   parser**, whose fixed port defaults collide between instances; the layered shape gets
-  OS-assigned ports ([cpp L500-L513](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.cpp#L500-L513)).
+  OS-assigned ports ([cpp L551-L564](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.cpp#L551-L564)).
 - `entryLayer`: `kernel` | `messaging` | `channels` (default). Kernel-only nodes reject
   `send`/`subscribe`/`channel*`.
 - `mode`: `Core` (relay) | `Edge` (light node).
@@ -152,36 +165,37 @@ App-developer shape ([plugin.h L64-L135](https://github.com/logos-co/logos-deliv
   `cluster-id`, `backfillEnabled` (true), `backfillRequestTimeoutSeconds` (10),
   `pluginKadDiscovery`, `kad-bootstrap-node`, `localStoragePath`.
 
-| preset | cluster | RLN | notes ([networks.md L26-L38](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/docs/pages/networks.md#L26-L38)) |
+| preset | cluster | RLN | notes ([networks.md L26-L38](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/networks.md#L26-L38)) |
 |---|---|---|---|
-| `logos.test` | 2 | **on**: registry `logos:testnet:841312e9…c893`, 600 s epochs, proofs attached, validation **off** | stable testnet fleet; default in chat |
+| `logos.test` | 2 | **on**: registry `logos:testnet:fd322d32…b971` (deployment `testnet-v03-z3`, LEZ v0.3.1; **new in 0.4.0**), 600 s epochs, proofs attached, validation **off** | stable testnet fleet; default in chat |
 | `logos.dev` | 3 | off | bleeding-edge fleet, may break |
 | `twn`, `status.prod`, `""` | – | off | accepted preset names |
 
-Both fleets: auto-sharding (8 shards), mix routing, discv5, Kademlia discovery on (unchanged in 0.3.2). RLN is not a
+Both fleets: auto-sharding (8 shards), mix routing, discv5, Kademlia discovery on (networks.md unchanged since 0.3.2). RLN is not a
 caller setting: it comes from the preset table in
-[rln_presets.cpp L40-L62](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/rln_presets.cpp#L40-L62);
+[rln_presets.cpp L40-L62](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/rln_presets.cpp#L40-L62);
 override via `LOGOS_DELIVERY_RLN_PRESETS=<json file>` (exact preset spellings only, typos are
-fatal). RLN identifier is application-wide `sha256("rln/logos-delivery/v0.0.1")` =
+fatal; 0.4.0 adds a boolean `manage-backend`, default true, which when false leaves RLN backend start/stop to the host — [README L136-L166](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/README.md#L136-L166)). RLN identifier is application-wide `sha256("rln/logos-delivery/v0.0.1")` =
 `5e269b6a…b977`. Bring-up: `createNode` installs the RLN plugin, then a background thread starts
 `liblogos_rln_module` with `{"registries":[registryId],"epoch_size_sec":600}`; if `start` fails,
 `rlnState` goes to `Failed` with the RLN module's error. **Changed in 0.3.1**
 ([#158](https://github.com/logos-co/logos-delivery-module/pull/158)): the library's
 `get_membership_state` check at startup no longer blocks `start`; a node without an
 `active`/`grace_period` membership logs a notice, starts, subscribes and relays, and only its
-sends fail ([rln.md L24-L79](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/docs/pages/rln.md#L24-L79)).
+sends fail ([rln.md L24-L88](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/rln.md#L24-L88)).
 With rate limiting on (`rate-limit-enabled`), each send asks `get_epoch_quota` and is queued
 (`messageQueued`) while `remaining` is 0.
+**Changed in 0.4.0** ([#160](https://github.com/logos-co/logos-delivery-module/pull/160)): `logos.test` moved to a new registry on the LEZ v0.3.1 testnet (sequencer `https://testnet.lez.logos.co/`); the old registry `logos:testnet:841312e9…c893` is no longer used, a membership registered there does not carry over (`get_membership_state` reports `unknown`), and sends fail until the node holds a membership in the new one ([rln.md L24-L88](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/rln.md#L24-L88)). `enableValidation` is still false ([rln_presets.cpp L40-L62](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/rln_presets.cpp#L40-L62)).
 `pluginKadDiscovery: true` requires `libp2p_module` installed (without it `start` fails and the
-node is stopped — [run-node.md L370-L372](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/docs/pages/run-node.md#L370-L372)). Since 0.3.2 **every** DHT bootstrap peer is handed to
+node is stopped — [run-node.md L370-L372](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/run-node.md#L370-L372)). Since 0.3.2 **every** DHT bootstrap peer is handed to
 libp2p (0.3.0 passed only the first); libp2p dials them inside its `start`, whose fixed 10 s call
 deadline a slow set can outlast — it carries on and is not reissued; `LD_DISCO_TRACE=<file>` traces the plugin boundary
-([architecture.md L52-L70](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/docs/pages/architecture.md#L52-L70)).
+([architecture.md L52-L70](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/architecture.md#L52-L70)).
 
 ### Persistence
 
 Node state defaults to `<instance persistence path>/data` (injected as `localStoragePath` unless
-the config names one) — [cpp L540-L594](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/src/delivery_module_plugin.cpp#L540-L594).
+the config names one) — [cpp L591-L645](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.cpp#L591-L645).
 Reliable-channel state persists there. Run multiple local instances with separate session dirs
 (`--user-dir` for the standalone app, `--config-dir` for logoscore/logosctl).
 
@@ -257,28 +271,32 @@ timeoutMs)` polling), kad DHT, service discovery (`disco*`), peerstore. Push eve
 
 ## RLN modules (liblogos_rln_module + liblogos_lez_rln_module)
 
-`liblogos_rln_module` contract ([lidl](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/rust-lib/liblogos_rln_module.lidl)):
+`liblogos_rln_module` contract ([lidl](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/rust-lib/liblogos_rln_module.lidl)):
 every call is scoped by `(registry_id CAIP-10, rln_identifier_hex)`. Two reply dialects: `result`
 methods (`start`, `stop`, `generate_proof`, `validate_proof`, `get_epoch_quota`,
 `get_registry_parameters`) vs `tstr` JSON methods with in-band `{"error":{class,kind,message}}`;
 switch on `class` ∈ `not_ready|transient|budget_exhausted|permanent`
-([lidl L14-L34](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/rust-lib/liblogos_rln_module.lidl#L14-L34)).
+([lidl L14-L34](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/rust-lib/liblogos_rln_module.lidl#L14-L34)).
 Key methods: `start(config_json{epoch_size_sec REQUIRED, max_epoch_gap?, registries?})`,
 `register_membership(registry_id, rln_identifier_hex, options_json)`, `get_membership_state`,
 `get_epoch_quota(…, timestamp) → {epoch_index, rate_limit, remaining}`, `generate_proof`,
 `validate_proof`; event `membership_state_changed(registry_id, rln_identifier, membership_hash,
 state, previous)`. Since 0.10.0 `start()` auto-provisions a **registry-wide** membership once the
-lez module's own wallet payer is funded ([ensure.rs L1-L28](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/rust-lib/src/ensure.rs#L1-L28)).
+lez module's own wallet payer is funded; since 0.12.0 it first checks the registry exists on the
+wallet's chain and fails with `ErrorKind::UnknownRegistry` instead of waiting for funds ([ensure.rs L342-L348](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/rust-lib/src/ensure.rs#L342-L348)). `validate_proof` also accepts a decomposed Mix proof without `external_nullifier` and returns the derived one ([wire-binding.md](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/docs/wire-binding.md)) ([ensure.rs L1-L28](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/rust-lib/src/ensure.rs#L1-L28)).
 Keystore lives in the instance persistence path (`rln_sealed.json`, `rln_allocations.json`,
 `rln_cache.json`), auto-unlocked via `rln_autounlock.secret` by default
 (`LOGOS_RLN_DISABLE_AUTO_UNLOCK=1` opts out); one process per keystore; never copy it
-([README L130-L160](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-rln-module/README.md#L130-L160)).
+([README L130-L160](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-rln-module/README.md#L130-L160)).
 `liblogos_lez_rln_module`: `wallet_status() → {payer, ready, state, network}` (fund that `payer`),
-`use_network(reference)`, `get_native_balance`, `register_member`, registry reads; built-in
-network `testnet` = sequencer `http://209.38.241.182:3240/`
-([networks.json L20-L32](https://github.com/logos-co/logos-rln-modules/blob/eb02da8f0cbbfc892365f32a713087f7cdb9aaa0/logos-lez-rln-module/rust-lib/networks.json#L20-L32)).
+`use_network(reference)`, `get_native_balance`, `register_member`, registry reads, and (5.1.0)
+`check_registry(config_account_id) -> {status: ok|not_deployed|wrong_generation|…, detail?}`; a
+registration the program would refuse is no longer submitted. Built-in network `testnet` =
+LEZ v0.3 zone, deployment `testnet-v03-z3`, sequencer `https://testnet.lez.logos.co/` (was
+`http://209.38.241.182:3240/`, `testnet-z1`)
+([networks.json L20-L32](https://github.com/logos-co/logos-rln-modules/blob/d9f8b3d5ff93f6fd6fb363f5689098c07e81ac47/logos-lez-rln-module/rust-lib/networks.json#L20-L32)).
 Funding for `logos.test`: ≥ 200 000 000 native LEZ testnet to the payer; membership active ~1–3
-min later; rate limit 100 per 600 s epoch ([run-node.md L121-L150](https://github.com/logos-co/logos-delivery-module/blob/c25b7868099949c375e7affdeb1502b354fd92e3/docs/pages/run-node.md#L121-L155)).
+min later; rate limit 100 per 600 s epoch ([run-node.md L121-L150](https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/run-node.md#L121-L155)).
 
 ## Using delivery_module from another module
 
@@ -330,11 +348,24 @@ min later; rate limit 100 per 600 s epoch ([run-node.md L121-L150](https://githu
 - **RLN on `logos.test` changed at v0.3.0 final** (`e8f48b7`, PR #149). `chat_module` 0.3.0 is
   built against `v0.3.0-rc.3` ([flake L16](https://github.com/logos-co/logos-chat-module/blob/5053dd5062817f34a93055435781c1c448c7ce6c/flake.nix#L16)),
   where `logos.test` had RLN off, and its doctests install only delivery+chat. With catalog
-  delivery 0.3.2 (rln.md as of 0.3.1: the membership gate no longer blocks `start`), a
+  delivery 0.4.0 (rln.md: the membership gate no longer blocks `start`), a
   `logos.test` node without a funded membership should start and receive but fail sends; one
   without the RLN modules installed should end RLN bring-up in `Failed` — runtime behaviour in
   Basecamp unverified. Basecamp now offers optional
   packages during install (basecamp #452).
+- **delivery_module 0.4.0 does not break its dependents' version ranges.** `chat_module` 0.3.0 and
+  `chat_ui` 0.3.0 declare `delivery_module >=0.3.0`, which 0.4.0 satisfies; `delivery_demo` 0.3.0
+  lists `delivery_module` and `liblogos_rln_module` unversioned, and delivery's own optional
+  dependencies carry no range, so liblogos will load 0.4.0 with RLN 0.12.0 / lez 5.1.0 (metadata.json
+  at the pinned commits). The risk is the unranged *optional* RLN pair: nothing stops an older
+  `liblogos_rln_module` / `liblogos_lez_rln_module` staying installed beside delivery 0.4.0, and
+  those older lez modules cannot sync the new `logos.test` zone (rln.md), so RLN bring-up or
+  sends fail. Upgrade the pair to >= 0.12.0 / >= 5.1.0 together. The ABI is additive
+  (`getLocalMixPeerRecord`, `addMixPeer`), so existing callers are unaffected. Not exercised at
+  runtime (**unverified**).
+- **Every `logos.test` membership from before 0.4.0 is void.** The registry id changed, so a
+  node that was sending on 0.3.2 starts but fails to send on 0.4.0 until it registers again
+  (needs a payer funded on the v0.3.1 zone); chat has no RLN handling, so it will not say why.
 - `chat_module` reports `online` on `start()` acceptance, not on `nodeStarted`, and has no RLN
   handling — an RLN failure (`rlnState` `Failed`, or sends that fail for lack of a membership) is not surfaced
   by chat (unverified).

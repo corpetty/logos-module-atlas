@@ -1,8 +1,8 @@
 # Compatibility: loading a third-party module next to the Basecamp 0.3.2 catalog
 
-What has to line up for your module to build, load and be callable in **Logos Basecamp 0.3.2** (tag `0.3.2` = [`f2fae63`][bc], released 2026-10-06) alongside the six bundled modules and the 46 catalog packages. It also covers how to check what generation a module was built on, how to pin one, and how to install a local build for testing.
+What has to line up for your module to build, load and be callable in **Logos Basecamp 0.3.2** (tag `0.3.2` = [`f2fae63`][bc], released 2026-10-06) alongside the six bundled modules and the 49 catalog packages. It also covers how to check what generation a module was built on, how to pin one, and how to install a local build for testing.
 
-Companion guide: [`calling-official-modules.md`](calling-official-modules.md), which covers how to call a module once it loads. All facts were checked on 2026-10-14 against the commits linked here, unless marked **unverified**. The Muster observations (§2, §3, §6) date from 2026-10-01 and were not re-checked. This guide was first written against the 0.3.1 release (`aeb8192`); where 0.3.2 changed something, the text says so.
+Companion guide: [`calling-official-modules.md`](calling-official-modules.md), which covers how to call a module once it loads. All facts were checked on 2026-10-14 against the commits linked here, unless marked **unverified**. The catalog figures (§1 generation table, §4 and §5 counts) were re-measured on 2026-11-04 against the live index (`generatedAt` 2026-11-04T12:26:17Z) and the registry of that day. The Muster observations (§2, §3, §6) date from 2026-10-01 and were not re-checked. This guide was first written against the 0.3.1 release (`aeb8192`); where 0.3.2 changed something, the text says so.
 
 ---
 
@@ -70,7 +70,7 @@ The six modules still span four protocol revisions, all 0.9.0.
 | `0.3.2` | `4b799827` | `3f34c0b2` | `8bbc027c` (0.9.0) | `3a471be1` | `03e489b1` | `569ecc5e` | `42d91408` |
 | `0.3.3` | `3a64943f` | `3bf5365c` | `9d59f5de` (0.9.0) | `2d36a088` | `b0c57af8` | `040e94e8` | `fd902f81` |
 
-Builder `0.3.3` (commit of 2026-10-03, released 2026-10-06, the same day as Basecamp 0.3.2) matches Basecamp 0.3.2 on protocol, cpp-sdk, plugin-qt, qt-sdk and logos-nix. Only view-module-runtime differs: `fd902f81` is the parent of Basecamp's `4c429723`, and the one commit between them is the Windows `ui-host` fix. **This is "the 0.3.2 generation".** Despite its name, builder `0.3.2` is the 0.3.1 generation with a newer rust-sdk. No builder release is newer than `0.3.3`. Master (`5f4c4f2`, 2026-10-13) has unreleased commits.
+Builder `0.3.3` (commit of 2026-10-03, released 2026-10-06, the same day as Basecamp 0.3.2) matches Basecamp 0.3.2 on protocol, cpp-sdk, plugin-qt, qt-sdk and logos-nix. Only view-module-runtime differs: `fd902f81` is the parent of Basecamp's `4c429723`, and the one commit between them is the Windows `ui-host` fix. **This is "the 0.3.2 generation".** Despite its name, builder `0.3.2` is the 0.3.1 generation with a newer rust-sdk. No builder release is newer than `0.3.3`. Master (`5f74cdb`, 2026-10-30) is 11 commits past it, unreleased, and one catalog package builds on an unreleased builder branch (below).
 
 **What 0.3.2 changes for a third-party module:**
 
@@ -80,23 +80,26 @@ Builder `0.3.3` (commit of 2026-10-03, released 2026-10-06, the same day as Base
 
 ### The catalog is not one generation
 
-Resolved at today's catalog (index 2026-10-14T12:39Z), from each package's pinned source (`registry.json` → `.modules[].source`, including its `subdir`). Each one's `flake.lock` → its builder → that builder's SDK inputs. [`data/catalog-pins.tsv`](../data/catalog-pins.tsv) is the 2026-10-01 snapshot. Since then, 18 of the 46 pins have moved.
+Resolved at today's catalog (index 2026-11-04T12:26Z), from each package's pinned source (`registry.json` → `.modules[].source`, including its `subdir`). Each one's `flake.lock` → its builder → that builder's SDK inputs. [`data/catalog-pins.tsv`](../data/catalog-pins.tsv) is the 2026-10-01 snapshot. Since then, 24 of that snapshot's 46 pins have moved, and 3 packages are new.
 
 | Generation | protocol (rev) | cpp-sdk | Catalog modules |
 |---|---|---|---|
-| 0.9, Oct 3 (builder `0.3.3`) | 0.9.0 (`9d59f5de`) | `3bf5365c` | **lez_core**, lez_wallet_ui, storage_ui |
-| 0.9, Sept 17–23 | 0.9.0 (`8bbc027c`) | `3f34c0b2` | blockchain module+ui, chat module+ui, delivery_module, delivery_demo, lez_explorer_ui, libp2p, monerod module+ui, openmetrics, uniswap_backend |
+| 0.9, Oct 3 (builder `0.3.3`) | 0.9.0 (`9d59f5de`) | `3bf5365c` | **lez_core**, lez_wallet_ui, storage_ui, the five packages built from `lez-programs` (amm module+ui, token module+ui, oracle_module; see "Wrapper packages" below), blockchain_ui (on an unreleased builder branch, see below) |
+| 0.9, Sept 17–23 | 0.9.0 (`8bbc027c`) | `3f34c0b2` | blockchain_module, chat module+ui, delivery_module, delivery_demo, lez_explorer_ui, libp2p, monerod module+ui, openmetrics, uniswap_backend |
 | 0.9, Sept 8–16 | 0.9.0 (`46386344`, `fdc09ff5`) | `e1d6bf20`, `fb88c7d5`, `50017552`, `7e29573e` | **every EVM wallet module** (keystore, tx_sender, eth_rpc, fee, token_list, uniswap, evm_assets, eth_wallet backend+ui, evm signer/keystore UIs and CLIs, eth_rpc_ui, token_list_ui), **every Monero wallet module** (core, backend, node, cli, ui), storage_module, the RLN modules (`liblogos_rln_module`, `liblogos_lez_rln_module`: builder `9f420c29` in each subdir's lock), accounts_ui, uniswap_ui, verified_proxy module+ui |
 | 0.2 | — | — | None. In 0.3.1: lez_core and openmetrics |
 | 0.1 | 0.1.0 (`9de4165a`) | `1bc101df` | lez_indexer_module |
 | Pre-protocol | None. Builder `d5ac0dce` (2026-06-10) has no logos-protocol input | `40e76314` | logos_execution_zone 1.0.0 |
-| ? | not resolvable from the lock | — | amm module+ui (builder nested under `lez_programs`). **Unverified** |
+
+**Wrapper packages.** `amm_module`, `amm_ui`, `token_module`, `token_ui` and `oracle_module` are published from wrapper repos in `logos-blockchain` (`logos-amm-module`, `logos-amm-ui-module`, `logos-token-module`, `logos-token-ui-module`, `logos-twap-oracle-module`). A wrapper holds a `metadata.json` and a `flake.nix` that re-exports one output of `logos-blockchain/lez-programs`: `lgx = lez_programs.packages.${system}.token-module-lgx`, for example ([logos-token-module flake.nix][w-token]). Its root inputs are only `flake-utils` and `lez_programs`, with `lez_programs` pinned by commit, and it has no builder input of its own. So the source, the contract and the builder generation all live in lez-programs, at the subdir in `registry.json` → `source.subdir` (`modules/amm`, `apps/amm`, `modules/token`, `apps/token`, `modules/oracle`). The wrapper pin is in `source.wrapper`, and each module card has a "Wrapper" row. All five wrappers re-export their own `lez_programs.packages.${system}.*-lgx` outputs and pin lez-programs [`543563a`][lp-543] (2026-10-29), in `flake.nix` and in `flake.lock`. That commit's root lock and each of those five subdirs' locks resolve builder `0.3.3` (`3a64943f`), so protocol `9d59f5de`, cpp-sdk `3bf5365c`, plugin-qt `2d36a088`, qt-sdk `b0c57af8` and view-module-runtime `fd902f81`. That is the "0.3.2 generation" row above. That the published `.lgx` is the build of that pin follows from the wrapper's `flake.nix`. Nothing was rebuilt or extracted here to confirm it, so it is **unverified**.
+
+**blockchain_ui builds on an unreleased builder.** Its flake input is `logos-module-builder/feat/systems-opt-out`, locked at `a648b359`, with a `TODO` to return to the default branch once [logos-module-builder#284][b-284] merges ([flake.nix][bui-flake]). That commit is 13 commits past `0.3.3`. The SDK inputs it resolves are the same as `0.3.3`'s, so it is on the 0.3.2 generation. The change adds an `excludeSystems` argument, which is how 0.3.5 left out the Windows build (§4). Its manifest is version `0.7.0`, the only one in the catalog.
 
 Consequences:
 
 - Rule 1 admits all of these. The gate loads a module with no protocol stamp "permissively with a warning". Whether logos_execution_zone's plugin carries a stamp is **unverified**.
-- Only three catalog packages were rebuilt on the 0.3.2 generation. Core modules at 0.1 and pre-protocol ship next to 0.9 ones. Whether each has been exercised against the 0.3.2 host is **unverified**.
-- A 0.2-generation caller works against a 0.9-generation callee in at least one tested case: Muster (0.2 glue) → `delivery_module` v0.3.0 (0.9) passed Muster's `scripts/ui-parity.sh` 8/8 in the standalone runner on 2026-10-01. The catalog now ships delivery_module 0.3.2, still on the Sept 17–23 generation.
+- Only nine of the 49 catalog packages are on the 0.3.2 generation: lez_core, lez_wallet_ui, storage_ui, blockchain_ui and the five `lez-programs` packages. Core modules at 0.1 and pre-protocol ship next to 0.9 ones. Whether each has been exercised against the 0.3.2 host is **unverified**.
+- A 0.2-generation caller works against a 0.9-generation callee in at least one tested case: Muster (0.2 glue) → `delivery_module` v0.3.0 (0.9) passed Muster's `scripts/ui-parity.sh` 8/8 in the standalone runner on 2026-10-01. The catalog now ships delivery_module 0.4.0, still on the Sept 17–23 generation (builder `0.3.1`, `16e2f6bd`, in its lock at the pin `1e1fb56`).
 - **UI modules all sit on 0.9 builders from Sept 8 to Oct 3.** Their view-module-runtime is `3ab072ea`, `42d91408`, `db31d118`, `da1069ae` or `fd902f81`, never Basecamp's exact `4c429723`. Rule 4 is therefore "same generation", not "same hash".
 
 ---
@@ -150,7 +153,7 @@ gh api "repos/logos-co/logos-protocol/contents/cpp/logos_protocol.h?ref=<rev>" \
 - Repeat the same walk for `logos-cpp-sdk`, `logos-plugin-qt`, `logos-qt-sdk` and `logos-view-module-runtime`.
 - `nix flake metadata --json` shows the same graph.
 - A builder with no `logos-protocol` input at all is pre-protocol (logos_execution_zone's `d5ac0dce`, above).
-- In a monorepo the package's lock is the one in its `subdir` (the RLN modules), not the root one.
+- In a monorepo the package's lock is the one in its `subdir` (the RLN modules), not the root one. For a wrapper package, use `source.repo`, `source.commit` and `source.subdir` (lez-programs), not `source.wrapper`: the wrapper's own lock has no builder.
 - A gitignored `flake.lock` (Muster's `module/` ignores it) means the effective set is whatever `flake.nix` pins by rev, plus each input's own lock for everything not overridden.
 
 **From a built plugin:**
@@ -186,7 +189,7 @@ cat result/version result/exports.txt   # 0.9.0 + the 12 names; result/bin/logos
 | Variant key in `manifest.json#main` | `linux-amd64-dev` (`darwin-arm64-dev`, …) | `linux-amd64`, `darwin-arm64`, `linux-arm64`, `windows-x86_64` |
 | Runtime deps | `/nix/store` paths: runs only where that store exists | Self-contained: `nix-bundle-dir` co-locates the libraries |
 | Host that accepts it | A nix-built **dev** Basecamp (`nix build` → `app`, `LOGOS_PORTABLE_BUILD=OFF`), dev `lgpm`, dev `logoscore` | The **release AppImage/DMG** (`appDistributed`, `portable = true`), portable `lgpm` (`cli-portable`), `logoscore`'s default resolver |
-| What the catalog ships | — | Portable only (checked against the 2026-10-14 index: no `-dev` keys) |
+| What the catalog ships | — | Portable only (checked against the 2026-11-04 index, all 143 published versions: no `-dev` keys) |
 
 **Why a dev-built module is rejected by the release AppImage.**
 
@@ -201,7 +204,7 @@ Ship and test against the AppImage with **`.#lgx-portable`**. Test against a nix
 **Windows.**
 
 - Basecamp 0.3.2 ships a Windows installer (`LogosBasecamp-Desktop-v0.3.2-f2fae6-x86_64-setup.exe`) next to the AppImages and the DMG.
-- 34 of the 46 catalog packages ship a `windows-x86_64` variant.
+- 34 of the 49 catalog packages ship a `windows-x86_64` variant (each package's latest version, 2026-11-04). The 15 without one: blockchain_module, blockchain_ui (0.3.5 dropped it), the five `lez-programs` packages, lez_core, lez_wallet_ui, lez_explorer_ui, lez_indexer_module, logos_execution_zone, liblogos_lez_rln_module, libp2p_module and accounts_ui.
 - New in 0.3.2: Basecamp's UI doc-tests have Windows legs (#470, #471), and `ui-host` dies with the app on Windows (#467).
 - Whether a third-party module's `windows-x86_64` variant installs and loads in the Windows build is **unverified**.
 
@@ -212,7 +215,7 @@ Ship and test against the AppImage with **`.#lgx-portable`**. Test against a nix
 - **Build:**
   - `nix build .#lgx-portable` (or `.#lgx`).
   - `nix build github:logos-co/logos-package#lgx` provides the CLI. `lgx manifest X.lgx` prints name, version, manifest version, **variants** and dependencies. `lgx extract X.lgx --assets-only` gives `assets/lidl/<name>.lidl` on current bundlers ([lgx README][lgx-readme]).
-  - Example check of Muster's portable `.lgx` (built 2026-09-23): manifest `0.3.0`, variant `linux-amd64`, deps `delivery_module`, `lez_core`, unsigned, no root assets. Of the catalog's 46 current releases, 42 are manifest `0.6.0`. amm module+ui are `0.3.0`, and lez_indexer_module and logos_execution_zone are `0.2.0`.
+  - Example check of Muster's portable `.lgx` (built 2026-09-23): manifest `0.3.0`, variant `linux-amd64`, deps `delivery_module`, `lez_core`, unsigned, no root assets. Of the catalog's 49 current releases, 46 are manifest `0.6.0`, blockchain_ui is `0.7.0`, and lez_indexer_module and logos_execution_zone are `0.2.0`.
 - **Install into Basecamp, GUI (release AppImage or dev build):**
   1. Install every dependency first, from the catalog. **A local `.lgx` install does not resolve dependencies** ([PMUI][pmui-local]).
   2. In Package Manager, use the "install local" action. It opens a file dialog titled "Select LGX Package to Install" ([PackageManager.qml][pmui-dialog]).
@@ -285,6 +288,10 @@ Staying on builder `0.3.1` or `0.3.2` still loads in 0.3.2: the protocol and exp
 [bc-one-proto]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/flake.nix#L15-L30
 [bc-installed]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/flake.nix#L221-L239
 [bc-dirs]: https://github.com/logos-co/logos-basecamp/blob/f2fae630737bc56ef8c4bb33ce92ae365ba8abb9/README.md#L94-L165
+[w-token]: https://github.com/logos-blockchain/logos-token-module/blob/2afe8a796a67b1a5ce807851b3f74660114e1ee2/flake.nix
+[lp-543]: https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011
+[b-284]: https://github.com/logos-co/logos-module-builder/pull/284
+[bui-flake]: https://github.com/logos-blockchain/logos-blockchain-ui/blob/df4fea7d4f351a5359321688d9bcf85155f14f10/flake.nix#L8-L14
 [b-upper]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/flake.nix#L50-L62
 [mk-outputs]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/mkLogosModule.nix#L1160-L1176
 [ll-gate]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/module_manager.cpp#L837-L870
