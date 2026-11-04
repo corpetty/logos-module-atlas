@@ -4,8 +4,9 @@
 The refresh regenerates registry.json, the cards and the contracts, but not what people
 write: stacks/*.md, guides/*.md, gaps.md and data/stacks.json. Each doc names the
 Basecamp release it was written against, and the stack docs and guides pin module
-versions and commits on a "Pinned at" or "Verified against" line. This compares all of
-that with registry.json, and checks that every module has a stack of its own.
+versions and commits on a "Pinned at" or "Verified against" line, and gaps.md names
+them in its "## Summary" table. This compares all of that with registry.json, and
+checks that every module has a stack of its own.
 
 Prints a Markdown report. Exit status 0 when nothing has drifted, 1 when something has.
 
@@ -29,7 +30,7 @@ RELEASE = re.compile(r"Basecamp\s+\**`?(\d+\.\d+\.\d+)`?\**(?:\s*\(\[?`?([0-9a-f
 PIN_HEAD = re.compile(r"Pinned at|Verified against", re.I)
 # A pinned version, with an optional commit that may name its repo:
 # "keystore_module 0.1.0 (`2318c67`)", "liblogos_lez_rln_module 4.2.1 (logos-rln-modules `eb02da8`)"
-PIN_VERSION = re.compile(r"\b([a-z][a-z0-9_]*)\s+`?(\d+\.\d+\.\d+)`?(?:\s*\((?:[\w.-]+\s+)?`([0-9a-f]{7,40})`\))?")
+PIN_VERSION = re.compile(r"\b([a-z][a-z0-9_]*)`?\s+`?(\d+\.\d+\.\d+)`?(?:\s*\((?:[\w.-]+\s+)?`([0-9a-f]{7,40})`\))?")
 # A pinned commit alone: "capability_module `1a1b8b5a`"
 PIN_COMMIT = re.compile(r"\b([a-z][a-z0-9_]*)\s+`([0-9a-f]{7,40})`")
 
@@ -46,6 +47,20 @@ def pin_paragraph(text: str) -> str:
                 out.append(following)
             return " ".join(out)
     return ""
+
+
+def summary_table(text: str) -> str:
+    """The lines under a "## Summary" heading, up to the next "## " heading, minus parentheticals."""
+    out, inside = [], False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if inside:
+                break
+            inside = line.strip().lower() == "## summary"
+        elif inside:
+            out.append(line)
+    # "(0.1.0, no tags)" and "(all 0.1.1)" are asides, not the version the row is about
+    return re.sub(r"\([^()]*\)", " ", "\n".join(out))
 
 
 def current_versions(m: dict) -> set[str]:
@@ -90,6 +105,13 @@ def check_doc(path: Path, registry: dict, by_name: dict, assigned: dict) -> list
         mentioned.add(name)
         if not (m.get("source") or {}).get("commit", "").startswith(commit):
             findings.append(f"Pins `{name}` at `{commit}`; the release builds it from `{m['source']['commit'][:7]}`.")
+
+    # A summary table names versions in its cells, with no commits
+    for name, version, _ in PIN_VERSION.findall(summary_table(text)):
+        m = by_name.get(name)
+        versions = current_versions(m) if m else set()
+        if versions and version not in versions:
+            findings.append(f"Summary table says `{name}` {version}; the release ships {', '.join(sorted(versions))}.")
 
     # A stack doc's pin line names every module in its stack
     stack = path.stem if path.parent.name == "stacks" else None
