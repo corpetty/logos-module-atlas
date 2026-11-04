@@ -2,7 +2,7 @@
 
 How a third-party Logos module depends on, and calls, a module from the Basecamp 0.3.2 catalog: what to declare, how to get the contract, the call and event patterns in each SDK, what the callee learns about you, and when to hand the user to another app's UI instead. It ends with Muster as a worked example.
 
-**Verified against** (2026-10-14): Basecamp `0.3.2` ([f2fae63][bc]), logos-module-builder `0.3.3` (`3a64943f`, which builds Basecamp 0.3.2's bundled package_downloader; its package-manager-ui and modules_state build from the pre-tag commits `fc31329d`/`3818566d`; 0.3.2 → 0.3.3 is lock-only), logos-cpp-sdk `3bf5365c`, logos-rust-sdk `040e94e8`, logos-protocol `0.9.0` (`9d59f5de`), liblogos `00f19ef8`, corpetty/logos-nim-sdk `6077eb7`, capability_module `1a1b8b5a` (unchanged), keystore_module `2318c679` (unchanged). Everything marked **unverified** was not checked. First written 2026-10-01 against Basecamp 0.3.1 (`aeb8192`).
+**Verified against** (2026-10-14): Basecamp `0.3.2` ([f2fae63][bc]), logos-module-builder `0.3.3` (`3a64943f`, which builds Basecamp 0.3.2's bundled package_downloader; its package-manager-ui and modules_state build from the pre-tag commits `fc31329d`/`3818566d`; 0.3.2 → 0.3.3 is lock-only), logos-cpp-sdk `3bf5365c`, logos-rust-sdk `040e94e8`, logos-protocol `0.9.0` (`9d59f5de`), liblogos `00f19ef8`, corpetty/logos-nim-sdk `6077eb7`, capability_module `1a1b8b5a` (unchanged), keystore_module `2318c679` (unchanged). Everything marked **unverified** was not checked. The pin-a-range note in §1 and the intents table in §6 were re-checked on 2026-11-04 against the registry and the catalog index of that day: Basecamp is still `0.3.2`, and `0.3.3` is still the newest builder release (`gh release list`), so the line above stands. Everything else is as of 2026-10-14. First written 2026-10-01 against Basecamp 0.3.1 (`aeb8192`).
 
 Related pages:
 
@@ -75,7 +75,12 @@ Measured on Basecamp 0.3.2 ([#6][a6]):
 - **`lp_get_methods` takes no deadline.** In a standalone runner it blocked about 20 s on a module the host did not have.
 - **Unverified:** logos-protocol [`0ec3cbe`][lp-absent] makes a QtRO acquire for a module that nothing listens for give up after a 1 s grace instead of the full budget. Each module embeds the protocol its builder pinned, and builder 0.3.3 pins one that carries this fix (`9d59f5de`). [#6][a6] does not record which protocol the measuring caller embedded. Whether a caller built with builder 0.3.3 fails in about 1 s was not measured.
 
-> **Pin a range on anything you call through raw lp.** An unversioned dep resolves to the newest catalog version. On 2026-10-14 that is `delivery_module 0.3.2` and `lez_core 0.5.1`, and nothing type-checks a raw `lp_invoke` against the new contract. delivery `0.3.0` added a `source` field before `timestamp` in `messageReceived` ([muster delivery.nim][m-deliv-hdr]). The field is still there at `0.3.2` ([`delivery_module.lidl`](../modules/delivery_module/delivery_module.lidl)). A range does not protect you from a breaking patch release. `lez_core 0.5.1` dropped `statistics_path` from `create_new` and `open`, and removed `token_elf`, `amm_elf` and `ata_elf`, so `~0.5.0` admits it (`git diff 335c097 HEAD -- modules/lez_core/`).
+> **Pin a range on anything you call through raw lp.** An unversioned dep resolves to the newest catalog version. On 2026-11-04 that is `delivery_module 0.4.0`, `lez_core 0.5.1` and `blockchain_module 0.3.4`, and nothing type-checks a raw `lp_invoke` against the new contract. delivery `0.3.0` added a `source` field before `timestamp` in `messageReceived` ([muster delivery.nim][m-deliv-hdr]). The field is still there at `0.4.0` ([`delivery_module.lidl`](../modules/delivery_module/delivery_module.lidl)), and `0.4.0` itself only adds methods (`getLocalMixPeerRecord`, `addMixPeer`). A range does not protect you from a breaking patch release, and two have shipped:
+>
+> - `lez_core 0.5.1` dropped `statistics_path` from `create_new` and `open`, and removed `token_elf`, `amm_elf` and `ata_elf`, so `~0.5.0` admits it (`git diff 335c097 HEAD -- modules/lez_core/`).
+> - `blockchain_module 0.3.4` (the catalog has no `0.3.3`) removed `update_user_config`, `migrate_user_config`, `migrate_user_config_0_1_2` and `merge_user_config`, dropped `keystore_path` from `participate`, and dropped `user_config_path` from `generate_key`, `add_key` and `remove_key`. So `~0.3.0` and `^0.3.2` both admit it (`git diff 85f999a -- modules/blockchain_module/blockchain_module.lidl`). Its own UI shows the limit of a loose range: `blockchain_ui 0.3.0`–`0.3.2` declared `>=0.3.0`, which `0.3.4` satisfies, and `0.3.5` dropped the range altogether.
+>
+> **An exact pin is the other edge.** Five catalog packages declare `lez_core` exactly `"0.4.3"`: `amm_module`, `amm_ui`, `token_module`, `token_ui` and `oracle_module`. That is the legacy LEZ v0.2.x line (lez-programs' `flake.nix` at [`543563a`][lp-pin] calls it "LEZ v0.2.4 legacy wallet-ffi"). `lez_wallet_ui` declares `>=0.5.1`, and the catalog offers `lez_core` `0.4.0` to `0.5.1`. Rule 7 of [`compatibility.md`](compatibility.md#0-the-rules-in-the-order-they-bite) applies as written: the gate compares each dependency's range with the **one** installed `lez_core`, so by that rule no single `lez_core` satisfies both groups and they cannot be co-installed ([dependency_gate.h][dep-gate]). That follows from reading the gate and the manifests. Nothing was installed or loaded to confirm it, so the runtime behaviour is **unverified**. So is how liblogos reads a bare `0.4.3`: the gate's header lists `^ ~ x * comparator-sets` and does not name an exact version. If you depend on `lez_core` yourself, pick the line you want and pin to it, because an unversioned dep lands on `0.5.1` and cannot sit beside the DEX, token or oracle modules.
 
 ---
 
@@ -269,7 +274,7 @@ logos.request("evm.signing.approve", { handle: h }, function (res) {
 - **Params:** the provider's `params` are enforced just before dispatch (`bad_request`). Extra fields pass through.
 - **Not signed.** A name is a claim, and the provider renders what is signed ([§6 limits][int-limits]).
 
-**Wallet intents in the 0.3.2 catalog** (from each pinned `metadata.json`, via `registry.json` on 2026-10-14):
+**Wallet intents in the 0.3.2 catalog** (from each pinned `metadata.json`, via `registry.json` on 2026-11-04; no `provides` or `uses` changed since 2026-10-14, and the new token, oracle and DEX packages declare none):
 
 | Intent | Provider | Params | Handoff | Used today by |
 |---|---|---|---|---|
@@ -369,6 +374,7 @@ These steps edit files in the Muster repo. Do them there, not here.
 [mk-lidl]: https://github.com/logos-co/logos-module-builder/blob/3a64943fe6827bab4c4686fb35c37d24d5df0710/lib/mkLogosModule.nix#L958-L985
 [pr226]: https://github.com/logos-co/logos-module-builder/pull/226
 [dep-gate]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/dependency_gate.h#L8-L24
+[lp-pin]: https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/flake.nix#L36-L59
 [ll-gate]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/module_manager.cpp#L838-L898
 [ll-derived]: https://github.com/logos-co/logos-liblogos/blob/00f19ef8e2ffd54e2cf97616a960cd19232ad4ba/src/logos_core/module_manager.cpp#L466-L504
 [ll-inflight]: https://github.com/logos-co/logos-liblogos/commit/7d372f567f69e1946668966cd759e473fd15117a

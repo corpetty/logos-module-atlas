@@ -1,6 +1,6 @@
 # Key custody across chains
 
-Pinned at Basecamp **0.3.2**, catalog index 2026-10-14. This page summarizes the
+Pinned at Basecamp **0.3.2**, catalog index 2026-11-04. This page summarizes the
 evidence in [evm-wallet.md](evm-wallet.md), [monero-wallet.md](monero-wallet.md) and
 [blockchain-lez.md](blockchain-lez.md). Those pages carry the permalinks, so follow
 them before relying on a detail.
@@ -14,7 +14,7 @@ another module (the motivating case is Muster).
 |---|---|---|---|---|---|
 | Ethereum / EVM | [`keystore_module`](../modules/keystore_module/README.md): scrypt vaults, BIP39/32 HD, secp256k1 | [`tx_sender_module`](../modules/tx_sender_module/README.md) for transactions; `keystore_module.request_approval` for messages, EIP-712 and digests | [`evm_signer_ui`](../modules/evm_signer_ui/README.md) (intent `evm.signing.approve`) | [`evm_signer_cli`](../modules/evm_signer_cli/README.md) + an operator | catalog |
 | Monero | [`monero_wallet_core_module`](../modules/monero_wallet_core_module/README.md): wallet2 via monero_c | [`monero_wallet_backend`](../modules/monero_wallet_backend/README.md) (`prepare_send` → `confirm_send`) | [`monero_wallet_ui`](../modules/monero_wallet_ui/README.md) (default approver; no "review this send" intent) | [`monero_wallet_cli`](../modules/monero_wallet_cli/README.md) | catalog |
-| LEZ | [`lez_core`](../modules/lez_core/README.md): BIP39 key tree, **stored unencrypted** (`password` ignored upstream) | `lez_core` directly. One wallet per process, shared by every caller | **none**: no consent step; every spending method is ungated | n/a | catalog |
+| LEZ | [`lez_core`](../modules/lez_core/README.md): BIP39 key tree, **stored unencrypted** (`password` ignored upstream, in 0.5.x and in the legacy 0.4.3) | `lez_core` directly. One wallet per process, shared by every caller, including the DEX, token and oracle modules, which only sign through it | **none**: no consent step; every spending method is ungated | n/a | catalog |
 | Bitcoin | none | — | — | — | **no**, see [gaps.md](../gaps.md) |
 | Zcash | none | — | — | — | **no**, see [gaps.md](../gaps.md) |
 
@@ -70,7 +70,9 @@ Both wallet stacks were built to the same pattern. Learn it once.
 `lez_core` has none of the shared model above. There are no roles, no approval and
 no per-caller scope. Any module that can reach it can spend from the shared wallet
 (`transfer_*`, `send_generic_*`, `bridge_withdraw`), and even
-`--access-policy enforce` only requires that the module *declares* `lez_core`. Keys
+`--access-policy enforce` only requires that the module *declares* `lez_core`; the DEX, token and oracle packages
+([`amm_module`](../modules/amm_module/README.md), [`token_module`](../modules/token_module/README.md), [`oracle_module`](../modules/oracle_module/README.md)) do, so each
+holds that authority, but none is a key holder: they build transactions and submit them through `lez_core` with public accounts only. Keys
 sit in a plain-JSON `storage.json`. There is one open wallet per process, and it may
 be the user's LEZ Wallet UI wallet. So **probe before you open**: if
 `get_sequencer_addr()` or `list_accounts()` is non-empty, a wallet is already open.
@@ -78,6 +80,9 @@ An "`open()` failed, so `create_new()`" fallback silently operates on someone
 else's wallet. Proving calls take minutes, so use `lp_invoke_async` rather than the
 20 s default timeout. Details and the full checklist:
 [blockchain-lez.md → Using `lez_core` from another module](blockchain-lez.md#using-lez_core-from-another-module).
+The catalog now has two `lez_core` lines that one install cannot serve: the wallet UI wants `>=0.5.1`,
+the DEX, token and oracle modules exactly `0.4.3`. Pin the line you mean
+([blockchain-lez.md → The LEZ split](blockchain-lez.md#the-lez-split-lez_core-043-vs-05x)).
 
 ## Security posture you are inheriting
 
