@@ -204,11 +204,15 @@ def default_repo_url(lock: dict) -> tuple[str, str]:
 # ------------------------------------------------------------------ source repos
 
 
-def module_metadata(repo: str, sha: str) -> list[tuple[str, dict]]:
-    """Every (subdir, metadata.json) in a repo that is a real module, not a test probe."""
+def module_metadata(repo: str, sha: str, max_depth: int | None = 1) -> list[tuple[str, dict]]:
+    """Every (subdir, metadata.json) in a repo that is a real module, not a test probe.
+
+    Looks at the root and top-level dirs only, unless max_depth says deeper (None: any depth)."""
     found = []
     for path in tree(repo, sha):
-        if not path.endswith("metadata.json") or path.count("/") > 1 or NOISE.search(path):
+        if not path.endswith("metadata.json") or NOISE.search(path) or (
+            max_depth is not None and path.count("/") > max_depth
+        ):
             continue
         text = raw(repo, sha, path)
         try:
@@ -250,6 +254,46 @@ def catalog_module_map(catalog_repo: str, commit: str) -> dict[str, dict]:
                 out.setdefault(meta["name"], {"dir": d, "repo": repo, "sha": sha, "subdir": subdir})
     _cache[key] = out
     return out
+
+
+# A flake input on GitHub: `<name>.url = "github:<owner>/<repo><rest>"` (rest: `/<ref>`, `?rev=…`).
+FLAKE_GITHUB_INPUT = re.compile(r'^\s*(?:inputs\.)?([\w-]+)\.url\s*=\s*"github:([\w.-]+)/([\w.-]+)([^"]*)"', re.M)
+OWN_SOURCE = re.compile(r"^(src/|CMakeLists\.txt$|Cargo\.toml$)")
+
+
+def unwrap(repo: str, sha: str, subdir: str, name: str) -> dict | None:
+    """The real source behind a thin wrapper, or None when this directory builds the module itself.
+
+    A wrapper has no source of its own (no src/, CMakeLists.txt or Cargo.toml) and a flake.nix
+    that re-exports `<input>.packages` from a GitHub input pinned to an exact rev (`?rev=<sha>`
+    or `/<sha>` in its URL, else the rev flake.lock locked). The real module is the directory of
+    that input, at that rev, whose metadata.json has the same name.
+    """
+    pre = f"{subdir}/" if subdir else ""
+    if any(OWN_SOURCE.match(p[len(pre):]) for p in tree(repo, sha) if p.startswith(pre)):
+        return None
+    flake = raw(repo, sha, f"{pre}flake.nix")
+    if not flake:
+        return None
+    try:
+        lock = json.loads(raw(repo, sha, f"{pre}flake.lock") or "{}")
+    except json.JSONDecodeError:
+        lock = {}
+    for inp, owner, name_, rest in FLAKE_GITHUB_INPUT.findall(flake):
+        if not re.search(rf"\b{re.escape(inp)}\.packages\b", flake):
+            continue
+        m = re.search(r"[?&]rev=([0-9a-f]{40})\b", rest) or re.match(r"/([0-9a-f]{40})\b", rest)
+        rev = m.group(1) if m else None
+        if not rev and lock.get("nodes"):
+            lk = locked(lock, inp) or {}
+            rev = lk.get("rev") if lk.get("type") == "github" else None
+        if not rev:
+            continue
+        target = f"{owner}/{name_}"
+        dirs = sorted((d for d, meta in module_metadata(target, rev, None) if meta["name"] == name), key=lambda d: (d.count("/"), d))
+        if dirs:
+            return {"repo": target, "commit": rev, "subdir": dirs[0], "input": inp}
+    return None
 
 
 # --------------------------------------------------------------- interface files
@@ -530,12 +574,24 @@ def build(args) -> None:
         e["catalog"] = catalog
         e["manifest"] = man
         if src:
-            meta = next((m for sd, m in module_metadata(src["repo"], src["sha"]) if m["name"] == pkg["name"]), {})
+            pinned = f"{pkg['catalog']}@{(t['catalogCommit'] or '')[:12]} submodules/{src['dir']} (tag {latest.get('publisherRef')})"
+            inner = unwrap(src["repo"], src["sha"], src["subdir"], pkg["name"])
+            if inner:
+                # A wrapper builds nothing itself: extract, build and link from what it re-exports.
+                e["source"] = {
+                    "repo": inner["repo"], "commit": inner["commit"], "subdir": inner["subdir"], "pinnedBy": pinned,
+                    "wrapper": {
+                        "repo": src["repo"], "commit": src["sha"], "subdir": src["subdir"], "flakeInput": inner["input"],
+                        "url": permalink(src["repo"], src["sha"], src["subdir"]),
+                    },
+                }
+                print(f"{pkg['name']}: wrapper {src['repo']}@{src['sha'][:7]} -> {inner['repo']}@{inner['commit'][:7]}:{inner['subdir']}", file=sys.stderr)
+            else:
+                e["source"] = {"repo": src["repo"], "commit": src["sha"], "subdir": src["subdir"], "pinnedBy": pinned}
+            s = e["source"]
+            meta = next((m for sd, m in module_metadata(s["repo"], s["commit"], None if inner else 1)
+                         if m["name"] == pkg["name"] and sd == s["subdir"]), {})
             e.setdefault("meta", meta)
-            e["source"] = {
-                "repo": src["repo"], "commit": src["sha"], "subdir": src["subdir"],
-                "pinnedBy": f"{pkg['catalog']}@{(t['catalogCommit'] or '')[:12]} submodules/{src['dir']} (tag {latest.get('publisherRef')})",
-            }
         else:
             e.setdefault("meta", {})
             e.setdefault("source", None)
@@ -694,6 +750,13 @@ def render_card(r: dict, release: dict) -> str:
     if src:
         sub = f" (`{src['subdir']}/`)" if src.get("subdir") else ""
         L.append(f"| Source | [{src['repo']}@{src['commit'][:7]}]({src['url']}){sub} |")
+        if src.get("wrapper"):
+            w = src["wrapper"]
+            wsub = f" (`{w['subdir']}/`)" if w.get("subdir") else ""
+            L.append(
+                f"| Wrapper | The package is built from [{w['repo']}@{w['commit'][:7]}]({w['url']}){wsub}, which re-exports "
+                f"[{src['repo']}@{src['commit'][:7]}]({src['url']}){sub} through its flake input `{w['flakeInput']}` |"
+            )
         L.append(f"| Pinned by | {src['pinnedBy']} |")
     L.append(f"| Depends on | {deps} |")
     L.append(f"| Required by | {req} |")

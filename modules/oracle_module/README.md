@@ -6,22 +6,40 @@
 | | |
 |---|---|
 | Type | `core` · interface `universal` · c++ |
-| Stack | [other](../../stacks/other.md) · category `oracle` |
+| Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `oracle` |
 | Availability | installable from the default catalog *Logos Official* |
 | Catalog version | **0.1.0** (released 2026-10-30) · all: 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [oracle_module-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/oracle_module-v0.1.0/oracle_module-0.1.0.lgx) · sha256 `2ff2e3b9bc617b98…` |
-| Source | [logos-blockchain/logos-twap-oracle-module@a964dc4](https://github.com/logos-blockchain/logos-twap-oracle-module/tree/a964dc4d32780adec3e6fa63ee549f151d3871b2) |
+| Source | [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/oracle) (`modules/oracle/`) |
+| Wrapper | The package is built from [logos-blockchain/logos-twap-oracle-module@a964dc4](https://github.com/logos-blockchain/logos-twap-oracle-module/tree/a964dc4d32780adec3e6fa63ee549f151d3871b2), which re-exports [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/oracle) (`modules/oracle/`) through its flake input `lez_programs` |
 | Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-twap-oracle-module (tag oracle_module-v0.1.0) |
 | Depends on | [`lez_core`](../lez_core/README.md) `0.4.3` |
 | Required by | — |
 
 ## Read these first
 
-1. **Stack overview** — [stacks/other.md](../../stacks/other.md): how this module fits with its neighbours, trust boundaries, flows.
+1. **Contract** — [`oracle_module.lidl`](oracle_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`modules/oracle/src/oracle_module_impl.h`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/oracle/src/oracle_module_impl.h). Doc comments here are the API reference.
+3. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+4. **Upstream docs** — [`modules/oracle/README.md`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/oracle/README.md)
+
+## API at a glance
+
+| Method | Signature | Summary |
+|---|---|---|
+| `setOracleProgramId` | `setOracleProgramId(request: {tstr: any})` |  |
+| `programInfo` | `programInfo()` |  |
+| `feedAddresses` | `feedAddresses(request: {tstr: any})` |  |
+| `createCurrentTickAccount` | `createCurrentTickAccount(request: {tstr: any})` |  |
+| `createPriceObservations` | `createPriceObservations(request: {tstr: any})` |  |
+| `createOraclePriceAccount` | `createOraclePriceAccount(request: {tstr: any})` |  |
+| `updateCurrentTick` | `updateCurrentTick(request: {tstr: any})` |  |
+| `recordTick` | `recordTick(request: {tstr: any})` |  |
+| `publishPrice` | `publishPrice(request: {tstr: any})` |  |
 
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["oracle_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-blockchain/logos-twap-oracle-module/a964dc4d32780adec3e6fa63ee549f151d3871b2#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-blockchain/lez-programs/543563af88b5638e308a981106fd821690227011?dir=modules/oracle#lidl' --no-link --print-out-paths`
 - Install: Basecamp → Package Manager, or `logosctl install oracle_module --version 0.1.0`

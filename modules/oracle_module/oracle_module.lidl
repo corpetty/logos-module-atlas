@@ -1,0 +1,16 @@
+module oracle_module {
+  version "0.1.0"
+  description "Universal Logos core module for canonical oracle prices and TWAP feeds"
+  category "oracle"
+  depends [lez_core]
+
+  method setOracleProgramId(request: {tstr: any}) -> {tstr: any} description "Select the program id, its ImageID (base58 or hex). Empty clears the\ninstance override and restores TWAP_ORACLE_PROGRAM_ID. Invalid input\nleaves the previous selection intact."
+  method programInfo() -> {tstr: any} description "Resolve the program on every call: the selected or TWAP_ORACLE_PROGRAM_ID\nid, the ImageID of TWAP_ORACLE_PROGRAM_BIN, or both when they agree."
+  method feedAddresses(request: {tstr: any}) -> {tstr: any} description "Derive current-tick, observations, price, and clock IDs from priceSourceId\nand decimal-string windowDurationMs. Does not assert account existence."
+  method createCurrentTickAccount(request: {tstr: any}) -> {tstr: any} description "{priceSourceId, initialPrice}: create the source's current-tick account.\ninitialPrice is a Q64.64 spot price; the source must be a public wallet\naccount (it signs) and the account must not exist yet."
+  method createPriceObservations(request: {tstr: any}) -> {tstr: any} description "{priceSourceId, initialTick, windowDurationMs}: create the observations\nring buffer for one window. initialTick is a signed i32."
+  method createOraclePriceAccount(request: {tstr: any}) -> {tstr: any} description "{priceSourceId, baseAssetId, quoteAssetId, initialPrice, windowDurationMs}:\ncreate the canonical price account for one window. initialPrice is a\nnon-zero Q64.64 price (quote per base)."
+  method updateCurrentTick(request: {tstr: any}) -> {tstr: any} description "{priceSourceId, price}: write a new Q64.64 spot price to the source's\nexisting current-tick account. The source signs."
+  method recordTick(request: {tstr: any}) -> {tstr: any} description "{priceSourceId, windowDurationMs}: permissionless; sample the current\ntick into the window's observations. The program skips samples taken\nsooner than windowDurationMs / 2048 after the previous one."
+  method publishPrice(request: {tstr: any}) -> {tstr: any} description "{priceSourceId, windowDurationMs}: permissionless; publish the window's\nTWAP to its price account. A no-op until two observations exist."
+}

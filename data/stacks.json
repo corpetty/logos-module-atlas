@@ -23,6 +23,7 @@
     "blockchain_module": "blockchain-lez", "blockchain_ui": "blockchain-lez", "lez_core": "blockchain-lez",
     "lez_wallet_ui": "blockchain-lez", "lez_indexer_module": "blockchain-lez", "lez_explorer_ui": "blockchain-lez",
     "logos_execution_zone": "blockchain-lez", "amm_module": "blockchain-lez", "amm_ui": "blockchain-lez",
+    "token_module": "blockchain-lez", "token_ui": "blockchain-lez", "oracle_module": "blockchain-lez",
 
     "delivery_module": "messaging", "chat_module": "messaging", "chat_ui": "messaging", "delivery_demo": "messaging",
     "libp2p_module": "messaging", "liblogos_rln_module": "messaging", "liblogos_lez_rln_module": "messaging",

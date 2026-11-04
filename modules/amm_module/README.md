@@ -11,17 +11,48 @@
 | Catalog version | **0.3.0** (released 2026-10-30) · all: 0.3.0, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [amm_module-v0.3.0](https://github.com/logos-co/logos-modules-release/releases/download/amm_module-v0.3.0/amm_module-0.3.0.lgx) · sha256 `284b5a208fe79912…` |
-| Source | [logos-blockchain/logos-amm-module@0efc26a](https://github.com/logos-blockchain/logos-amm-module/tree/0efc26a6012e86f252c1b99a4964aac4a96d96c9) |
+| Source | [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/amm) (`modules/amm/`) |
+| Wrapper | The package is built from [logos-blockchain/logos-amm-module@0efc26a](https://github.com/logos-blockchain/logos-amm-module/tree/0efc26a6012e86f252c1b99a4964aac4a96d96c9), which re-exports [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/amm) (`modules/amm/`) through its flake input `lez_programs` |
 | Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-module (tag amm_module-v0.3.0) |
 | Depends on | [`lez_core`](../lez_core/README.md) `0.4.3` |
 | Required by | [`amm_ui`](../amm_ui/README.md) |
 
 ## Read these first
 
-1. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+1. **Contract** — [`amm_module.lidl`](amm_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`modules/amm/src/amm_module_impl.h`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/amm/src/amm_module_impl.h). Doc comments here are the API reference.
+3. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+4. **Upstream docs** — [`modules/amm/README.md`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/amm/README.md)
+
+## API at a glance
+
+| Method | Signature | Summary |
+|---|---|---|
+| `resolvePoolAccount` | `resolvePoolAccount(def_a_hex: tstr, def_b_hex: tstr)` |  |
+| `configAccount` | `configAccount()` |  |
+| `setAmmProgramId` | `setAmmProgramId(request: {tstr: any})` |  |
+| `setConfigId` | `setConfigId(request: {tstr: any})` |  |
+| `transferOwnership` | `transferOwnership(request: {tstr: any})` |  |
+| `withdrawProtocolFees` | `withdrawProtocolFees(request: {tstr: any})` |  |
+| `createPriceObservations` | `createPriceObservations(request: {tstr: any})` |  |
+| `createOraclePriceAccount` | `createOraclePriceAccount(request: {tstr: any})` |  |
+| `swapExactInQuote` | `swapExactInQuote(token_in_hex: tstr, token_out_hex: tstr, amount_in: any, slippage_bps: int)` |  |
+| `swapExactOutQuote` | `swapExactOutQuote(token_in_hex: tstr, token_out_hex: tstr, amount_out: any, slippage_bps: int)` |  |
+| `swapExactInput` | `swapExactInput(def_a_hex: tstr, def_b_hex: tstr, user_input_holding_hex: tstr, user_output_holding_hex: tstr, amount_in: any, min_out: any, deadline: any) -> tstr` | Submits an on-chain SwapExactInput transaction against the pool for (def_a_hex = token in, def_b_hex = token out). |
+| `swapExactOutput` | `swapExactOutput(def_a_hex: tstr, def_b_hex: tstr, user_input_holding_hex: tstr, user_output_holding_hex: tstr, amount_out: any, max_in: any, deadline: any) -> tstr` | Submits an on-chain SwapExactOutput transaction against the pool for (def_a_hex = token in, def_b_hex = token out). |
+| `createPoolQuote` | `createPoolQuote(request: {tstr: any})` |  |
+| `createPool` | `createPool(request: {tstr: any})` |  |
+| `addLiquidityQuote` | `addLiquidityQuote(request: {tstr: any})` |  |
+| `addLiquidity` | `addLiquidity(request: {tstr: any})` |  |
+| `removeLiquidityQuote` | `removeLiquidityQuote(request: {tstr: any})` |  |
+| `removeLiquidity` | `removeLiquidity(request: {tstr: any})` |  |
+| `syncReserves` | `syncReserves(request: {tstr: any})` |  |
+| `tokenHoldings` | `tokenHoldings(wallet_open: bool) -> [any]` | Lists the connected wallet's fungible token holdings for the account selector: `[{ accountId (hex), accountType:"TokenHolding", definitionId (base58), definitionIdHex (hex), balanceRaw }]` — one row per holding accoun… |
+| `feeTiers` | `feeTiers() -> [any]` | Lists the AMM's supported fee tiers as raw basis points, ascending: `[1, 5, 30, 100]`. |
+| `resolveTokens` | `resolveTokens(request: {tstr: any}, wallet_open: bool) -> [any]` | Resolves an app-provided set of token ids into liquidity selector rows. |
 
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["amm_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-blockchain/logos-amm-module/0efc26a6012e86f252c1b99a4964aac4a96d96c9#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-blockchain/lez-programs/543563af88b5638e308a981106fd821690227011?dir=modules/amm#lidl' --no-link --print-out-paths`
 - Install: Basecamp → Package Manager, or `logosctl install amm_module --version 0.3.0`
