@@ -11,16 +11,71 @@
 | Catalog version | **0.3.0** (released 2026-10-30) · all: 0.3.0, 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [amm_ui-v0.3.0](https://github.com/logos-co/logos-modules-release/releases/download/amm_ui-v0.3.0/amm_ui-0.3.0.lgx) · sha256 `e1904cc34d5dd5ef…` |
-| Source | [logos-blockchain/logos-amm-ui-module@31cfedc](https://github.com/logos-blockchain/logos-amm-ui-module/tree/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa) |
+| Source | [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/apps/amm) (`apps/amm/`) |
+| Wrapper | The package is built from [logos-blockchain/logos-amm-ui-module@31cfedc](https://github.com/logos-blockchain/logos-amm-ui-module/tree/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa), which re-exports [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/apps/amm) (`apps/amm/`) through its flake input `lez_programs` |
 | Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-ui-module (tag amm_ui-v0.3.0) |
 | Depends on | [`lez_core`](../lez_core/README.md) `0.4.3`, [`amm_module`](../amm_module/README.md) |
 | Required by | — |
 
 ## Read these first
 
-1. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`apps/amm/src/AmmUiBackend.rep`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/amm/src/AmmUiBackend.rep). Doc comments here are the API reference.
+2. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+3. **Upstream docs** — [`apps/amm/README.md`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/amm/README.md)
+
+## API at a glance
+
+| Method | Signature | Summary |
+|---|---|---|
+| `isWalletOpen` | `isWalletOpen: bool` | property (read-only) |
+| `walletStateReady` | `walletStateReady: bool` | property (read-only) |
+| `walletExists` | `walletExists: bool` | property (read-only) |
+| `configPath` | `configPath: QString` | property (read-only) |
+| `storagePath` | `storagePath: QString` | property (read-only) |
+| `walletHome` | `walletHome: QString` | property (read-only) |
+| `lastSyncedBlock` | `lastSyncedBlock: int` | property (read-only) |
+| `currentBlockHeight` | `currentBlockHeight: int` | property (read-only) |
+| `sequencerAddr` | `sequencerAddr: QString` | property (read-only) |
+| `sequencerReachable` | `sequencerReachable: bool` | property (read-only) |
+| `registryRevision` | `registryRevision: int` | property (read-only) |
+| `registryUrl` | `registryUrl: QString` | property (read-only) |
+| `activeNetwork` | `activeNetwork: QString` | property (read-only) |
+| `networks` | `networks: QVariantList` | property (read-only) |
+| `createAccountPublic` | `createAccountPublic() -> QString` | slot |
+| `createAccountPrivate` | `createAccountPrivate() -> QString` | slot |
+| `refreshAccounts` | `refreshAccounts()` | slot |
+| `refreshBalances` | `refreshBalances()` | slot |
+| `getBalance` | `getBalance(QString accountIdHex, bool isPublic) -> QString` | slot |
+| `createNewDefault` | `createNewDefault(QString password) -> QString` | slot |
+| `createNew` | `createNew(QString configPath, QString storagePath, QString password) -> QString` | slot |
+| `openExisting` | `openExisting() -> bool` | slot |
+| `disconnectWallet` | `disconnectWallet()` | slot |
+| `resolvePoolAccount` | `resolvePoolAccount(QString defAHex, QString defBHex) -> QVariantMap` | slot |
+| `configAccount` | `configAccount() -> QVariantMap` | slot |
+| `transferOwnership` | `transferOwnership(QVariantMap request) -> QVariantMap` | slot |
+| `createPriceObservations` | `createPriceObservations(QVariantMap request) -> QVariantMap` | slot |
+| `createOraclePriceAccount` | `createOraclePriceAccount(QVariantMap request) -> QVariantMap` | slot |
+| `swapExactInput` | `swapExactInput(QString defAHex, QString defBHex, QString userInputHoldingHex, QString userOutputHoldingHex, QString amountInDecimal, QString minOutDecimal, QString deadlineDecimal) -> QString` | slot |
+| `swapExactInQuote` | `swapExactInQuote(QString tokenInHex, QString tokenOutHex, QString amountInDecimal, int slippageBps) -> QVariantMap` | slot |
+| `swapExactOutQuote` | `swapExactOutQuote(QString tokenInHex, QString tokenOutHex, QString amountOutDecimal, int slippageBps) -> QVariantMap` | slot |
+| `swapExactOutput` | `swapExactOutput(QString defAHex, QString defBHex, QString userInputHoldingHex, QString userOutputHoldingHex, QString amountOutDecimal, QString maxInDecimal, QString deadlineDecimal) -> QString` | slot |
+| `tokenList` | `tokenList() -> QVariantList` | slot |
+| `createPoolQuote` | `createPoolQuote(QVariantMap request) -> QVariantMap` | slot |
+| `addLiquidityQuote` | `addLiquidityQuote(QVariantMap request) -> QVariantMap` | slot |
+| `createPool` | `createPool(QVariantMap request) -> QVariantMap` | slot |
+| `addLiquidity` | `addLiquidity(QVariantMap request) -> QVariantMap` | slot |
+| `removeLiquidityQuote` | `removeLiquidityQuote(QVariantMap request) -> QVariantMap` | slot |
+| `removeLiquidity` | `removeLiquidity(QVariantMap request) -> QVariantMap` | slot |
+| `tokenHoldings` | `tokenHoldings() -> QVariantList` | slot |
+| `poolList` | `poolList() -> QVariantList` | slot |
+| `feeTiers` | `feeTiers() -> QVariantList` | slot |
+| `resolveTokens` | `resolveTokens() -> QVariantList` | slot |
+| `addCustomToken` | `addCustomToken(QString tokenId) -> QVariantMap` | slot |
+| `refreshRegistry` | `refreshRegistry()` | slot |
+| `saveRegistryUrl` | `saveRegistryUrl(QString url)` | slot |
+| `selectNetwork` | `selectNetwork(QString id)` | slot |
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-blockchain/logos-amm-ui-module/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-blockchain/lez-programs/543563af88b5638e308a981106fd821690227011?dir=apps/amm#lidl' --no-link --print-out-paths`
 - Install: Basecamp → Package Manager, or `logosctl install amm_ui --version 0.3.0`

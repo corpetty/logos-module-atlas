@@ -6,21 +6,64 @@
 | | |
 |---|---|
 | Type | `ui_qml` · qml |
-| Stack | [other](../../stacks/other.md) · category `token` |
+| Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `token` |
 | Availability | installable from the default catalog *Logos Official* |
 | Catalog version | **0.1.0** (released 2026-10-30) · all: 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [token_ui-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/token_ui-v0.1.0/token_ui-0.1.0.lgx) · sha256 `2ee19fcd14123236…` |
-| Source | [logos-blockchain/logos-token-ui-module@255f0ca](https://github.com/logos-blockchain/logos-token-ui-module/tree/255f0cac9e530dc0e1587f83a4a2d57185b5f5eb) |
+| Source | [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/apps/token) (`apps/token/`) |
+| Wrapper | The package is built from [logos-blockchain/logos-token-ui-module@255f0ca](https://github.com/logos-blockchain/logos-token-ui-module/tree/255f0cac9e530dc0e1587f83a4a2d57185b5f5eb), which re-exports [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/apps/token) (`apps/token/`) through its flake input `lez_programs` |
 | Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-ui-module (tag token_ui-v0.1.0) |
 | Depends on | [`lez_core`](../lez_core/README.md) `0.4.3`, [`token_module`](../token_module/README.md) |
 | Required by | — |
 
 ## Read these first
 
-1. **Stack overview** — [stacks/other.md](../../stacks/other.md): how this module fits with its neighbours, trust boundaries, flows.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`apps/token/src/TokenUiBackend.rep`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/token/src/TokenUiBackend.rep). Doc comments here are the API reference.
+2. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+3. **Upstream docs** — [`apps/token/README.md`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/token/README.md)
+
+## API at a glance
+
+| Method | Signature | Summary |
+|---|---|---|
+| `isWalletOpen` | `isWalletOpen: bool` | property (read-only) |
+| `walletExists` | `walletExists: bool` | property (read-only) |
+| `configPath` | `configPath: QString` | property (read-only) |
+| `storagePath` | `storagePath: QString` | property (read-only) |
+| `walletHome` | `walletHome: QString` | property (read-only) |
+| `lastSyncedBlock` | `lastSyncedBlock: int` | property (read-only) |
+| `currentBlockHeight` | `currentBlockHeight: int` | property (read-only) |
+| `sequencerAddr` | `sequencerAddr: QString` | property (read-only) |
+| `sequencerReachable` | `sequencerReachable: bool` | property (read-only) |
+| `createAccountPublic` | `createAccountPublic() -> QString` | slot |
+| `createAccountPrivate` | `createAccountPrivate() -> QString` | slot |
+| `refreshAccounts` | `refreshAccounts()` | slot |
+| `refreshBalances` | `refreshBalances()` | slot |
+| `getBalance` | `getBalance(QString accountIdHex, bool isPublic) -> QString` | slot |
+| `createNewDefault` | `createNewDefault(QString password) -> QString` | slot |
+| `createNew` | `createNew(QString configPath, QString storagePath, QString password) -> QString` | slot |
+| `openExisting` | `openExisting() -> bool` | slot |
+| `disconnectWallet` | `disconnectWallet()` | slot |
+| `tokenProgramInfo` | `tokenProgramInfo() -> QVariantMap` | slot |
+| `inspectDefinition` | `inspectDefinition(QString definitionId) -> QVariantMap` | slot |
+| `inspectHolding` | `inspectHolding(QString holdingId) -> QVariantMap` | slot |
+| `inspectMetadata` | `inspectMetadata(QString metadataId) -> QVariantMap` | slot |
+| `walletTokenAccounts` | `walletTokenAccounts() -> QVariantMap` | slot |
+| `walletDefinitions` | `walletDefinitions() -> QVariantList` | slot |
+| `createFungible` | `createFungible(QString definitionTargetId, QString holdingTargetId, QString name, QString totalSupplyRaw, QString mintAuthority) -> QVariantMap` | slot |
+| `createFungibleWithMetadata` | `createFungibleWithMetadata(QString definitionTargetId, QString holdingTargetId, QString metadataTargetId, QString name, QString totalSupplyRaw, QString mintAuthority, QString metadataStandard, QString uri, QString creators) -> QVariantMap` | slot |
+| `createNonFungible` | `createNonFungible(QString definitionTargetId, QString masterHoldingTargetId, QString metadataTargetId, QString name, QString printableSupplyRaw, QString metadataStandard, QString uri, QString creators) -> QVariantMap` | slot |
+| `initializeHolding` | `initializeHolding(QString definitionId, QString holdingTargetId) -> QVariantMap` | slot |
+| `transfer` | `transfer(QString senderHoldingId, QString recipientHoldingId, QString amountRaw) -> QVariantMap` | slot |
+| `burn` | `burn(QString definitionId, QString holdingId, QString amountRaw) -> QVariantMap` | slot |
+| `mint` | `mint(QString definitionId, QString holdingId, QString amountRaw) -> QVariantMap` | slot |
+| `mintWithAuthority` | `mintWithAuthority(QString definitionId, QString holdingId, QString authorityId, QString amountRaw) -> QVariantMap` | slot |
+| `setAuthority` | `setAuthority(QString definitionId, QString newAuthority) -> QVariantMap` | slot |
+| `setAuthorityWithAuthority` | `setAuthorityWithAuthority(QString definitionId, QString authorityId, QString newAuthority) -> QVariantMap` | slot |
+| `printNft` | `printNft(QString masterHoldingId, QString printedHoldingTargetId) -> QVariantMap` | slot |
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-blockchain/logos-token-ui-module/255f0cac9e530dc0e1587f83a4a2d57185b5f5eb#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-blockchain/lez-programs/543563af88b5638e308a981106fd821690227011?dir=apps/token#lidl' --no-link --print-out-paths`
 - Install: Basecamp → Package Manager, or `logosctl install token_ui --version 0.1.0`

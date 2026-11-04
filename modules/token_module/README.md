@@ -6,22 +6,47 @@
 | | |
 |---|---|
 | Type | `core` · interface `universal` · c++ |
-| Stack | [other](../../stacks/other.md) · category `token` |
+| Stack | [blockchain-lez](../../stacks/blockchain-lez.md) · category `token` |
 | Availability | installable from the default catalog *Logos Official* |
 | Catalog version | **0.1.0** (released 2026-10-30) · all: 0.1.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64 |
 | Package | [token_module-v0.1.0](https://github.com/logos-co/logos-modules-release/releases/download/token_module-v0.1.0/token_module-0.1.0.lgx) · sha256 `c1f5ca9dc942bcb2…` |
-| Source | [logos-blockchain/logos-token-module@2afe8a7](https://github.com/logos-blockchain/logos-token-module/tree/2afe8a796a67b1a5ce807851b3f74660114e1ee2) |
+| Source | [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/token) (`modules/token/`) |
+| Wrapper | The package is built from [logos-blockchain/logos-token-module@2afe8a7](https://github.com/logos-blockchain/logos-token-module/tree/2afe8a796a67b1a5ce807851b3f74660114e1ee2), which re-exports [logos-blockchain/lez-programs@543563a](https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/token) (`modules/token/`) through its flake input `lez_programs` |
 | Pinned by | logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-module (tag token_module-v0.1.0) |
 | Depends on | [`lez_core`](../lez_core/README.md) `0.4.3` |
 | Required by | [`token_ui`](../token_ui/README.md) |
 
 ## Read these first
 
-1. **Stack overview** — [stacks/other.md](../../stacks/other.md): how this module fits with its neighbours, trust boundaries, flows.
+1. **Contract** — [`token_module.lidl`](token_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`modules/token/src/token_module_impl.h`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/token/src/token_module_impl.h). Doc comments here are the API reference.
+3. **Stack overview** — [stacks/blockchain-lez.md](../../stacks/blockchain-lez.md): how this module fits with its neighbours, trust boundaries, flows.
+4. **Upstream docs** — [`modules/token/README.md`](https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/token/README.md)
+
+## API at a glance
+
+| Method | Signature | Summary |
+|---|---|---|
+| `programInfo` | `programInfo()` |  |
+| `inspectDefinition` | `inspectDefinition(definition_id: tstr)` |  |
+| `inspectHolding` | `inspectHolding(holding_id: tstr)` |  |
+| `inspectMetadata` | `inspectMetadata(metadata_id: tstr)` |  |
+| `walletTokenAccounts` | `walletTokenAccounts()` |  |
+| `createFungible` | `createFungible(definition_target_id: tstr, holding_target_id: tstr, name: tstr, total_supply_raw: any, mint_authority: tstr)` |  |
+| `createFungibleWithMetadata` | `createFungibleWithMetadata(definition_target_id: tstr, holding_target_id: tstr, metadata_target_id: tstr, name: tstr, total_supply_raw: any, mint_authority: tstr, metadata_standard: tstr, uri: tstr, creators: tstr)` |  |
+| `createNonFungible` | `createNonFungible(definition_target_id: tstr, master_holding_target_id: tstr, metadata_target_id: tstr, name: tstr, printable_supply_raw: any, metadata_standard: tstr, uri: tstr, creators: tstr)` |  |
+| `initializeHolding` | `initializeHolding(definition_id: tstr, holding_target_id: tstr)` |  |
+| `transfer` | `transfer(sender_holding_id: tstr, recipient_holding_id: tstr, amount_raw: any)` |  |
+| `burn` | `burn(definition_id: tstr, holding_id: tstr, amount_raw: any)` |  |
+| `mint` | `mint(definition_id: tstr, holding_id: tstr, amount_raw: any)` |  |
+| `mintWithAuthority` | `mintWithAuthority(definition_id: tstr, holding_id: tstr, authority_id: tstr, amount_raw: any)` |  |
+| `setAuthority` | `setAuthority(definition_id: tstr, new_authority: tstr)` |  |
+| `setAuthorityWithAuthority` | `setAuthorityWithAuthority(definition_id: tstr, authority_id: tstr, new_authority: tstr)` |  |
+| `printNft` | `printNft(master_holding_id: tstr, printed_holding_target_id: tstr)` |  |
 
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["token_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-blockchain/logos-token-module/2afe8a796a67b1a5ce807851b3f74660114e1ee2#lidl' --no-link --print-out-paths`
+- Contract from source: `nix build 'github:logos-blockchain/lez-programs/543563af88b5638e308a981106fd821690227011?dir=modules/token#lidl' --no-link --print-out-paths`
 - Install: Basecamp → Package Manager, or `logosctl install token_module --version 0.1.0`

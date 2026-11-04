@@ -1,0 +1,23 @@
+module token_module {
+  version "0.1.0"
+  description "Universal Logos core module for LEZ token account reads and transactions"
+  category "token"
+  depends [lez_core]
+
+  method programInfo() -> {tstr: any} description "Returns `{status,error,programId,programIdHex,networkFingerprint}`.\nConfigure TOKEN_PROGRAM_ID or TOKEN_PROGRAM_BIN. If both are set, they\nmust identify the same program."
+  method inspectDefinition(definition_id: tstr) -> {tstr: any} description "Reads and decodes any public token definition account. `definition_id`\naccepts 32-byte hex or base58. Success adds `definition`; failures use\ninvalid_account_id, account_read_failed, token_program_mismatch,\ninvalid_definition_data, config_missing, or backend_error."
+  method inspectHolding(holding_id: tstr) -> {tstr: any} description "Reads and decodes any public token holding account. Success adds\n`holding`; failures follow the same stable read envelope."
+  method inspectMetadata(metadata_id: tstr) -> {tstr: any} description "Reads and decodes any public token metadata account. Success adds\n`metadata`; failures follow the same stable read envelope."
+  method walletTokenAccounts() -> {tstr: any} description "Discovers wallet-owned public token accounts from live reads. Invalid,\nforeign, unreadable, and ambiguously decoded rows are skipped. Success\nadds `accounts`, sorted by lowercase accountIdHex."
+  method createFungible(definition_target_id: tstr, holding_target_id: tstr, name: tstr, total_supply_raw: any, mint_authority: tstr) -> {tstr: any} description "Creates a fungible definition and initial holding. Both target IDs must\nbe fresh public wallet accounts and sign. `total_supply_raw` is an exact\nnon-negative u128 decimal. `mint_authority`: none, self, or account ID."
+  method createFungibleWithMetadata(definition_target_id: tstr, holding_target_id: tstr, metadata_target_id: tstr, name: tstr, total_supply_raw: any, mint_authority: tstr, metadata_standard: tstr, uri: tstr, creators: tstr) -> {tstr: any} description "Creates a metadata-backed fungible definition. All three target IDs are\nfresh public wallet accounts and sign. Standard is simple or expanded."
+  method createNonFungible(definition_target_id: tstr, master_holding_target_id: tstr, metadata_target_id: tstr, name: tstr, printable_supply_raw: any, metadata_standard: tstr, uri: tstr, creators: tstr) -> {tstr: any} description "Creates a non-fungible definition, master holding, and metadata. All\ntargets must be fresh public wallet accounts and sign."
+  method initializeHolding(definition_id: tstr, holding_target_id: tstr) -> {tstr: any} description "Initializes a fresh wallet-owned holding; holding target signs."
+  method transfer(sender_holding_id: tstr, recipient_holding_id: tstr, amount_raw: any) -> {tstr: any} description "Transfers exact raw amount. Sender signs. Recipient signs only when its\nlive account is empty and wallet ownership proves it is fresh."
+  method burn(definition_id: tstr, holding_id: tstr, amount_raw: any) -> {tstr: any} description "Burns exact raw amount. Holding signs."
+  method mint(definition_id: tstr, holding_id: tstr, amount_raw: any) -> {tstr: any} description "Mints through self-authority. Definition signs; holding signs only when\nlive state and wallet ownership prove it is fresh."
+  method mintWithAuthority(definition_id: tstr, holding_id: tstr, authority_id: tstr, amount_raw: any) -> {tstr: any} description "Mints through explicit external authority. Authority signs; holding\nsigns only when live state and wallet ownership prove it is fresh."
+  method setAuthority(definition_id: tstr, new_authority: tstr) -> {tstr: any} description "Rotates/revokes self authority. `new_authority`: none, self, or account\nID. Definition signs."
+  method setAuthorityWithAuthority(definition_id: tstr, authority_id: tstr, new_authority: tstr) -> {tstr: any} description "Rotates/revokes explicit external authority. Current authority signs."
+  method printNft(master_holding_id: tstr, printed_holding_target_id: tstr) -> {tstr: any} description "Prints an NFT copy. Master and fully fresh printed target both sign."
+}

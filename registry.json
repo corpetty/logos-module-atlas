@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-02T15:44:08+00:00",
+  "generatedAt": "2026-11-04T15:51:19+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-11-02T12:27:33Z",
+      "indexGeneratedAt": "2026-11-04T12:26:17Z",
       "packageCount": 49
     }
   ],
@@ -84,11 +84,18 @@
         ]
       },
       "source": {
-        "repo": "logos-blockchain/logos-amm-module",
-        "commit": "0efc26a6012e86f252c1b99a4964aac4a96d96c9",
-        "subdir": "",
+        "repo": "logos-blockchain/lez-programs",
+        "commit": "543563af88b5638e308a981106fd821690227011",
+        "subdir": "modules/amm",
         "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-module (tag amm_module-v0.3.0)",
-        "url": "https://github.com/logos-blockchain/logos-amm-module/tree/0efc26a6012e86f252c1b99a4964aac4a96d96c9"
+        "wrapper": {
+          "repo": "logos-blockchain/logos-amm-module",
+          "commit": "0efc26a6012e86f252c1b99a4964aac4a96d96c9",
+          "subdir": "",
+          "flakeInput": "lez_programs",
+          "url": "https://github.com/logos-blockchain/logos-amm-module/tree/0efc26a6012e86f252c1b99a4964aac4a96d96c9"
+        },
+        "url": "https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/amm"
       },
       "dependencies": [
         {
@@ -104,9 +111,139 @@
       "provides": [],
       "uses": [],
       "card": "modules/amm_module/README.md",
-      "interfaceSource": null,
-      "docs": [],
+      "interfaceSource": {
+        "file": "interface.h",
+        "from": "modules/amm/src/amm_module_impl.h",
+        "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/amm/src/amm_module_impl.h",
+        "lang": "h"
+      },
+      "docs": [
+        {
+          "path": "modules/amm/README.md",
+          "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/amm/README.md"
+        }
+      ],
       "qmlView": null,
+      "contract": {
+        "file": "amm_module.lidl",
+        "builtFrom": "543563af88b5638e308a981106fd821690227011",
+        "stale": false
+      },
+      "api": {
+        "methods": [
+          {
+            "name": "resolvePoolAccount",
+            "signature": "resolvePoolAccount(def_a_hex: tstr, def_b_hex: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "configAccount",
+            "signature": "configAccount()",
+            "summary": ""
+          },
+          {
+            "name": "setAmmProgramId",
+            "signature": "setAmmProgramId(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "setConfigId",
+            "signature": "setConfigId(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "transferOwnership",
+            "signature": "transferOwnership(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "withdrawProtocolFees",
+            "signature": "withdrawProtocolFees(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "createPriceObservations",
+            "signature": "createPriceObservations(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "createOraclePriceAccount",
+            "signature": "createOraclePriceAccount(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "swapExactInQuote",
+            "signature": "swapExactInQuote(token_in_hex: tstr, token_out_hex: tstr, amount_in: any, slippage_bps: int)",
+            "summary": ""
+          },
+          {
+            "name": "swapExactOutQuote",
+            "signature": "swapExactOutQuote(token_in_hex: tstr, token_out_hex: tstr, amount_out: any, slippage_bps: int)",
+            "summary": ""
+          },
+          {
+            "name": "swapExactInput",
+            "signature": "swapExactInput(def_a_hex: tstr, def_b_hex: tstr, user_input_holding_hex: tstr, user_output_holding_hex: tstr, amount_in: any, min_out: any, deadline: any) -> tstr",
+            "summary": "Submits an on-chain SwapExactInput transaction against the pool for (def_a_hex = token in, def_b_hex = token out)."
+          },
+          {
+            "name": "swapExactOutput",
+            "signature": "swapExactOutput(def_a_hex: tstr, def_b_hex: tstr, user_input_holding_hex: tstr, user_output_holding_hex: tstr, amount_out: any, max_in: any, deadline: any) -> tstr",
+            "summary": "Submits an on-chain SwapExactOutput transaction against the pool for (def_a_hex = token in, def_b_hex = token out)."
+          },
+          {
+            "name": "createPoolQuote",
+            "signature": "createPoolQuote(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "createPool",
+            "signature": "createPool(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "addLiquidityQuote",
+            "signature": "addLiquidityQuote(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "addLiquidity",
+            "signature": "addLiquidity(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "removeLiquidityQuote",
+            "signature": "removeLiquidityQuote(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "removeLiquidity",
+            "signature": "removeLiquidity(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "syncReserves",
+            "signature": "syncReserves(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "tokenHoldings",
+            "signature": "tokenHoldings(wallet_open: bool) -> [any]",
+            "summary": "Lists the connected wallet's fungible token holdings for the account selector: `[{ accountId (hex), accountType:\"TokenHolding\", definitionId (base58), definitionIdHex (hex), balanceRaw }]` \u2014 one row per holding accoun\u2026"
+          },
+          {
+            "name": "feeTiers",
+            "signature": "feeTiers() -> [any]",
+            "summary": "Lists the AMM's supported fee tiers as raw basis points, ascending: `[1, 5, 30, 100]`."
+          },
+          {
+            "name": "resolveTokens",
+            "signature": "resolveTokens(request: {tstr: any}, wallet_open: bool) -> [any]",
+            "summary": "Resolves an app-provided set of token ids into liquidity selector rows."
+          }
+        ],
+        "events": []
+      },
       "notes": false
     },
     {
@@ -144,11 +281,18 @@
         ]
       },
       "source": {
-        "repo": "logos-blockchain/logos-amm-ui-module",
-        "commit": "31cfedc37a24dd3f6e58677a7a4cca385e1fcefa",
-        "subdir": "",
+        "repo": "logos-blockchain/lez-programs",
+        "commit": "543563af88b5638e308a981106fd821690227011",
+        "subdir": "apps/amm",
         "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-amm-ui-module (tag amm_ui-v0.3.0)",
-        "url": "https://github.com/logos-blockchain/logos-amm-ui-module/tree/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa"
+        "wrapper": {
+          "repo": "logos-blockchain/logos-amm-ui-module",
+          "commit": "31cfedc37a24dd3f6e58677a7a4cca385e1fcefa",
+          "subdir": "",
+          "flakeInput": "lez_programs",
+          "url": "https://github.com/logos-blockchain/logos-amm-ui-module/tree/31cfedc37a24dd3f6e58677a7a4cca385e1fcefa"
+        },
+        "url": "https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/apps/amm"
       },
       "dependencies": [
         {
@@ -166,9 +310,259 @@
       "provides": [],
       "uses": [],
       "card": "modules/amm_ui/README.md",
-      "interfaceSource": null,
-      "docs": [],
-      "qmlView": null,
+      "interfaceSource": {
+        "file": "interface.rep",
+        "from": "apps/amm/src/AmmUiBackend.rep",
+        "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/amm/src/AmmUiBackend.rep",
+        "lang": "rep"
+      },
+      "docs": [
+        {
+          "path": "apps/amm/README.md",
+          "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/amm/README.md"
+        }
+      ],
+      "qmlView": "apps/amm/qml/Main.qml",
+      "api": {
+        "methods": [
+          {
+            "name": "isWalletOpen",
+            "signature": "isWalletOpen: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "walletStateReady",
+            "signature": "walletStateReady: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "walletExists",
+            "signature": "walletExists: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "configPath",
+            "signature": "configPath: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "storagePath",
+            "signature": "storagePath: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "walletHome",
+            "signature": "walletHome: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "lastSyncedBlock",
+            "signature": "lastSyncedBlock: int",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "currentBlockHeight",
+            "signature": "currentBlockHeight: int",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "sequencerAddr",
+            "signature": "sequencerAddr: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "sequencerReachable",
+            "signature": "sequencerReachable: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "registryRevision",
+            "signature": "registryRevision: int",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "registryUrl",
+            "signature": "registryUrl: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "activeNetwork",
+            "signature": "activeNetwork: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "networks",
+            "signature": "networks: QVariantList",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "createAccountPublic",
+            "signature": "createAccountPublic() -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "createAccountPrivate",
+            "signature": "createAccountPrivate() -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "refreshAccounts",
+            "signature": "refreshAccounts()",
+            "summary": "slot"
+          },
+          {
+            "name": "refreshBalances",
+            "signature": "refreshBalances()",
+            "summary": "slot"
+          },
+          {
+            "name": "getBalance",
+            "signature": "getBalance(QString accountIdHex, bool isPublic) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "createNewDefault",
+            "signature": "createNewDefault(QString password) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "createNew",
+            "signature": "createNew(QString configPath, QString storagePath, QString password) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "openExisting",
+            "signature": "openExisting() -> bool",
+            "summary": "slot"
+          },
+          {
+            "name": "disconnectWallet",
+            "signature": "disconnectWallet()",
+            "summary": "slot"
+          },
+          {
+            "name": "resolvePoolAccount",
+            "signature": "resolvePoolAccount(QString defAHex, QString defBHex) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "configAccount",
+            "signature": "configAccount() -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "transferOwnership",
+            "signature": "transferOwnership(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "createPriceObservations",
+            "signature": "createPriceObservations(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "createOraclePriceAccount",
+            "signature": "createOraclePriceAccount(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "swapExactInput",
+            "signature": "swapExactInput(QString defAHex, QString defBHex, QString userInputHoldingHex, QString userOutputHoldingHex, QString amountInDecimal, QString minOutDecimal, QString deadlineDecimal) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "swapExactInQuote",
+            "signature": "swapExactInQuote(QString tokenInHex, QString tokenOutHex, QString amountInDecimal, int slippageBps) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "swapExactOutQuote",
+            "signature": "swapExactOutQuote(QString tokenInHex, QString tokenOutHex, QString amountOutDecimal, int slippageBps) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "swapExactOutput",
+            "signature": "swapExactOutput(QString defAHex, QString defBHex, QString userInputHoldingHex, QString userOutputHoldingHex, QString amountOutDecimal, QString maxInDecimal, QString deadlineDecimal) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "tokenList",
+            "signature": "tokenList() -> QVariantList",
+            "summary": "slot"
+          },
+          {
+            "name": "createPoolQuote",
+            "signature": "createPoolQuote(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "addLiquidityQuote",
+            "signature": "addLiquidityQuote(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "createPool",
+            "signature": "createPool(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "addLiquidity",
+            "signature": "addLiquidity(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "removeLiquidityQuote",
+            "signature": "removeLiquidityQuote(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "removeLiquidity",
+            "signature": "removeLiquidity(QVariantMap request) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "tokenHoldings",
+            "signature": "tokenHoldings() -> QVariantList",
+            "summary": "slot"
+          },
+          {
+            "name": "poolList",
+            "signature": "poolList() -> QVariantList",
+            "summary": "slot"
+          },
+          {
+            "name": "feeTiers",
+            "signature": "feeTiers() -> QVariantList",
+            "summary": "slot"
+          },
+          {
+            "name": "resolveTokens",
+            "signature": "resolveTokens() -> QVariantList",
+            "summary": "slot"
+          },
+          {
+            "name": "addCustomToken",
+            "signature": "addCustomToken(QString tokenId) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "refreshRegistry",
+            "signature": "refreshRegistry()",
+            "summary": "slot"
+          },
+          {
+            "name": "saveRegistryUrl",
+            "signature": "saveRegistryUrl(QString url)",
+            "summary": "slot"
+          },
+          {
+            "name": "selectNetwork",
+            "signature": "selectNetwork(QString id)",
+            "summary": "slot"
+          }
+        ],
+        "events": []
+      },
       "notes": false
     },
     {
@@ -2048,6 +2442,559 @@
             "name": "get_sequencer_addr",
             "signature": "get_sequencer_addr() -> tstr",
             "summary": ""
+          }
+        ],
+        "events": []
+      },
+      "notes": false
+    },
+    {
+      "name": "oracle_module",
+      "displayName": null,
+      "description": "Universal Logos core module for canonical oracle prices and TWAP feeds",
+      "type": "core",
+      "interface": "universal",
+      "language": "c++",
+      "category": "oracle",
+      "stack": "blockchain-lez",
+      "availability": {
+        "bundledInBasecamp": false,
+        "bundledVersion": null,
+        "inDefaultCatalog": true
+      },
+      "catalog": {
+        "repository": "Logos Official",
+        "catalogRepo": "logos-co/logos-modules-release",
+        "latest": "0.1.0",
+        "versions": [
+          "0.1.0"
+        ],
+        "releasedAt": "2026-10-30T13:50:15Z",
+        "publisherRef": "oracle_module-v0.1.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/oracle_module-v0.1.0/oracle_module-0.1.0.lgx",
+        "sha256": "2ff2e3b9bc617b987a263f201aedf77abd059dd6e713c5932b06f0cbf28ccd1b",
+        "size": 13761132,
+        "variants": [
+          "darwin-arm64",
+          "linux-amd64",
+          "linux-arm64"
+        ]
+      },
+      "source": {
+        "repo": "logos-blockchain/lez-programs",
+        "commit": "543563af88b5638e308a981106fd821690227011",
+        "subdir": "modules/oracle",
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-twap-oracle-module (tag oracle_module-v0.1.0)",
+        "wrapper": {
+          "repo": "logos-blockchain/logos-twap-oracle-module",
+          "commit": "a964dc4d32780adec3e6fa63ee549f151d3871b2",
+          "subdir": "",
+          "flakeInput": "lez_programs",
+          "url": "https://github.com/logos-blockchain/logos-twap-oracle-module/tree/a964dc4d32780adec3e6fa63ee549f151d3871b2"
+        },
+        "url": "https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/oracle"
+      },
+      "dependencies": [
+        {
+          "name": "lez_core",
+          "version": "0.4.3"
+        }
+      ],
+      "requiredBy": [],
+      "concurrency": null,
+      "capabilities": [],
+      "provides": [],
+      "uses": [],
+      "card": "modules/oracle_module/README.md",
+      "interfaceSource": {
+        "file": "interface.h",
+        "from": "modules/oracle/src/oracle_module_impl.h",
+        "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/oracle/src/oracle_module_impl.h",
+        "lang": "h"
+      },
+      "docs": [
+        {
+          "path": "modules/oracle/README.md",
+          "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/oracle/README.md"
+        }
+      ],
+      "qmlView": null,
+      "contract": {
+        "file": "oracle_module.lidl",
+        "builtFrom": "543563af88b5638e308a981106fd821690227011",
+        "stale": false
+      },
+      "api": {
+        "methods": [
+          {
+            "name": "setOracleProgramId",
+            "signature": "setOracleProgramId(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "programInfo",
+            "signature": "programInfo()",
+            "summary": ""
+          },
+          {
+            "name": "feedAddresses",
+            "signature": "feedAddresses(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "createCurrentTickAccount",
+            "signature": "createCurrentTickAccount(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "createPriceObservations",
+            "signature": "createPriceObservations(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "createOraclePriceAccount",
+            "signature": "createOraclePriceAccount(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "updateCurrentTick",
+            "signature": "updateCurrentTick(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "recordTick",
+            "signature": "recordTick(request: {tstr: any})",
+            "summary": ""
+          },
+          {
+            "name": "publishPrice",
+            "signature": "publishPrice(request: {tstr: any})",
+            "summary": ""
+          }
+        ],
+        "events": []
+      },
+      "notes": false
+    },
+    {
+      "name": "token_module",
+      "displayName": null,
+      "description": "Universal Logos core module for LEZ token account reads and transactions",
+      "type": "core",
+      "interface": "universal",
+      "language": "c++",
+      "category": "token",
+      "stack": "blockchain-lez",
+      "availability": {
+        "bundledInBasecamp": false,
+        "bundledVersion": null,
+        "inDefaultCatalog": true
+      },
+      "catalog": {
+        "repository": "Logos Official",
+        "catalogRepo": "logos-co/logos-modules-release",
+        "latest": "0.1.0",
+        "versions": [
+          "0.1.0"
+        ],
+        "releasedAt": "2026-10-30T13:49:38Z",
+        "publisherRef": "token_module-v0.1.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/token_module-v0.1.0/token_module-0.1.0.lgx",
+        "sha256": "c1f5ca9dc942bcb2601264f3ae0cdc5eb927c7cc5d994b552996b92c56757e5e",
+        "size": 14018233,
+        "variants": [
+          "darwin-arm64",
+          "linux-amd64",
+          "linux-arm64"
+        ]
+      },
+      "source": {
+        "repo": "logos-blockchain/lez-programs",
+        "commit": "543563af88b5638e308a981106fd821690227011",
+        "subdir": "modules/token",
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-module (tag token_module-v0.1.0)",
+        "wrapper": {
+          "repo": "logos-blockchain/logos-token-module",
+          "commit": "2afe8a796a67b1a5ce807851b3f74660114e1ee2",
+          "subdir": "",
+          "flakeInput": "lez_programs",
+          "url": "https://github.com/logos-blockchain/logos-token-module/tree/2afe8a796a67b1a5ce807851b3f74660114e1ee2"
+        },
+        "url": "https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/modules/token"
+      },
+      "dependencies": [
+        {
+          "name": "lez_core",
+          "version": "0.4.3"
+        }
+      ],
+      "requiredBy": [
+        "token_ui"
+      ],
+      "concurrency": null,
+      "capabilities": [],
+      "provides": [],
+      "uses": [],
+      "card": "modules/token_module/README.md",
+      "interfaceSource": {
+        "file": "interface.h",
+        "from": "modules/token/src/token_module_impl.h",
+        "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/token/src/token_module_impl.h",
+        "lang": "h"
+      },
+      "docs": [
+        {
+          "path": "modules/token/README.md",
+          "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/token/README.md"
+        }
+      ],
+      "qmlView": null,
+      "contract": {
+        "file": "token_module.lidl",
+        "builtFrom": "543563af88b5638e308a981106fd821690227011",
+        "stale": false
+      },
+      "api": {
+        "methods": [
+          {
+            "name": "programInfo",
+            "signature": "programInfo()",
+            "summary": ""
+          },
+          {
+            "name": "inspectDefinition",
+            "signature": "inspectDefinition(definition_id: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "inspectHolding",
+            "signature": "inspectHolding(holding_id: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "inspectMetadata",
+            "signature": "inspectMetadata(metadata_id: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "walletTokenAccounts",
+            "signature": "walletTokenAccounts()",
+            "summary": ""
+          },
+          {
+            "name": "createFungible",
+            "signature": "createFungible(definition_target_id: tstr, holding_target_id: tstr, name: tstr, total_supply_raw: any, mint_authority: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "createFungibleWithMetadata",
+            "signature": "createFungibleWithMetadata(definition_target_id: tstr, holding_target_id: tstr, metadata_target_id: tstr, name: tstr, total_supply_raw: any, mint_authority: tstr, metadata_standard: tstr, uri: tstr, creators: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "createNonFungible",
+            "signature": "createNonFungible(definition_target_id: tstr, master_holding_target_id: tstr, metadata_target_id: tstr, name: tstr, printable_supply_raw: any, metadata_standard: tstr, uri: tstr, creators: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "initializeHolding",
+            "signature": "initializeHolding(definition_id: tstr, holding_target_id: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "transfer",
+            "signature": "transfer(sender_holding_id: tstr, recipient_holding_id: tstr, amount_raw: any)",
+            "summary": ""
+          },
+          {
+            "name": "burn",
+            "signature": "burn(definition_id: tstr, holding_id: tstr, amount_raw: any)",
+            "summary": ""
+          },
+          {
+            "name": "mint",
+            "signature": "mint(definition_id: tstr, holding_id: tstr, amount_raw: any)",
+            "summary": ""
+          },
+          {
+            "name": "mintWithAuthority",
+            "signature": "mintWithAuthority(definition_id: tstr, holding_id: tstr, authority_id: tstr, amount_raw: any)",
+            "summary": ""
+          },
+          {
+            "name": "setAuthority",
+            "signature": "setAuthority(definition_id: tstr, new_authority: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "setAuthorityWithAuthority",
+            "signature": "setAuthorityWithAuthority(definition_id: tstr, authority_id: tstr, new_authority: tstr)",
+            "summary": ""
+          },
+          {
+            "name": "printNft",
+            "signature": "printNft(master_holding_id: tstr, printed_holding_target_id: tstr)",
+            "summary": ""
+          }
+        ],
+        "events": []
+      },
+      "notes": false
+    },
+    {
+      "name": "token_ui",
+      "displayName": "Token",
+      "description": "Logos UI module for creating and inspecting Token Program assets",
+      "type": "ui_qml",
+      "interface": null,
+      "language": "qml",
+      "category": "token",
+      "stack": "blockchain-lez",
+      "availability": {
+        "bundledInBasecamp": false,
+        "bundledVersion": null,
+        "inDefaultCatalog": true
+      },
+      "catalog": {
+        "repository": "Logos Official",
+        "catalogRepo": "logos-co/logos-modules-release",
+        "latest": "0.1.0",
+        "versions": [
+          "0.1.0"
+        ],
+        "releasedAt": "2026-10-30T13:49:56Z",
+        "publisherRef": "token_ui-v0.1.0",
+        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/token_ui-v0.1.0/token_ui-0.1.0.lgx",
+        "sha256": "2ee19fcd14123236c6e06bbfd34b555cb83233f211bf54bab22ed86235bd5e49",
+        "size": 13645297,
+        "variants": [
+          "darwin-arm64",
+          "linux-amd64",
+          "linux-arm64"
+        ]
+      },
+      "source": {
+        "repo": "logos-blockchain/lez-programs",
+        "commit": "543563af88b5638e308a981106fd821690227011",
+        "subdir": "apps/token",
+        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-ui-module (tag token_ui-v0.1.0)",
+        "wrapper": {
+          "repo": "logos-blockchain/logos-token-ui-module",
+          "commit": "255f0cac9e530dc0e1587f83a4a2d57185b5f5eb",
+          "subdir": "",
+          "flakeInput": "lez_programs",
+          "url": "https://github.com/logos-blockchain/logos-token-ui-module/tree/255f0cac9e530dc0e1587f83a4a2d57185b5f5eb"
+        },
+        "url": "https://github.com/logos-blockchain/lez-programs/tree/543563af88b5638e308a981106fd821690227011/apps/token"
+      },
+      "dependencies": [
+        {
+          "name": "lez_core",
+          "version": "0.4.3"
+        },
+        {
+          "name": "token_module",
+          "version": null
+        }
+      ],
+      "requiredBy": [],
+      "concurrency": null,
+      "capabilities": [],
+      "provides": [],
+      "uses": [],
+      "card": "modules/token_ui/README.md",
+      "interfaceSource": {
+        "file": "interface.rep",
+        "from": "apps/token/src/TokenUiBackend.rep",
+        "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/token/src/TokenUiBackend.rep",
+        "lang": "rep"
+      },
+      "docs": [
+        {
+          "path": "apps/token/README.md",
+          "url": "https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/apps/token/README.md"
+        }
+      ],
+      "qmlView": "apps/token/qml/Main.qml",
+      "api": {
+        "methods": [
+          {
+            "name": "isWalletOpen",
+            "signature": "isWalletOpen: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "walletExists",
+            "signature": "walletExists: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "configPath",
+            "signature": "configPath: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "storagePath",
+            "signature": "storagePath: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "walletHome",
+            "signature": "walletHome: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "lastSyncedBlock",
+            "signature": "lastSyncedBlock: int",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "currentBlockHeight",
+            "signature": "currentBlockHeight: int",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "sequencerAddr",
+            "signature": "sequencerAddr: QString",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "sequencerReachable",
+            "signature": "sequencerReachable: bool",
+            "summary": "property (read-only)"
+          },
+          {
+            "name": "createAccountPublic",
+            "signature": "createAccountPublic() -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "createAccountPrivate",
+            "signature": "createAccountPrivate() -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "refreshAccounts",
+            "signature": "refreshAccounts()",
+            "summary": "slot"
+          },
+          {
+            "name": "refreshBalances",
+            "signature": "refreshBalances()",
+            "summary": "slot"
+          },
+          {
+            "name": "getBalance",
+            "signature": "getBalance(QString accountIdHex, bool isPublic) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "createNewDefault",
+            "signature": "createNewDefault(QString password) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "createNew",
+            "signature": "createNew(QString configPath, QString storagePath, QString password) -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "openExisting",
+            "signature": "openExisting() -> bool",
+            "summary": "slot"
+          },
+          {
+            "name": "disconnectWallet",
+            "signature": "disconnectWallet()",
+            "summary": "slot"
+          },
+          {
+            "name": "tokenProgramInfo",
+            "signature": "tokenProgramInfo() -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "inspectDefinition",
+            "signature": "inspectDefinition(QString definitionId) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "inspectHolding",
+            "signature": "inspectHolding(QString holdingId) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "inspectMetadata",
+            "signature": "inspectMetadata(QString metadataId) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "walletTokenAccounts",
+            "signature": "walletTokenAccounts() -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "walletDefinitions",
+            "signature": "walletDefinitions() -> QVariantList",
+            "summary": "slot"
+          },
+          {
+            "name": "createFungible",
+            "signature": "createFungible(QString definitionTargetId, QString holdingTargetId, QString name, QString totalSupplyRaw, QString mintAuthority) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "createFungibleWithMetadata",
+            "signature": "createFungibleWithMetadata(QString definitionTargetId, QString holdingTargetId, QString metadataTargetId, QString name, QString totalSupplyRaw, QString mintAuthority, QString metadataStandard, QString uri, QString creators) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "createNonFungible",
+            "signature": "createNonFungible(QString definitionTargetId, QString masterHoldingTargetId, QString metadataTargetId, QString name, QString printableSupplyRaw, QString metadataStandard, QString uri, QString creators) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "initializeHolding",
+            "signature": "initializeHolding(QString definitionId, QString holdingTargetId) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "transfer",
+            "signature": "transfer(QString senderHoldingId, QString recipientHoldingId, QString amountRaw) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "burn",
+            "signature": "burn(QString definitionId, QString holdingId, QString amountRaw) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "mint",
+            "signature": "mint(QString definitionId, QString holdingId, QString amountRaw) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "mintWithAuthority",
+            "signature": "mintWithAuthority(QString definitionId, QString holdingId, QString authorityId, QString amountRaw) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "setAuthority",
+            "signature": "setAuthority(QString definitionId, QString newAuthority) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "setAuthorityWithAuthority",
+            "signature": "setAuthorityWithAuthority(QString definitionId, QString authorityId, QString newAuthority) -> QVariantMap",
+            "summary": "slot"
+          },
+          {
+            "name": "printNft",
+            "signature": "printNft(QString masterHoldingId, QString printedHoldingTargetId) -> QVariantMap",
+            "summary": "slot"
           }
         ],
         "events": []
@@ -9066,183 +10013,6 @@
         ],
         "events": []
       },
-      "notes": false
-    },
-    {
-      "name": "oracle_module",
-      "displayName": null,
-      "description": "Universal Logos core module for canonical oracle prices and TWAP feeds",
-      "type": "core",
-      "interface": "universal",
-      "language": "c++",
-      "category": "oracle",
-      "stack": "other",
-      "availability": {
-        "bundledInBasecamp": false,
-        "bundledVersion": null,
-        "inDefaultCatalog": true
-      },
-      "catalog": {
-        "repository": "Logos Official",
-        "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
-        "versions": [
-          "0.1.0"
-        ],
-        "releasedAt": "2026-10-30T13:50:15Z",
-        "publisherRef": "oracle_module-v0.1.0",
-        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/oracle_module-v0.1.0/oracle_module-0.1.0.lgx",
-        "sha256": "2ff2e3b9bc617b987a263f201aedf77abd059dd6e713c5932b06f0cbf28ccd1b",
-        "size": 13761132,
-        "variants": [
-          "darwin-arm64",
-          "linux-amd64",
-          "linux-arm64"
-        ]
-      },
-      "source": {
-        "repo": "logos-blockchain/logos-twap-oracle-module",
-        "commit": "a964dc4d32780adec3e6fa63ee549f151d3871b2",
-        "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-twap-oracle-module (tag oracle_module-v0.1.0)",
-        "url": "https://github.com/logos-blockchain/logos-twap-oracle-module/tree/a964dc4d32780adec3e6fa63ee549f151d3871b2"
-      },
-      "dependencies": [
-        {
-          "name": "lez_core",
-          "version": "0.4.3"
-        }
-      ],
-      "requiredBy": [],
-      "concurrency": null,
-      "capabilities": [],
-      "provides": [],
-      "uses": [],
-      "card": "modules/oracle_module/README.md",
-      "interfaceSource": null,
-      "docs": [],
-      "qmlView": null,
-      "notes": false
-    },
-    {
-      "name": "token_module",
-      "displayName": null,
-      "description": "Universal Logos core module for LEZ token account reads and transactions",
-      "type": "core",
-      "interface": "universal",
-      "language": "c++",
-      "category": "token",
-      "stack": "other",
-      "availability": {
-        "bundledInBasecamp": false,
-        "bundledVersion": null,
-        "inDefaultCatalog": true
-      },
-      "catalog": {
-        "repository": "Logos Official",
-        "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
-        "versions": [
-          "0.1.0"
-        ],
-        "releasedAt": "2026-10-30T13:49:38Z",
-        "publisherRef": "token_module-v0.1.0",
-        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/token_module-v0.1.0/token_module-0.1.0.lgx",
-        "sha256": "c1f5ca9dc942bcb2601264f3ae0cdc5eb927c7cc5d994b552996b92c56757e5e",
-        "size": 14018233,
-        "variants": [
-          "darwin-arm64",
-          "linux-amd64",
-          "linux-arm64"
-        ]
-      },
-      "source": {
-        "repo": "logos-blockchain/logos-token-module",
-        "commit": "2afe8a796a67b1a5ce807851b3f74660114e1ee2",
-        "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-module (tag token_module-v0.1.0)",
-        "url": "https://github.com/logos-blockchain/logos-token-module/tree/2afe8a796a67b1a5ce807851b3f74660114e1ee2"
-      },
-      "dependencies": [
-        {
-          "name": "lez_core",
-          "version": "0.4.3"
-        }
-      ],
-      "requiredBy": [
-        "token_ui"
-      ],
-      "concurrency": null,
-      "capabilities": [],
-      "provides": [],
-      "uses": [],
-      "card": "modules/token_module/README.md",
-      "interfaceSource": null,
-      "docs": [],
-      "qmlView": null,
-      "notes": false
-    },
-    {
-      "name": "token_ui",
-      "displayName": "Token",
-      "description": "Logos UI module for creating and inspecting Token Program assets",
-      "type": "ui_qml",
-      "interface": null,
-      "language": "qml",
-      "category": "token",
-      "stack": "other",
-      "availability": {
-        "bundledInBasecamp": false,
-        "bundledVersion": null,
-        "inDefaultCatalog": true
-      },
-      "catalog": {
-        "repository": "Logos Official",
-        "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.1.0",
-        "versions": [
-          "0.1.0"
-        ],
-        "releasedAt": "2026-10-30T13:49:56Z",
-        "publisherRef": "token_ui-v0.1.0",
-        "catalogCommit": "85f6d216a08f5bf58d9a8d0b2f06b967656d4d95",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/token_ui-v0.1.0/token_ui-0.1.0.lgx",
-        "sha256": "2ee19fcd14123236c6e06bbfd34b555cb83233f211bf54bab22ed86235bd5e49",
-        "size": 13645297,
-        "variants": [
-          "darwin-arm64",
-          "linux-amd64",
-          "linux-arm64"
-        ]
-      },
-      "source": {
-        "repo": "logos-blockchain/logos-token-ui-module",
-        "commit": "255f0cac9e530dc0e1587f83a4a2d57185b5f5eb",
-        "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@85f6d216a08f submodules/logos-token-ui-module (tag token_ui-v0.1.0)",
-        "url": "https://github.com/logos-blockchain/logos-token-ui-module/tree/255f0cac9e530dc0e1587f83a4a2d57185b5f5eb"
-      },
-      "dependencies": [
-        {
-          "name": "lez_core",
-          "version": "0.4.3"
-        },
-        {
-          "name": "token_module",
-          "version": null
-        }
-      ],
-      "requiredBy": [],
-      "concurrency": null,
-      "capabilities": [],
-      "provides": [],
-      "uses": [],
-      "card": "modules/token_ui/README.md",
-      "interfaceSource": null,
-      "docs": [],
-      "qmlView": null,
       "notes": false
     },
     {

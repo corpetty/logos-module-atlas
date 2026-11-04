@@ -1,0 +1,321 @@
+// Extracted by logos-module-atlas from logos-blockchain/lez-programs@543563af88b5:modules/amm/src/amm_module_impl.h
+// https://github.com/logos-blockchain/lez-programs/blob/543563af88b5638e308a981106fd821690227011/modules/amm/src/amm_module_impl.h
+
+#pragma once
+
+#include <cstdint>
+#include <string>
+#include <vector>
+
+#include <logos_json.h>            // LogosMap / LogosList (nlohmann::json aliases)
+#include <logos_module_context.h>  // LogosModuleContext base + modules()
+
+// AMM business logic as a universal core Logos module.
+//
+// Orchestration only: the AMM domain math (PDA derivation, on-chain account
+// decoding, quote/plan computation, and instruction encoding) lives in the Rust
+// `amm_ffi` crate and is reached through its JSON FFI (amm_ffi.h — one
+// `char* op(const char*)` per operation, request and response both JSON). This
+// module sequences those ops with chain I/O delegated to the
+// `lez_core` wallet module (reached via modules().lez_core).
+//
+// The same surface is consumed by the QML UI (via modules().amm_module) and
+// headlessly (logoscore call amm_module ...). The swap / add-liquidity
+// orchestration and the backend's network-context derivation are made Qt-free
+// (std::string / LogosMap / LogosList / nlohmann::json) as the universal
+// authoring model requires.
+//
+// Public methods ARE the module's API; the Qt plugin glue is generated from
+// this header because metadata.json sets "interface": "universal". Keep the
+// header Qt-free — std types only.
+class AmmModuleImpl : public LogosModuleContext {
+public:
+    AmmModuleImpl() = default;
+    ~AmmModuleImpl() = default;
+
+    /// Derives the pool PDA for the (def_a_hex, def_b_hex) pair and reads/decodes the
+    /// pool account. On success: `{ status:"ok", error:"", poolId, defAHex, defBHex,
+    /// vaultAId, vaultBId, lpDefinitionId, reserveA, reserveB, liquiditySupply, feeBps }`
+    /// — the A/B fields oriented to the caller's requested order (A is def_a_hex's).
+    /// Otherwise `{ status:"error", error:<code> }`: `no_program_bin` (AMM_PROGRAM_BIN
+    /// unset/unreadable/bad), `amm_not_initialized` (config undecodable), `bad_config`
+    /// (bad ids / internal decode failure), `same_token_pair`, or `no_pool` for the
+    /// ordinary "no pool / no liquidity yet" state (still carries `poolId`).
+    LogosMap resolvePoolAccount(const std::string& def_a_hex, const std::string& def_b_hex);
+
+    /// Decodes the singleton AMM config account. On success: `{ status:"ok", error:"",
+    /// configId, ammProgramId, authority, tokenProgramId, twapOracleProgramId }` (ids
+    /// base58). `{ status:"error", error:"config_missing" }` when AMM_PROGRAM_BIN is
+    /// unset/unreadable; `config_unavailable` when the config isn't on-chain yet; or
+    /// `backend_error` when the backend FFI call fails.
+    LogosMap configAccount();
+
+    /// Sets the AMM program id every op derives from (base58 or hex; empty clears
+    /// it, reverting to `AMM_PROGRAM_BIN`). The app calls this to adopt the program
+    /// id of the network it selected (from its configured registry) so no
+    /// `AMM_PROGRAM_BIN` is needed. Not selection logic — the module just adopts the
+    /// caller's choice. Headless callers never touch it. Returns `{ status:"ok" }`.
+    LogosMap setAmmProgramId(const LogosMap& request);
+
+    /// Selects which namespaced AMM instance the module talks to, by the account id of its config
+    /// PDA (`request.configId`, base58 or hex). The app resolves this from its registry (the
+    /// active network's `ammConfigId`) — the same way it publishes `poolId`s — so no owner/nonce
+    /// derivation happens here. Empty reverts to the `AMM_CONFIG_ID` env fallback. `{ status:"ok" }`.
+    LogosMap setConfigId(const LogosMap& request);
+
+    /// Submits an `UpdateConfig` transferring admin authority to `request.newAuthorityId`
+    /// (base58 or hex). Only the current admin can sign, so the connected wallet must control it.
+    /// On success `{ status:"ok", error:"", transactionId:<hex> }`; on failure:
+    /// `{ status:"error", error:<code> }` — `config_missing`, `invalid_account_id`,
+    /// `wallet_submission_failed`, `backend_error`, or a plan code (e.g. `config_unavailable`).
+    LogosMap transferOwnership(const LogosMap& request);
+
+    /// Submits a `WithdrawProtocolFees` moving `request.amount` of accrued protocol fees for
+    /// `request.tokenDefinitionId` (base58 or hex) out to `request.destinationId` (an existing
+    /// holding of that token). Only the config's admin authority can sign, so the connected wallet
+    /// must control it. On success `{ status:"ok", error:"", transactionId:<hex> }`; on failure:
+    /// `{ status:"error", error:<code> }` — `config_missing`, `invalid_account_id`,
+    /// `invalid_amount`, `wallet_submission_failed`, `backend_error`, or a plan code.
+    LogosMap withdrawProtocolFees(const LogosMap& request);
+
+    /// Submits `CreatePriceObservations` / `CreateOraclePriceAccount` — seeds a pool's TWAP feed /
+    /// creates its oracle price account for `request.windowDurationMs` (a distinct account per
+    /// window). `request` carries `{ tokenAId, tokenBId, windowDurationMs }`. Both are direct
+    /// submits (chained into the oracle, seeded from validated pool state — nothing signs). On
+    /// success `{ status:"ok", error:"", transactionId:<hex> }`; on failure
+    /// `{ status:"error", error:<code> }` — `config_missing`, `invalid_token_id`,
+    /// `invalid_window`, `same_token_pair`, `config_unavailable`, `wallet_submission_failed`,
+    /// `backend_error` (`already_exists` if the target account is already created).
+    LogosMap createPriceObservations(const LogosMap& request);
+    LogosMap createOraclePriceAccount(const LogosMap& request);
+
+    /// Prices a `SwapExactInput` for the (token_in_hex, token_out_hex) pair:
+    /// reads the pool and returns `{ status:"ok", error:"", expectedOut,
+    /// minReceived, priceImpactBps }`, oriented and computed server-side via
+    /// the shared on-chain formula. `amount_in` accepts a JSON integer or a
+    /// decimal string (JSON floats rejected); `slippage_bps` is basis points.
+    /// On failure: `{ status:"error", error:<code> }` — `no_pool` (no pool /
+    /// liquidity), `config_missing` (AMM_PROGRAM_BIN unset/unreadable),
+    /// `bad_amount`, `invalid_slippage` (`slippage_bps` out of range), or
+    /// `backend_error`. Pool metadata (reserves, fee) comes from `resolvePool`,
+    /// so it isn't echoed here.
+    LogosMap swapExactInQuote(const std::string& token_in_hex,
+                       const std::string& token_out_hex,
+                       const nlohmann::json& amount_in,
+                       int64_t slippage_bps);
+
+    /// Prices a `SwapExactOutput` for the (token_in_hex, token_out_hex) pair:
+    /// reads the pool and returns `{ status:"ok", error:"", requiredIn,
+    /// maxIn, priceImpactBps }`, oriented and computed server-side via the
+    /// shared on-chain formula. `amount_out` accepts a JSON integer or a decimal
+    /// string (JSON floats rejected); `slippage_bps` is basis points. On failure:
+    /// `{ status:"error", error:<code> }` — `no_pool` (no pool / liquidity),
+    /// `output_exceeds_liquidity` (amount_out ≥ reserve), `config_missing`
+    /// (AMM_PROGRAM_BIN unset/unreadable), `bad_amount`, `invalid_slippage`
+    /// (`slippage_bps` out of range), or `backend_error`.
+    LogosMap swapExactOutQuote(const std::string& token_in_hex,
+                       const std::string& token_out_hex,
+                       const nlohmann::json& amount_out,
+                       int64_t slippage_bps);
+
+    /// Submits an on-chain SwapExactInput transaction against the pool for
+    /// (def_a_hex = token in, def_b_hex = token out). amount_in / min_out are
+    /// u128 base-unit amounts; deadline is a u64 unix-ms timestamp. Each accepts
+    /// EITHER a small JSON integer (bare `1000` on the CLI) OR a decimal string
+    /// (what the UI passes, and what the CLI must use for any big value — large
+    /// amounts and the unix-ms deadline — as a quote-wrapped arg like
+    /// '"1000000000000000000"'). Declared `nlohmann::json` so the generated
+    /// dispatch hands us the raw value; JSON floats are rejected rather than
+    /// submit a silently-rounded amount. Returns the tx hash, or an empty string
+    /// on failure (no pool, unreadable AMM_PROGRAM_BIN, bad inputs, failed tx).
+    std::string swapExactInput(const std::string& def_a_hex,
+                               const std::string& def_b_hex,
+                               const std::string& user_input_holding_hex,
+                               const std::string& user_output_holding_hex,
+                               const nlohmann::json& amount_in,
+                               const nlohmann::json& min_out,
+                               const nlohmann::json& deadline);
+
+    /// Submits an on-chain SwapExactOutput transaction against the pool for
+    /// (def_a_hex = token in, def_b_hex = token out). amount_out / max_in are
+    /// u128 base-unit amounts; deadline is a u64 unix-ms timestamp. Same argument
+    /// conventions as swapExactInput (JSON integer or decimal string; floats
+    /// rejected). Returns the tx hash, or an empty string on failure (no pool,
+    /// unreadable AMM_PROGRAM_BIN, bad inputs, failed tx).
+    std::string swapExactOutput(const std::string& def_a_hex,
+                                const std::string& def_b_hex,
+                                const std::string& user_input_holding_hex,
+                                const std::string& user_output_holding_hex,
+                                const nlohmann::json& amount_out,
+                                const nlohmann::json& max_in,
+                                const nlohmann::json& deadline);
+
+    /// Prices creating a pool for (tokenAId, tokenBId) from the two deposit amounts.
+    /// A pure preview — no chain reads, and no fee needed (the fee is not part of the
+    /// pool PDA and doesn't affect the opening LP/price). Returns `{ status:"ok",
+    /// error:"", amountA, amountB, expectedLp, lockedLp, initialPrice }`
+    /// computed via the shared `amm_core` opening-LP math, so `expectedLp` is
+    /// exactly what the guest mints. `request` carries `{ tokenAId, tokenBId,
+    /// amountA, amountB }` (ids hex or base58, normalized to hex; amounts a JSON
+    /// integer or decimal string). On failure: `{ status:"error", error:<code> }` —
+    /// `invalid_token_id`, `same_token_pair`, `bad_amount` (an amount field is present
+    /// but not a valid integer — e.g. a float, from `jsonAmountToDecimal`),
+    /// `amount_required` (an amount field is omitted), `invalid_raw_amount` (non-digit or
+    /// beyond the u128 range), `amount_must_be_positive` (zero), `amount_too_low`
+    /// (deposits below the locked minimum), or `backend_error`. `amount_required`,
+    /// `invalid_raw_amount`, `amount_must_be_positive`, `same_token_pair`, and
+    /// `amount_too_low` come from the FFI; the rest from the module. The caller decides
+    /// create-vs-add by pool existence before calling this.
+    LogosMap createPoolQuote(const LogosMap& request);
+
+    /// Submits a `NewDefinition` transaction creating the pool for the request's pair.
+    /// `request` carries `{ tokenAId, tokenBId, holdingAId, holdingBId, lpHoldingId,
+    /// amountA, amountB, deadlineMs }` (ids hex or base58, normalized to
+    /// hex; amounts/deadline a JSON integer or decimal string, deadline a u64 unix-ms).
+    /// The swap fee is instance-wide (set at `initialize`, stored in the config), so pool
+    /// creation no longer takes a `feeBps`.
+    /// The caller provides `lpHoldingId` — a fresh (empty) account the guest initializes
+    /// and mints the creator's LP tokens into; a new pool has no pre-existing LP holding,
+    /// and the module never creates wallet accounts. On success:
+    /// `{ status:"ok", error:"", transactionId:<hex tx hash> }`. On failure:
+    /// `{ status:"error", error:<code> }` — `config_missing`, `backend_error`,
+    /// `invalid_account_id`, `bad_amount` (malformed amount/deadline),
+    /// `wallet_submission_failed`, or a plan code (e.g. `config_unavailable`). Unlike the
+    /// swaps, a submit failure carries a code so the create-pool UI can tell the user why.
+    LogosMap createPool(const LogosMap& request);
+
+    /// Prices an `AddLiquidity` into the existing pool for (tokenAId, tokenBId) from the
+    /// two max deposit amounts. Reads the pool server-side (like the swap quotes) and runs
+    /// the guest's proportional-deposit math. Returns the same shape as `createPoolQuote`
+    /// minus the create-only locked LP: `{ status:"ok", error:"", amountA, amountB,
+    /// expectedLp, price }` — the actual ratio-matched deposits (display order), the
+    /// LP minted, and the pool's spot price. Slippage is applied at submit, not here.
+    /// `request` carries `{ tokenAId, tokenBId, maxAmountA, maxAmountB }` (ids hex or
+    /// base58, normalized to hex; amounts a JSON integer or decimal string). On failure:
+    /// `{ status:"error", error:<code> }` — `invalid_token_id`, `config_missing`,
+    /// `bad_amount`, `no_pool`, `pair_mismatch`, `amount_too_low`, or `backend_error`.
+    LogosMap addLiquidityQuote(const LogosMap& request);
+
+    /// Submits an `AddLiquidity` transaction into the request's pool. `request` carries
+    /// `{ tokenAId, tokenBId, holdingAId, holdingBId, lpHoldingId, maxAmountA,
+    /// maxAmountB, minLp, deadlineMs }` (ids hex or base58, normalized to hex;
+    /// amounts/deadline a JSON integer or decimal string). `minLp` is the caller's
+    /// slippage floor on the LP minted (the UI derives it from the quote's expectedLp
+    /// and its slippage control). `lpHoldingId` is the holding that receives the minted LP.
+    /// On success: `{ status:"ok", error:"", transactionId:<hex tx hash> }`. On failure:
+    /// `{ status:"error", error:<code> }` — `config_missing`, `backend_error`,
+    /// `invalid_account_id`, `bad_amount`, `same_token_pair` (from `amm_pool_id` or the plan),
+    /// `wallet_submission_failed`, or a plan code (e.g. `no_pool`, `pair_mismatch`,
+    /// `config_unavailable`).
+    LogosMap addLiquidity(const LogosMap& request);
+
+    /// Prices a `RemoveLiquidity` from the existing pool for (tokenAId, tokenBId): burning
+    /// `lpAmount` returns the proportional share of each reserve. Reads the pool
+    /// server-side (like the add quote) and runs the guest's `floor(reserve·lp/supply)` math.
+    /// Returns `{ status:"ok", error:"", amountA, amountB, minimumAmountA,
+    /// minimumAmountB, price }` — the withdrawals (display order), the slippage floors
+    /// the submit enforces, and the pool's spot price. `request` carries `{ tokenAId, tokenBId,
+    /// lpAmount, slippageBps }` (ids hex or base58, normalized to hex; amount a JSON integer
+    /// or decimal string). On failure: `{ status:"error", error:<code> }` — `invalid_token_id`,
+    /// `config_missing`, `bad_amount`, `invalid_slippage`, `no_pool`, `pair_mismatch`,
+    /// `insufficient_pool_liquidity`, `amount_too_low`, `minimum_amount_zero`, or
+    /// `backend_error`.
+    LogosMap removeLiquidityQuote(const LogosMap& request);
+
+    /// Submits a `RemoveLiquidity` transaction against the request's pool. `request` carries
+    /// `{ tokenAId, tokenBId, holdingAId, holdingBId, lpHoldingId, lpAmount, minAmountA,
+    /// minAmountB, deadlineMs }` (ids hex or base58, normalized to hex; amounts/deadline a
+    /// JSON integer or decimal string). `lpHoldingId` is the existing holding burned; the token
+    /// a/b holdings receive the withdrawal (no fresh account, unlike add/create). `minAmount*Raw`
+    /// are the caller's slippage floors on the tokens withdrawn. On success:
+    /// `{ status:"ok", error:"", transactionId:<hex tx hash> }`. On failure:
+    /// `{ status:"error", error:<code> }` — `config_missing`, `backend_error`,
+    /// `invalid_account_id`, `bad_amount`, `wallet_submission_failed`, or a plan code (e.g.
+    /// `no_pool`, `config_unavailable`).
+    LogosMap removeLiquidity(const LogosMap& request);
+
+    /// Submits a `SyncReserves` transaction for the (tokenAId, tokenBId) pool — a
+    /// permissionless keeper op that refreshes the pool's stored reserves to the live vault
+    /// balances and its TWAP tick. `request` carries just `{ tokenAId, tokenBId }` (ids hex or
+    /// base58, normalized to hex): no amounts, deadline, or holdings, and nothing signs. On
+    /// success: `{ status:"ok", error:"", transactionId:<hex tx hash> }`. On failure:
+    /// `{ status:"error", error:<code> }` — `invalid_token_id`, `config_missing`,
+    /// `backend_error`, `wallet_submission_failed`, or a plan code (e.g. `no_pool`,
+    /// `config_unavailable`).
+    LogosMap syncReserves(const LogosMap& request);
+
+    /// Lists the connected wallet's fungible token holdings for the account
+    /// selector: `[{ accountId (hex), accountType:"TokenHolding", definitionId
+    /// (base58), definitionIdHex (hex), balanceRaw }]` — one row per holding
+    /// account, every token, including zero-balance holdings. Narrowing to a
+    /// specific token is the selector's job. `wallet_open` gates the wallet read;
+    /// an empty list on a closed wallet, unset AMM_PROGRAM_BIN, or a decode failure.
+    /// (Thin stopgap — token-holding listing is wallet/token data; see
+    /// token_holdings.rs.)
+    LogosList tokenHoldings(bool wallet_open);
+
+    /// Lists the AMM's supported fee tiers as raw basis points, ascending:
+    /// `[1, 5, 30, 100]`. Pure and input-free — the list is `amm_core`'s
+    /// `SUPPORTED_FEE_TIERS` (the same set the guest enforces), so the UI's fee
+    /// selector never hardcodes or drifts from the program. The app formats the
+    /// labels and decides selectability.
+    LogosList feeTiers();
+
+    /// Resolves an app-provided set of token ids into liquidity selector rows.
+    /// `request` carries `{ tokenIds: [<definition id>, …] }` (base58 or hex,
+    /// normalized to hex here) — the app owns the set: its configured tokens plus any
+    /// custom/pasted ids it remembers (held-but-unlisted tokens are not auto-added by
+    /// the app). Reads each definition and (when `wallet_open`) the wallet, then returns
+    /// `[{ definitionId (base58), name, totalSupply, holdingId, balance }]`. Every
+    /// row has the same fields — a token the wallet doesn't hold gets `holdingId:""`
+    /// and `balance:"0"` — held tokens first. A requested id whose definition is
+    /// unreadable / non-fungible is omitted (the app treats a missing row as
+    /// unresolved). Empty list if AMM_PROGRAM_BIN is unset or the config read fails.
+    /// (`tokenIds` is wrapped in a map, not passed as a bare list, because the
+    /// universal-module glue only supports map/scalar inputs.)
+    LogosList resolveTokens(const LogosMap& request, bool wallet_open);
+
+private:
+    // 64-char lowercase-hex AMM program id via the amm_ffi `program_id` op
+    // over the AMM_PROGRAM_BIN bytes (empty if unset/unreadable/bad).
+    std::string ammProgramId();
+
+    // 64-char lowercase-hex account id of the active instance's config PDA. An
+    // app-selected id (setConfigId) takes precedence; AMM_CONFIG_ID is the
+    // env fallback for local / headless use. Empty when neither is set.
+    std::string ammConfigId();
+
+    // Reads AMM_PROGRAM_BIN into a byte vector (empty on unset/unreadable/empty).
+    std::vector<uint8_t> loadAmmElf();
+
+    // Normalizes an account id given as 64-char hex or base58 to lowercase hex
+    // (base58 via the wallet module). Empty string if it is neither.
+    std::string normalizeAccountId(const std::string& id);
+
+    // Reads the active instance's config account (at ammConfigId()) and returns the
+    // account-read shape the amm_ffi ops embed. Null json when no config id is
+    // configured (readPublicAccount always yields at least {id,status}).
+    nlohmann::json readConfig();
+
+    // Reads a public account through the wallet module and returns the
+    // { id, status, account:{ program_owner, balance, nonce, data } } shape the
+    // amm_ffi ops expect (see the app-side accountReadJson). `account` is
+    // omitted when the read has no data (uninitialized/nonexistent).
+    nlohmann::json readPublicAccount(const std::string& account_id);
+
+    // The user's own public account reads, fresh each call (empty when the wallet
+    // is closed). Each read is a live sequencer round-trip.
+    nlohmann::json walletAccountReads(bool wallet_open);
+
+    // Shared body for createPriceObservations / createOraclePriceAccount: reads the config,
+    // builds the window-seeded oracle plan (observations vs price account), and submits it.
+    LogosMap oracleSetupSubmit(const LogosMap& request, bool observations);
+
+    // The AMM program id the app selected (via setAmmProgramId). Empty ⇒
+    // ammProgramId() falls back to deriving it from AMM_PROGRAM_BIN.
+    std::string m_activeProgramId;
+
+    // The config-PDA account id the app selected (via setConfigId), 64-char
+    // lowercase hex. Empty ⇒ ammConfigId() falls back to AMM_CONFIG_ID.
+    std::string m_activeConfigId;
+};
