@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-delivery-module@1e1fb56aaf4b:src/delivery_module_plugin.h
-// https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h
+// Extracted by logos-module-atlas from logos-co/logos-delivery-module@1d995bda3128:src/delivery_module_plugin.h
+// https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/src/delivery_module_plugin.h
 
 #pragma once
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-04T15:51:19+00:00",
+  "generatedAt": "2026-11-05T14:37:21+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-11-04T12:26:17Z",
+      "indexGeneratedAt": "2026-11-05T12:28:25Z",
       "packageCount": 49
     }
   ],
@@ -7594,9 +7594,8 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.4.0",
+        "latest": "0.3.3",
         "versions": [
-          "0.4.0",
           "0.3.3",
           "0.3.2",
           "0.3.1",
@@ -7606,25 +7605,24 @@
           "0.1.3",
           "0.1.2"
         ],
-        "releasedAt": "2026-10-14T21:16:52Z",
-        "publisherRef": "delivery_module-v0.4.0",
-        "catalogCommit": "d0283dcc14366fff3936e26aea17184aeb4047bc",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/delivery_module-v0.4.0/delivery_module-0.4.0.lgx",
-        "sha256": "cfecd6f216c152e9185c5e631983b6e5b5ceefa30952e131bf010324f9b3b410",
-        "size": 97990384,
+        "releasedAt": "2026-10-26T06:55:23Z",
+        "publisherRef": "delivery_module-v0.3.3",
+        "catalogCommit": "433017d2a856927100c52c00db88792abc979cf6",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/delivery_module-v0.3.3/delivery_module-0.3.3.lgx",
+        "sha256": "fd538b07488dfb512bd17a14006676b2590b7f50158b86c1d372fea689a3044d",
+        "size": 72942983,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
-          "linux-arm64",
-          "windows-x86_64"
+          "linux-arm64"
         ]
       },
       "source": {
         "repo": "logos-co/logos-delivery-module",
-        "commit": "1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f",
+        "commit": "1d995bda3128e13f21ed17e0f925f4c04d2bd117",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@d0283dcc1436 submodules/logos-delivery-module (tag delivery_module-v0.4.0)",
-        "url": "https://github.com/logos-co/logos-delivery-module/tree/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f"
+        "pinnedBy": "logos-co/logos-modules-release@433017d2a856 submodules/logos-delivery-module (tag delivery_module-v0.3.3)",
+        "url": "https://github.com/logos-co/logos-delivery-module/tree/1d995bda3128e13f21ed17e0f925f4c04d2bd117"
       },
       "dependencies": [],
       "requiredBy": [
@@ -7640,59 +7638,59 @@
       "interfaceSource": {
         "file": "interface.h",
         "from": "src/delivery_module_plugin.h",
-        "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/src/delivery_module_plugin.h",
+        "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/src/delivery_module_plugin.h",
         "lang": "h"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/README.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/README.md"
         },
         {
           "path": "docs/index.rst",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/index.rst"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/index.rst"
         },
         {
           "path": "docs/pages/api-layers.rst",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/api-layers.rst"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/api-layers.rst"
         },
         {
           "path": "docs/pages/api_reference.rst",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/api_reference.rst"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/api_reference.rst"
         },
         {
           "path": "docs/pages/architecture.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/architecture.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/architecture.md"
         },
         {
           "path": "docs/pages/internal.rst",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/internal.rst"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/internal.rst"
         },
         {
           "path": "docs/pages/networks.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/networks.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/networks.md"
         },
         {
           "path": "docs/pages/query-node.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/query-node.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/query-node.md"
         },
         {
           "path": "docs/pages/rln.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/rln.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/rln.md"
         },
         {
           "path": "docs/pages/run-node.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/run-node.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/run-node.md"
         },
         {
           "path": "docs/pages/versioning.md",
-          "url": "https://github.com/logos-co/logos-delivery-module/blob/1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f/docs/pages/versioning.md"
+          "url": "https://github.com/logos-co/logos-delivery-module/blob/1d995bda3128e13f21ed17e0f925f4c04d2bd117/docs/pages/versioning.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "delivery_module.lidl",
-        "builtFrom": "1e1fb56aaf4bb6b80e8d1fef043ce64eba6bd28f",
+        "builtFrom": "1d995bda3128e13f21ed17e0f925f4c04d2bd117",
         "stale": false
       },
       "api": {
