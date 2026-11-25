@@ -1,5 +1,5 @@
-; Extracted by logos-module-atlas from logos-blockchain/logos-blockchain-module@b49ecaa740dc:blockchain_module.lidl
-; https://github.com/logos-blockchain/logos-blockchain-module/blob/b49ecaa740dc2a575361c8c539f1d76b50000d09/blockchain_module.lidl
+; Extracted by logos-module-atlas from logos-blockchain/logos-blockchain-module@173643258294:blockchain_module.lidl
+; https://github.com/logos-blockchain/logos-blockchain-module/blob/1736432582948b2fb7759f135753faf8617f6411/blockchain_module.lidl
 
 module blockchain_module {
   version "0.0.999"

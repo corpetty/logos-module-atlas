@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-24T17:39:54+00:00",
+  "generatedAt": "2026-11-25T17:10:41+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-11-24T12:28:36Z",
+      "indexGeneratedAt": "2026-11-25T15:09:48Z",
       "packageCount": 49
     }
   ],
@@ -582,8 +582,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "0.3.6",
+        "latest": "0.3.7",
         "versions": [
+          "0.3.7",
           "0.3.6",
           "0.3.4",
           "0.3.2",
@@ -598,12 +599,12 @@
           "0.1.3-rc.13",
           "0.0.999"
         ],
-        "releasedAt": "2026-11-24T12:03:02Z",
-        "publisherRef": "blockchain_module-v0.3.6",
-        "catalogCommit": "c25a215024fd80f4ab2f0d79bb59a6c4713ce9f8",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.6/blockchain_module-0.3.6.lgx",
-        "sha256": "1168d8de5d657c45ec08ec25ba13efeffbbf75a2ead95182422f65ea43462e0c",
-        "size": 145429791,
+        "releasedAt": "2026-11-25T15:07:03Z",
+        "publisherRef": "blockchain_module-v0.3.7",
+        "catalogCommit": "81ea8e373544cec138583a906bd9e1ef3faeabb5",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/blockchain_module-v0.3.7/blockchain_module-0.3.7.lgx",
+        "sha256": "41d1c252a91b3fb53e9f70e76c7f727ae994ffcdfa2a265a00feff236d7ba97d",
+        "size": 145434415,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -612,10 +613,10 @@
       },
       "source": {
         "repo": "logos-blockchain/logos-blockchain-module",
-        "commit": "b49ecaa740dc2a575361c8c539f1d76b50000d09",
+        "commit": "1736432582948b2fb7759f135753faf8617f6411",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@c25a215024fd submodules/logos-blockchain-module (tag blockchain_module-v0.3.6)",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-module/tree/b49ecaa740dc2a575361c8c539f1d76b50000d09"
+        "pinnedBy": "logos-co/logos-modules-release@81ea8e373544 submodules/logos-blockchain-module (tag blockchain_module-v0.3.7)",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-module/tree/1736432582948b2fb7759f135753faf8617f6411"
       },
       "dependencies": [],
       "requiredBy": [
@@ -629,19 +630,19 @@
       "interfaceSource": {
         "file": "interface.lidl",
         "from": "blockchain_module.lidl",
-        "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/b49ecaa740dc2a575361c8c539f1d76b50000d09/blockchain_module.lidl",
+        "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/1736432582948b2fb7759f135753faf8617f6411/blockchain_module.lidl",
         "lang": "lidl"
       },
       "docs": [
         {
           "path": "README.md",
-          "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/b49ecaa740dc2a575361c8c539f1d76b50000d09/README.md"
+          "url": "https://github.com/logos-blockchain/logos-blockchain-module/blob/1736432582948b2fb7759f135753faf8617f6411/README.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "blockchain_module.lidl",
-        "builtFrom": "b49ecaa740dc2a575361c8c539f1d76b50000d09",
+        "builtFrom": "1736432582948b2fb7759f135753faf8617f6411",
         "stale": false
       },
       "api": {
