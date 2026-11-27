@@ -122,7 +122,7 @@ repos and remain under their terms. Each one names its source repo and commit.
 ## Modules
 
 <!-- registry:start -->
-_Generated 2026-11-25 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-11-25T15:09)._
+_Generated 2026-11-27 from Basecamp [0.3.2](https://github.com/logos-co/logos-basecamp/releases/tag/0.3.2) and its default catalog [Logos Official](https://github.com/logos-co/logos-modules-release) (index generated 2026-11-27T12:28)._
 
 ### [Blockchain & LEZ](stacks/blockchain-lez.md)
 
@@ -205,7 +205,7 @@ _Generated 2026-11-25 from Basecamp [0.3.2](https://github.com/logos-co/logos-ba
 
 | Module | Type | Version | Where | Contract | Description |
 |---|---|---|---|---|---|
-| [`storage_module`](modules/storage_module/README.md) | core | 3.0.2 | bundled + catalog | [lidl](modules/storage_module/storage_module.lidl) | Storage module |
-| [`storage_ui`](modules/storage_ui/README.md) | ui_qml | 3.0.2 | catalog | — | Storage interface for the Logos application |
+| [`storage_module`](modules/storage_module/README.md) | core | 3.1.0-rc1 | bundled + catalog | [lidl](modules/storage_module/storage_module.lidl) | Storage module |
+| [`storage_ui`](modules/storage_ui/README.md) | ui_qml | 3.1.0-rc1 | catalog | — | Storage interface for the Logos application |
 
 <!-- registry:end -->

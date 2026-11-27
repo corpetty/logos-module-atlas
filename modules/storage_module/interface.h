@@ -1,21 +1,21 @@
-// Extracted by logos-module-atlas from logos-co/logos-storage-module@7548f41ae189:src/storage_module_plugin.h
-// https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h
+// Extracted by logos-module-atlas from logos-co/logos-storage-module@0108ad3785b0:src/storage_module_plugin.h
+// https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/src/storage_module_plugin.h
 
 #pragma once
 
 #include <atomic>
 #include <condition_variable>
 #include <cstdint>
-#include <mutex>
-#include <string>
-#include <vector>
 #include <logos_json.h>
 #include <logos_module_context.h>
 #include <logos_result.h>
+#include <mutex>
+#include <optional>
+#include <string>
+#include <vector>
 
-extern "C" {
-#include "lib/libstorage.h"
-}
+// No extern "C" here: the header has its own, and it pulls in the C runtime.
+#include <libstorage.h>
 
 /// Logos Storage Module API.
 ///
@@ -24,19 +24,23 @@ extern "C" {
 /// report completion through the typed events in the
 /// `Asynchronous-completion events` section.
 class StorageModuleImpl : public LogosModuleContext {
-public:
+  public:
     StorageModuleImpl();
     ~StorageModuleImpl();
 
     /// Load the configuration saved by the last successful init().
     ///
-    /// The configuration is read from `~/.logos_storage/config.json` and migrated
+    /// The configuration is read from `config.json` in the persistence directory
+    /// that the host gives to the module. It is migrated
     /// to this module version using its `config-version`. Depending on the updates
     /// of logos-storage-nim, some options can be removed or replaced with new ones.
-    /// The data-dir and the Mix configuration are then filled in as init() does.
+    /// The data-dir is then filled in as init() does.
+    /// An unknown `network` is reported as an error.
     ///
-    /// When the file does not exist, returns a suitable default configuration.
-    /// This call does not write anything to disk.
+    /// Call it before init() and pass its result to init(): init() does not
+    /// migrate and does not fill `log-file` and `log-format`.
+    ///
+    /// When there is no existing configuration, returns a suitable default configuration.
     ///
     /// Returns StdLogosResult::value as a JSON string.
     StdLogosResult loadConfigOrDefault();
@@ -59,7 +63,6 @@ public:
     ///     "nat": "auto",
     ///     "net-privkey": "key",
     ///     "bootstrap-node": [],
-    ///     "no-bootstrap-node": false,
     ///     "network": "logos.test",
     ///     "dht-mix-proxy": [],
     ///     "mix-enabled": false,
@@ -89,12 +92,21 @@ public:
     ///
     /// `cfg` is taken as a configuration suitable for this version of the module - older
     /// configuration strings are not migrated automatically (see `loadConfigOrDefault`).
-    /// The data-dir is set if it is not provided. With `mix-enabled` true and no
-    /// custom bootstrap settings, the Mix configuration of the network is filled in.
+    /// The data-dir is set if it is not provided.
+    /// With no custom bootstrap settings, the node joins `network` through the
+    /// bootstrap nodes this module ships for it. With `mix-enabled` true as well,
+    /// the node finds the Mix relays and proxies of the network through service discovery.
+    /// The bootstrap nodes are not saved but exposed via `nodeConfig()`.
+    /// An unknown `network` is rejected.
+    ///
+    /// It is highly recommended to call `loadConfigOrDefault` first in order to get a configuration up to date
+    /// and then to pass this configuration to `init`.
+    /// `loadConfigOrDefault` is intended to be called outside of `init`, to avoid
+    /// side effects in `init`.
     ///
     /// Do not call init() more than once per instance.
     ///
-    /// On success, `cfg` is saved in `~/.logos_storage/config.json`, where
+    /// On success, `cfg` is saved in `config.json` in the persistence directory, where
     /// loadConfigOrDefault() reads it back. A `cfg` without `config-version` is
     /// saved with the current version.
     ///
@@ -109,8 +121,8 @@ public:
     ///
     /// `storageStart` is emitted once the node is up.
     ///
-    /// Returns true if the start command was accepted by libstorage.  Actual
-    /// completion is signalled asynchronously via the `storageStart` event.
+    /// The returned bool only reports whether the start command was
+    /// dispatched. The real outcome arrives later via the `storageStart` event.
     ///
     /// The method is asynchronous.
     bool start();
@@ -119,18 +131,17 @@ public:
     ///
     /// If the node is starting or stopping, the call fails.
     ///
-    /// The node can be started and stopped multiple times.  Returns a
-    /// StdLogosResult indicating whether the stop command was sent; actual
-    /// completion is signalled via the `storageStop` event.
+    /// Calling start() again after stop() is not supported. To restart the
+    /// node, call destroy(), then init(), then start().
+    ///
+    /// The returned StdLogosResult only reports whether the stop command was
+    /// dispatched. The real outcome arrives later via the `storageStop` event.
     ///
     /// The method is asynchronous.
     StdLogosResult stop();
 
     /// Destroy the storage context and free all resources.
-    ///
-    /// Internally calls storage_close then storage_destroy.  The node should
-    /// be stopped before calling destroy().  Not stopping first can lead to
-    /// undefined behaviour (e.g. data loss or crashes).
+    /// The context lives as long as its node, so this also stops and closes it.
     ///
     /// Fails while the node is starting or stopping.
     ///
@@ -153,8 +164,7 @@ public:
     /// for it -- that name is reserved for module identity and must be
     /// `version() -> tstr`, which the generator injects from `metadata.json`.
     ///
-    /// Does not require the node to be started.
-    ///
+    /// Requires neither a started node nor an initialized context.
     /// Returns StdLogosResult::value as a std::string on success.
     /// The method is synchronous.
     StdLogosResult libstorageVersion();
@@ -171,10 +181,20 @@ public:
     StdLogosResult dataDir();
 
     /// Get the Logos network this node was configured for.
+    /// The value is empty when the node was configured without network.
     ///
     /// Returns StdLogosResult::value as a std::string on success.
     /// The method is synchronous.
     StdLogosResult network();
+
+    /// Get the configuration the node was created with.
+    ///
+    /// It is the configuration given to init(), where `network` is replaced by the
+    /// bootstrap nodes of that network.
+    ///
+    /// Returns StdLogosResult::value as a JSON string on success.
+    /// The method is synchronous.
+    StdLogosResult nodeConfig();
 
     /// Get the node's peer ID.
     ///
@@ -199,12 +219,22 @@ public:
     ///   "id": string,
     ///   "addrs": [string],
     ///   "spr": string,
+    ///   "libp2pPubKey": string,
+    ///   "mixPubKey": string,       // null when Mix is not enabled
     ///   "table": {
     ///     "localNode": { "peerId": string, "addresses": [string],
     ///                    "lastSeen": null },
     ///     "nodes": [{ "peerId": string, "addresses": [string],
     ///                 "lastSeen": int }]
-    ///   }
+    ///   },
+    ///   "storage": { "version": string, "revision": string },
+    ///   "nat": {
+    ///     "reachability": string,
+    ///     "clientMode": bool,
+    ///     "relayRunning": bool,
+    ///     "portMapping": string
+    ///   },
+    ///   "connections": [{ "peerId": string, "direct": bool }]
     /// }
     /// @endcode
     ///
@@ -246,15 +276,16 @@ public:
     /// Uses `peerAddresses` as explicit dial targets when provided; otherwise
     /// the peer must be discoverable via the DHT using `peerId`.
     ///
-    /// Returns a StdLogosResult indicating whether the connect command was sent;
-    /// actual completion is signalled via the `storageConnect` event.
+    /// The returned StdLogosResult only reports whether the connect command
+    /// was dispatched. The real outcome arrives later via the `storageConnect`
+    /// event.
     ///
     /// The method is asynchronous.
     StdLogosResult connect(const std::string& peerId, const std::vector<std::string>& peerAddresses);
 
     /// Upload a local file by absolute path.
     ///
-    /// Internally calls storage_upload_init followed by storage_upload_file.
+    /// Internally calls storage_ctx_upload_init followed by storage_ctx_upload_file.
     /// If init succeeds but the file upload command fails, the session is
     /// cancelled automatically.
     ///
@@ -314,7 +345,8 @@ public:
     ///
     /// `cid`       – content identifier to download.
     /// `filePath`  – destination path on disk.
-    /// `local`     – if true, only reads from locally cached data (no network).
+    /// `local`     – has no effect. The manifest is always fetched first, from
+    ///    the network when it is not in local storage.
     /// `chunkSize` – download chunk size in bytes (default 65536).
     /// `isPrivate` – if true, tunnels the download over Mix. Complete privacy
     ///    also requires setting `advertise=false`.
@@ -325,7 +357,8 @@ public:
     /// The method is asynchronous; progress is signalled via the
     /// `storageDownloadProgress` event (throttled to at most one event per %
     /// point) and completion via the `storageDownloadDone` event.
-    StdLogosResult downloadToUrl(const std::string& cid, const std::string& filePath, bool local, int64_t chunkSize, bool isPrivate, bool advertise);
+    StdLogosResult downloadToUrl(const std::string& cid, const std::string& filePath, bool local, int64_t chunkSize,
+                                 bool isPrivate, bool advertise);
 
     /// Download content by CID and deliver it as a stream of base64-encoded chunks.
     ///
@@ -334,7 +367,7 @@ public:
     /// the base64 encoding overhead.
     ///
     /// `cid`       – content identifier to download.
-    /// `local`     – if true, only reads from locally cached data (no network).
+    /// `local`     – if true, the call fails when the CID is not in local storage.
     /// `chunkSize` – download chunk size in bytes (default 65536).
     /// `isPrivate` – if true, tunnels the download over Mix. Complete privacy
     ///    also requires setting `advertise=false`.
@@ -343,7 +376,8 @@ public:
     /// The method is asynchronous; each chunk is delivered via the
     /// `storageDownloadProgress` event (one event per chunk, not throttled) and
     /// completion via the `storageDownloadDone` event.
-    StdLogosResult downloadChunks(const std::string& cid, bool local, int64_t chunkSize, bool isPrivate, bool advertise);
+    StdLogosResult downloadChunks(const std::string& cid, bool local, int64_t chunkSize, bool isPrivate,
+                                  bool advertise);
 
     /// Cancel an ongoing download session.
     ///
@@ -359,10 +393,15 @@ public:
 
     /// Fetch content from the network and cache it locally in the background.
     ///
-    /// The method returns as soon as the fetch request is accepted; no event is
-    /// emitted when the background download completes.
+    /// The call first waits for the manifest. The manifest is read from local
+    /// storage, or downloaded from the network when it is not there. The call
+    /// fails when the manifest is not available after 30 seconds.
     ///
-    /// Returns StdLogosResult::success = true if the request was accepted.
+    /// The blocks are then downloaded in the background. No event is emitted
+    /// when the background download completes.
+    ///
+    /// Returns StdLogosResult::success = true once the background download
+    /// has started.
     /// The method is synchronous.
     ///
     /// `isPrivate` – if true, tunnels the download over Mix. Complete privacy
@@ -379,12 +418,55 @@ public:
     /// Returns StdLogosResult::success = true on success. The method is synchronous.
     StdLogosResult setAdvertise(const std::string& cid, bool advertise);
 
-    /// Remove content identified by CID from local storage in the background.
+    /// Share a dataset CID under a name. Publishing again with the
+    /// same label points the name to a new dataset CID.
     ///
-    /// The delete may touch the network and can take a while, so this method
-    /// does not block: the returned StdLogosResult only reports whether the
-    /// command was dispatched. The real outcome arrives later via the
-    /// `storageRemoveDone` event.
+    /// This method doesn't block: its result only says if the command was sent.
+    /// The `storageNamePublishDone` event carries the outcome and the name key.
+    /// The publish succeeds even when the DHT can't be reached.
+    ///
+    /// `seqnum` – optional, the sequence number of the name record. Without it, or
+    ///    with 0, the node uses the current Unix time in seconds. It can't be negative
+    ///    or lower than the stored one, and it can be equal to it only for the same
+    ///    dataset CID.
+    StdLogosResult namePublish(const std::string& label, const std::string& cid, std::optional<int64_t> seqnum);
+
+    /// Delete the name record of the label locally: the node stops advertising it.
+    /// The name record stays in the DHT until it expires.
+    /// This method is synchronous: its result says if the delete succeeded.
+    StdLogosResult nameUnpublish(const std::string& label);
+
+    /// Read the name record of the name key in the DHT and advertise it again,
+    /// unchanged, in the background. Any node can refresh any name.
+    ///
+    /// This method doesn't block: its result only says if the command was sent.
+    /// The `storageNameRefreshDone` event carries the outcome.
+    StdLogosResult nameRefresh(const std::string& nameKey);
+
+    /// Get the dataset CID that the name key points to, from the DHT.
+    ///
+    /// This method doesn't block: its result only says if the command was sent.
+    /// The `storageNameResolveDone` event carries the dataset CID.
+    StdLogosResult nameResolve(const std::string& nameKey);
+
+    /// Get the dataset CID that the peer publishes for the label, from the DHT.
+    ///
+    /// This method doesn't block: its result only says if the command was sent.
+    /// The `storageNameResolveKeyDone` event carries the dataset CID.
+    StdLogosResult nameResolveKey(const std::string& peerId, const std::string& label);
+
+    /// Check whether the string is a name key. A dataset CID is not a name key.
+    /// It doesn't ask the DHT.
+    /// Returns StdLogosResult::value as a bool on success: true for a name key.
+    /// The method is synchronous.
+    StdLogosResult isNameKey(const std::string& key);
+
+    /// Remove content identified by CID from local storage.
+    ///
+    /// A large dataset takes a long time, so this method does not block:
+    /// the returned StdLogosResult only reports whether the command was
+    /// dispatched. The real outcome arrives later via the `storageRemoveDone`
+    /// event.
     StdLogosResult remove(const std::string& cid);
 
     /// Get storage space information.
@@ -445,15 +527,16 @@ public:
     /// Each event delivers a single JSON-encoded string `payload`, described
     /// with the event below.
     /// @{
-logos_events:
-    /// Emitted when start() has finished starting the node.
-    /// @code{.json}
-    /// {
-    ///   "success": bool,
-    ///   "message": string
-    /// }
-    /// @endcode
-    void storageStart(const std::string& payload);
+    logos_events :
+        /// Emitted when start() has finished starting the node.
+        /// @code{.json}
+        /// {
+        ///   "success": bool,
+        ///   "message": string
+        /// }
+        /// @endcode
+        void
+        storageStart(const std::string& payload);
 
     /// Emitted when stop() has finished stopping the node.
     /// @code{.json}
@@ -545,27 +628,90 @@ logos_events:
     /// }
     /// @endcode
     void storageRemoveDone(const std::string& payload);
+
+    /// Emitted when namePublish() finishes.
+    /// @code{.json}
+    /// {
+    ///   "success": bool,
+    ///   "label":   string,
+    ///   "cid":     string,
+    ///   "nameKey": string,         // present on success
+    ///   "error":   string          // present on failure
+    /// }
+    /// @endcode
+    void storageNamePublishDone(const std::string& payload);
+
+    /// Emitted when nameRefresh() finishes.
+    /// @code{.json}
+    /// {
+    ///   "success": bool,
+    ///   "nameKey": string,
+    ///   "error":   string          // present on failure
+    /// }
+    /// @endcode
+    void storageNameRefreshDone(const std::string& payload);
+
+    /// Emitted when nameResolve() finishes. `cid` is empty when the DHT has
+    /// no name record.
+    /// @code{.json}
+    /// {
+    ///   "success": bool,
+    ///   "nameKey": string,
+    ///   "cid":     string,         // present on success
+    ///   "error":   string          // present on failure
+    /// }
+    /// @endcode
+    void storageNameResolveDone(const std::string& payload);
+
+    /// Emitted when nameResolveKey() finishes. `cid` is empty when the DHT has
+    /// no name record.
+    /// @code{.json}
+    /// {
+    ///   "success": bool,
+    ///   "peerId":  string,
+    ///   "label":   string,
+    ///   "cid":     string,         // present on success
+    ///   "error":   string          // present on failure
+    /// }
+    /// @endcode
+    void storageNameResolveKeyDone(const std::string& payload);
     /// @}
 
-protected:
+  protected:
     /// Stop the node and destroy the context before the host
     /// tears the module down.
     ///
     /// The method is synchronous.
     LogosShutdown aboutToUnload() override;
 
-private:
-    void* storageCtx;
+  private:
+    StorageCtx* storageCtx;
+    std::string networkName;
+    std::string nodeConfigJson;
 
     std::atomic<bool> nodeRunning{false};
     std::atomic<bool> nodeBusy{false};
 
     StdLogosResult destroyContext();
 
+    /// The configuration saved by init(): in the persistence directory, or in
+    /// `~/.logos_storage` when a version before 5 saved it.
+    /// An empty object when there is none.
+    nlohmann::json persistedConfig();
+
+    /// Returns true when the config was written.
+    bool persistConfig(nlohmann::json config);
+
+    /// The saved configuration, migrated to the current `config-version`.
+    nlohmann::json migrateConfigVersion();
+
+    /// Moves the data of a configuration saved before version 5 to the
+    /// persistence folder.
+    /// Throws when the data cannot be moved.
+    void maybeMoveOldData(const nlohmann::json& config);
+
     /// Shared internal download helper used by downloadToUrl and downloadChunks.
     /// Returns session ID (= cid) on success, empty string on failure.
-    std::string downloadChunksInternal(const std::string& cid,
-                                       const std::string& filepath,
-                                       bool local, int64_t chunkSize,
-                                       bool isPrivate, bool advertise);
+    std::string downloadChunksInternal(const std::string& cid, const std::string& filepath, bool local,
+                                       int64_t chunkSize, bool isPrivate, bool advertise);
 };

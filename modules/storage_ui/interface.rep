@@ -1,5 +1,5 @@
-// Extracted by logos-module-atlas from logos-co/logos-storage-ui@7b89afee451b:src/StorageBackend.rep
-// https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.rep
+// Extracted by logos-module-atlas from logos-co/logos-storage-ui@aa82e918277a:src/StorageBackend.rep
+// https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/src/StorageBackend.rep
 
 #include <QVariantList>
 #include <QUrl>
@@ -37,11 +37,18 @@ class StorageBackend
     // Upload / Download
     SLOT(void uploadFile(QUrl url))
     SLOT(void downloadFile(QString cid, QUrl url, qint64 totalBytes, bool isPrivate))
+    SLOT(void cancelDownload(QString cid))
     SLOT(void downloadManifest(QString cid, bool isPrivate))
     SLOT(void downloadManifests())
     SLOT(void exists(QString cid))
     SLOT(void remove(QString cid))
     SLOT(void fetch(QString cid))
+
+    // Names
+    SLOT(void publishName(QString label, QString cid))
+    SLOT(void unpublishName(QString label))
+    // Fetch the manifest of a dataset cid, or of the dataset a name key points to.
+    SLOT(void fetchManifestOrName(QString key, bool isPrivate))
 
     // Space
     SLOT(void refreshSpace())
@@ -49,6 +56,8 @@ class StorageBackend
     // Config
     SLOT(void updateUserConfig(QString configJson))
     SLOT(QString getUserConfig())
+
+    SLOT(QString getNodeConfig())
 
     // Onboarding
     SLOT(void restartOnboarding())
@@ -83,6 +92,8 @@ class StorageBackend
     SIGNAL(downloadStarted(QString cid, QString filename, qint64 totalBytes))
     SIGNAL(downloadChunk(qint64 len))
     SIGNAL(downloadCompleted(QString cid))
+    SIGNAL(downloadCancelled(QString cid))
+    SIGNAL(downloadFailed(QString cid, QString error))
 
     // Manifests
     SIGNAL(manifestsUpdated(QVariantList manifests))
@@ -92,6 +103,15 @@ class StorageBackend
     // Remove
     SIGNAL(removeStarted(QString cid))
     SIGNAL(removeFailed(QString cid, QString error))
+
+    // Names
+    SIGNAL(namePublishStarted(QString label, QString cid))
+    SIGNAL(namePublished(QString label, QString cid, QString nameKey))
+    SIGNAL(namePublishFailed(QString label, QString cid, QString error))
+    SIGNAL(nameUnpublished(QString label))
+    SIGNAL(nameResolveStarted(QString nameKey))
+    SIGNAL(nameResolved(QString nameKey, QString cid))
+    SIGNAL(nameResolveFailed(QString nameKey, QString error))
 
     // Network / Onboarding
     SIGNAL(onboardingRestarted())

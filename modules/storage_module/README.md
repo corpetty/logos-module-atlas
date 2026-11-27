@@ -8,20 +8,20 @@
 | Type | `core` · interface `universal` · c++ |
 | Stack | [storage](../../stacks/storage.md) · category `protocol` |
 | Availability | bundled in Basecamp 0.3.2 (v3.0.2); installable from the default catalog *Logos Official* |
-| Catalog version | **3.0.2** (released 2026-10-03) · all: 3.0.2, 3.0.1, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.1, 2.0.0, 1.2.0, 1.1.0, 1.0.0 |
+| Catalog version | **3.1.0-rc1** (released 2026-11-27) · all: 3.1.0-rc1, 3.0.2, 3.0.1, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.1, 2.0.0, 1.2.0, 1.1.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [storage_module-v3.0.2](https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.0.2/storage_module-3.0.2.lgx) · sha256 `49accbb8e538bc13…` |
-| Source | [logos-co/logos-storage-module@7548f41](https://github.com/logos-co/logos-storage-module/tree/7548f41ae189917d58c37f0fb6d3a2700b99f59b) |
-| Pinned by | logos-co/logos-modules-release@1b7f8967b1d9 submodules/logos-storage-module (tag storage_module-v3.0.2) |
+| Package | [storage_module-v3.1.0-rc1](https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.1.0-rc1/storage_module-3.1.0-rc1.lgx) · sha256 `5c0216040d173d04…` |
+| Source | [logos-co/logos-storage-module@0108ad3](https://github.com/logos-co/logos-storage-module/tree/0108ad3785b0382b3f551b3edb8118c375fb60de) |
+| Pinned by | logos-co/logos-modules-release@7ab0214e653d submodules/logos-storage-module (tag storage_module-v3.1.0-rc1) |
 | Depends on | — |
 | Required by | [`storage_ui`](../storage_ui/README.md) |
 
 ## Read these first
 
 1. **Contract** — [`storage_module.lidl`](storage_module.lidl): canonical LIDL, what codegen (C++/Rust/Nim) consumes.
-2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/storage_module_plugin.h`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h). Doc comments here are the API reference.
+2. **Annotated interface source** — [`interface.h`](interface.h), extracted from [`src/storage_module_plugin.h`](https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/src/storage_module_plugin.h). Doc comments here are the API reference.
 3. **Stack overview** — [stacks/storage.md](../../stacks/storage.md): how this module fits with its neighbours, trust boundaries, flows.
-4. **Upstream docs** — [`CLAUDE.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/CLAUDE.md), [`README.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/README.md), [`docs/api_reference.rst`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/api_reference.rst), [`docs/index.rst`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/index.rst), [`docs/qt-creator.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/qt-creator.md), [`docs/logoscore-overview/logoscore.md`](https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/logoscore-overview/logoscore.md)
+4. **Upstream docs** — [`CLAUDE.md`](https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/CLAUDE.md), [`README.md`](https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/README.md), [`docs/api_reference.rst`](https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/docs/api_reference.rst), [`docs/index.rst`](https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/docs/index.rst), [`docs/logoscore-overview/logoscore.md`](https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/docs/logoscore-overview/logoscore.md)
 
 ## API at a glance
 
@@ -37,6 +37,7 @@
 | `moduleVersion` | `moduleVersion() -> tstr` | Get this module's version, as declared in `metadata.json`. |
 | `dataDir` | `dataDir() -> result` | Get the storage data directory path. |
 | `network` | `network() -> result` | Get the Logos network this node was configured for. |
+| `nodeConfig` | `nodeConfig() -> result` | Get the configuration the node was created with. |
 | `peerId` | `peerId() -> result` | Get the node's peer ID. |
 | `spr` | `spr() -> result` | Get the node's Signed Peer Record (SPR). |
 | `debug` | `debug() -> result` | Get debug information for the node. |
@@ -55,7 +56,13 @@
 | `fetch` | `fetch(cid: tstr, isPrivate: bool, advertise: bool) -> result` | Fetch content from the network and cache it locally in the background. |
 | `getAdvertise` | `getAdvertise(cid: tstr) -> result` | Check whether the dataset is announced to the DHT and served to peers. |
 | `setAdvertise` | `setAdvertise(cid: tstr, advertise: bool) -> result` | Enable or disable DHT announcements and serving to peers for a dataset. |
-| `remove` | `remove(cid: tstr) -> result` | Remove content identified by CID from local storage in the background. |
+| `namePublish` | `namePublish(label: tstr, cid: tstr, seqnum: ? int) -> result` | Share a dataset CID under a name. |
+| `nameUnpublish` | `nameUnpublish(label: tstr) -> result` | Delete the name record of the label locally: the node stops advertising it. |
+| `nameRefresh` | `nameRefresh(nameKey: tstr) -> result` | Read the name record of the name key in the DHT and advertise it again, unchanged, in the background. |
+| `nameResolve` | `nameResolve(nameKey: tstr) -> result` | Get the dataset CID that the name key points to, from the DHT. |
+| `nameResolveKey` | `nameResolveKey(peerId: tstr, label: tstr) -> result` | Get the dataset CID that the peer publishes for the label, from the DHT. |
+| `isNameKey` | `isNameKey(key: tstr) -> result` | Check whether the string is a name key. |
+| `remove` | `remove(cid: tstr) -> result` | Remove content identified by CID from local storage. |
 | `space` | `space() -> result` | Get storage space information. |
 | `manifests` | `manifests() -> result` | List all manifests stored locally. |
 | `downloadManifest` | `downloadManifest(cid: tstr, isPrivate: bool, advertise: bool) -> result` | Fetch the manifest for a given CID in the background. |
@@ -63,7 +70,7 @@
 
 | Event | Payload | Summary |
 |---|---|---|
-| `storageStart` | `storageStart(payload: tstr)` | Emitted when start() has finished starting the node. |
+| `storageStart` | `storageStart(payload: tstr)` |  |
 | `storageStop` | `storageStop(payload: tstr)` | Emitted when stop() has finished stopping the node. |
 | `storageConnect` | `storageConnect(payload: tstr)` | Emitted when connect() has finished connecting to the peer. |
 | `storageUploadProgress` | `storageUploadProgress(payload: tstr)` | Emitted as uploadUrl() or uploadChunk() upload data. |
@@ -72,9 +79,13 @@
 | `storageDownloadDone` | `storageDownloadDone(payload: tstr)` | Emitted when downloadToUrl() or downloadChunks() finishes. |
 | `storageDownloadManifestDone` | `storageDownloadManifestDone(payload: tstr)` | Emitted when downloadManifest() finishes. |
 | `storageRemoveDone` | `storageRemoveDone(payload: tstr)` | Emitted when remove() finishes. |
+| `storageNamePublishDone` | `storageNamePublishDone(payload: tstr)` | Emitted when namePublish() finishes. |
+| `storageNameRefreshDone` | `storageNameRefreshDone(payload: tstr)` | Emitted when nameRefresh() finishes. |
+| `storageNameResolveDone` | `storageNameResolveDone(payload: tstr)` | Emitted when nameResolve() finishes. |
+| `storageNameResolveKeyDone` | `storageNameResolveKeyDone(payload: tstr)` | Emitted when nameResolveKey() finishes. |
 
 ## Depend on it / get it
 
 - From your module's `metadata.json`: `"dependencies": ["storage_module"]` (see [guides/calling-official-modules.md](../../guides/calling-official-modules.md)).
-- Contract from source: `nix build 'github:logos-co/logos-storage-module/7548f41ae189917d58c37f0fb6d3a2700b99f59b#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install storage_module --version 3.0.2`
+- Contract from source: `nix build 'github:logos-co/logos-storage-module/0108ad3785b0382b3f551b3edb8118c375fb60de#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install storage_module --version 3.1.0-rc1`

@@ -8,19 +8,19 @@
 | Type | `ui_qml` · interface `universal` · qml+c++ |
 | Stack | [storage](../../stacks/storage.md) · category `storage` |
 | Availability | installable from the default catalog *Logos Official* |
-| Catalog version | **3.0.2** (released 2026-10-05) · all: 3.0.2, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.2, 2.0.1, 2.0.0, 1.0.0 |
+| Catalog version | **3.1.0-rc1** (released 2026-11-27) · all: 3.1.0-rc1, 3.0.2, 3.0.0, 3.0.0-rc1, 2.1.3, 2.1.2, 2.1.0, 2.0.2, 2.0.1, 2.0.0, 1.0.0 |
 | Platforms | darwin-arm64, linux-amd64, linux-arm64, windows-x86_64 |
-| Package | [storage_ui-v3.0.2](https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.0.2/storage_ui-3.0.2.lgx) · sha256 `3adbed3020e0ab8a…` |
-| Source | [logos-co/logos-storage-ui@7b89afe](https://github.com/logos-co/logos-storage-ui/tree/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b) |
-| Pinned by | logos-co/logos-modules-release@39d24c75ffd1 submodules/logos-storage-ui (tag storage_ui-v3.0.2) |
+| Package | [storage_ui-v3.1.0-rc1](https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.1.0-rc1/storage_ui-3.1.0-rc1.lgx) · sha256 `91dd7bd853f35a2e…` |
+| Source | [logos-co/logos-storage-ui@aa82e91](https://github.com/logos-co/logos-storage-ui/tree/aa82e918277a7e9f0541e28ca71d052288f4ebdc) |
+| Pinned by | logos-co/logos-modules-release@7ab0214e653d submodules/logos-storage-ui (tag storage_ui-v3.1.0-rc1) |
 | Depends on | [`storage_module`](../storage_module/README.md) |
 | Required by | — |
 
 ## Read these first
 
-1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/StorageBackend.rep`](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.rep). Doc comments here are the API reference.
+1. **Annotated interface source** — [`interface.rep`](interface.rep), extracted from [`src/StorageBackend.rep`](https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/src/StorageBackend.rep). Doc comments here are the API reference.
 2. **Stack overview** — [stacks/storage.md](../../stacks/storage.md): how this module fits with its neighbours, trust boundaries, flows.
-3. **Upstream docs** — [`CLAUDE.md`](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/CLAUDE.md), [`README.md`](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/README.md), [`docs/ui-guide.md`](https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/docs/ui-guide.md)
+3. **Upstream docs** — [`CLAUDE.md`](https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/CLAUDE.md), [`README.md`](https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/README.md), [`docs/ui-guide.md`](https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/docs/ui-guide.md)
 
 ## API at a glance
 
@@ -39,14 +39,19 @@
 | `destroy` | `destroy()` | slot |
 | `uploadFile` | `uploadFile(QUrl url)` | slot |
 | `downloadFile` | `downloadFile(QString cid, QUrl url, qint64 totalBytes, bool isPrivate)` | slot |
+| `cancelDownload` | `cancelDownload(QString cid)` | slot |
 | `downloadManifest` | `downloadManifest(QString cid, bool isPrivate)` | slot |
 | `downloadManifests` | `downloadManifests()` | slot |
 | `exists` | `exists(QString cid)` | slot |
 | `remove` | `remove(QString cid)` | slot |
 | `fetch` | `fetch(QString cid)` | slot |
+| `publishName` | `publishName(QString label, QString cid)` | slot |
+| `unpublishName` | `unpublishName(QString label)` | slot |
+| `fetchManifestOrName` | `fetchManifestOrName(QString key, bool isPrivate)` | slot |
 | `refreshSpace` | `refreshSpace()` | slot |
 | `updateUserConfig` | `updateUserConfig(QString configJson)` | slot |
 | `getUserConfig` | `getUserConfig() -> QString` | slot |
+| `getNodeConfig` | `getNodeConfig() -> QString` | slot |
 | `restartOnboarding` | `restartOnboarding()` | slot |
 | `fetchWidgetsData` | `fetchWidgetsData()` | slot |
 | `refreshNodeStatus` | `refreshNodeStatus()` | slot |
@@ -69,11 +74,20 @@
 | `downloadStarted` | `downloadStarted(QString cid, QString filename, qint64 totalBytes)` | signal |
 | `downloadChunk` | `downloadChunk(qint64 len)` | signal |
 | `downloadCompleted` | `downloadCompleted(QString cid)` | signal |
+| `downloadCancelled` | `downloadCancelled(QString cid)` | signal |
+| `downloadFailed` | `downloadFailed(QString cid, QString error)` | signal |
 | `manifestsUpdated` | `manifestsUpdated(QVariantList manifests)` | signal |
 | `manifestFetchStarted` | `manifestFetchStarted(QString cid, bool isPrivate)` | signal |
 | `manifestFetchFailed` | `manifestFetchFailed(QString cid, QString error)` | signal |
 | `removeStarted` | `removeStarted(QString cid)` | signal |
 | `removeFailed` | `removeFailed(QString cid, QString error)` | signal |
+| `namePublishStarted` | `namePublishStarted(QString label, QString cid)` | signal |
+| `namePublished` | `namePublished(QString label, QString cid, QString nameKey)` | signal |
+| `namePublishFailed` | `namePublishFailed(QString label, QString cid, QString error)` | signal |
+| `nameUnpublished` | `nameUnpublished(QString label)` | signal |
+| `nameResolveStarted` | `nameResolveStarted(QString nameKey)` | signal |
+| `nameResolved` | `nameResolved(QString nameKey, QString cid)` | signal |
+| `nameResolveFailed` | `nameResolveFailed(QString nameKey, QString error)` | signal |
 | `onboardingRestarted` | `onboardingRestarted()` | signal |
 | `peersUpdated` | `peersUpdated(int count)` | signal |
 | `debugInfoUpdated` | `debugInfoUpdated(QVariantMap info)` | signal |
@@ -81,5 +95,5 @@
 
 ## Depend on it / get it
 
-- Contract from source: `nix build 'github:logos-co/logos-storage-ui/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b#lidl' --no-link --print-out-paths`
-- Install: Basecamp → Package Manager, or `logosctl install storage_ui --version 3.0.2`
+- Contract from source: `nix build 'github:logos-co/logos-storage-ui/aa82e918277a7e9f0541e28ca71d052288f4ebdc#lidl' --no-link --print-out-paths`
+- Install: Basecamp → Package Manager, or `logosctl install storage_ui --version 3.1.0-rc1`

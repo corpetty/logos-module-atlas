@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-25T17:10:41+00:00",
+  "generatedAt": "2026-11-27T16:37:15+00:00",
   "scope": "Every module the latest Logos Basecamp release makes available: bundled in the app, or installable from its default catalog.",
   "basecamp": {
     "tag": "0.3.2",
@@ -18,7 +18,7 @@
       "name": "logos-modules-official",
       "displayName": "Logos Official",
       "indexUrl": "https://github.com/logos-co/logos-modules-release/releases/download/index/index.json",
-      "indexGeneratedAt": "2026-11-25T15:09:48Z",
+      "indexGeneratedAt": "2026-11-27T12:28:59Z",
       "packageCount": 49
     }
   ],
@@ -11281,8 +11281,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "3.0.2",
+        "latest": "3.1.0-rc1",
         "versions": [
+          "3.1.0-rc1",
           "3.0.2",
           "3.0.1",
           "3.0.0",
@@ -11296,12 +11297,12 @@
           "1.1.0",
           "1.0.0"
         ],
-        "releasedAt": "2026-10-03T17:48:25Z",
-        "publisherRef": "storage_module-v3.0.2",
-        "catalogCommit": "1b7f8967b1d996a5c9582c1760c584d1afd44838",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.0.2/storage_module-3.0.2.lgx",
-        "sha256": "49accbb8e538bc13bc910d3857e4caffac53da079e72fced0ecc9695d380923a",
-        "size": 49796785,
+        "releasedAt": "2026-11-27T11:16:57Z",
+        "publisherRef": "storage_module-v3.1.0-rc1",
+        "catalogCommit": "7ab0214e653d8340206cf10dccc585fb6ee9f073",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/storage_module-v3.1.0-rc1/storage_module-3.1.0-rc1.lgx",
+        "sha256": "5c0216040d173d04006909e51abc12385c4c324c4938c23941de82e88c568854",
+        "size": 55021515,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -11311,10 +11312,10 @@
       },
       "source": {
         "repo": "logos-co/logos-storage-module",
-        "commit": "7548f41ae189917d58c37f0fb6d3a2700b99f59b",
+        "commit": "0108ad3785b0382b3f551b3edb8118c375fb60de",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@1b7f8967b1d9 submodules/logos-storage-module (tag storage_module-v3.0.2)",
-        "url": "https://github.com/logos-co/logos-storage-module/tree/7548f41ae189917d58c37f0fb6d3a2700b99f59b"
+        "pinnedBy": "logos-co/logos-modules-release@7ab0214e653d submodules/logos-storage-module (tag storage_module-v3.1.0-rc1)",
+        "url": "https://github.com/logos-co/logos-storage-module/tree/0108ad3785b0382b3f551b3edb8118c375fb60de"
       },
       "dependencies": [],
       "requiredBy": [
@@ -11328,39 +11329,35 @@
       "interfaceSource": {
         "file": "interface.h",
         "from": "src/storage_module_plugin.h",
-        "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/src/storage_module_plugin.h",
+        "url": "https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/src/storage_module_plugin.h",
         "lang": "h"
       },
       "docs": [
         {
           "path": "CLAUDE.md",
-          "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/CLAUDE.md"
+          "url": "https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/CLAUDE.md"
         },
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/README.md"
+          "url": "https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/README.md"
         },
         {
           "path": "docs/api_reference.rst",
-          "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/api_reference.rst"
+          "url": "https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/docs/api_reference.rst"
         },
         {
           "path": "docs/index.rst",
-          "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/index.rst"
-        },
-        {
-          "path": "docs/qt-creator.md",
-          "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/qt-creator.md"
+          "url": "https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/docs/index.rst"
         },
         {
           "path": "docs/logoscore-overview/logoscore.md",
-          "url": "https://github.com/logos-co/logos-storage-module/blob/7548f41ae189917d58c37f0fb6d3a2700b99f59b/docs/logoscore-overview/logoscore.md"
+          "url": "https://github.com/logos-co/logos-storage-module/blob/0108ad3785b0382b3f551b3edb8118c375fb60de/docs/logoscore-overview/logoscore.md"
         }
       ],
       "qmlView": null,
       "contract": {
         "file": "storage_module.lidl",
-        "builtFrom": "7548f41ae189917d58c37f0fb6d3a2700b99f59b",
+        "builtFrom": "0108ad3785b0382b3f551b3edb8118c375fb60de",
         "stale": false
       },
       "api": {
@@ -11414,6 +11411,11 @@
             "name": "network",
             "signature": "network() -> result",
             "summary": "Get the Logos network this node was configured for."
+          },
+          {
+            "name": "nodeConfig",
+            "signature": "nodeConfig() -> result",
+            "summary": "Get the configuration the node was created with."
           },
           {
             "name": "peerId",
@@ -11506,9 +11508,39 @@
             "summary": "Enable or disable DHT announcements and serving to peers for a dataset."
           },
           {
+            "name": "namePublish",
+            "signature": "namePublish(label: tstr, cid: tstr, seqnum: ? int) -> result",
+            "summary": "Share a dataset CID under a name."
+          },
+          {
+            "name": "nameUnpublish",
+            "signature": "nameUnpublish(label: tstr) -> result",
+            "summary": "Delete the name record of the label locally: the node stops advertising it."
+          },
+          {
+            "name": "nameRefresh",
+            "signature": "nameRefresh(nameKey: tstr) -> result",
+            "summary": "Read the name record of the name key in the DHT and advertise it again, unchanged, in the background."
+          },
+          {
+            "name": "nameResolve",
+            "signature": "nameResolve(nameKey: tstr) -> result",
+            "summary": "Get the dataset CID that the name key points to, from the DHT."
+          },
+          {
+            "name": "nameResolveKey",
+            "signature": "nameResolveKey(peerId: tstr, label: tstr) -> result",
+            "summary": "Get the dataset CID that the peer publishes for the label, from the DHT."
+          },
+          {
+            "name": "isNameKey",
+            "signature": "isNameKey(key: tstr) -> result",
+            "summary": "Check whether the string is a name key."
+          },
+          {
             "name": "remove",
             "signature": "remove(cid: tstr) -> result",
-            "summary": "Remove content identified by CID from local storage in the background."
+            "summary": "Remove content identified by CID from local storage."
           },
           {
             "name": "space",
@@ -11535,7 +11567,7 @@
           {
             "name": "storageStart",
             "signature": "storageStart(payload: tstr)",
-            "summary": "Emitted when start() has finished starting the node."
+            "summary": ""
           },
           {
             "name": "storageStop",
@@ -11576,6 +11608,26 @@
             "name": "storageRemoveDone",
             "signature": "storageRemoveDone(payload: tstr)",
             "summary": "Emitted when remove() finishes."
+          },
+          {
+            "name": "storageNamePublishDone",
+            "signature": "storageNamePublishDone(payload: tstr)",
+            "summary": "Emitted when namePublish() finishes."
+          },
+          {
+            "name": "storageNameRefreshDone",
+            "signature": "storageNameRefreshDone(payload: tstr)",
+            "summary": "Emitted when nameRefresh() finishes."
+          },
+          {
+            "name": "storageNameResolveDone",
+            "signature": "storageNameResolveDone(payload: tstr)",
+            "summary": "Emitted when nameResolve() finishes."
+          },
+          {
+            "name": "storageNameResolveKeyDone",
+            "signature": "storageNameResolveKeyDone(payload: tstr)",
+            "summary": "Emitted when nameResolveKey() finishes."
           }
         ]
       },
@@ -11598,8 +11650,9 @@
       "catalog": {
         "repository": "Logos Official",
         "catalogRepo": "logos-co/logos-modules-release",
-        "latest": "3.0.2",
+        "latest": "3.1.0-rc1",
         "versions": [
+          "3.1.0-rc1",
           "3.0.2",
           "3.0.0",
           "3.0.0-rc1",
@@ -11611,12 +11664,12 @@
           "2.0.0",
           "1.0.0"
         ],
-        "releasedAt": "2026-10-05T15:18:26Z",
-        "publisherRef": "storage_ui-v3.0.2",
-        "catalogCommit": "39d24c75ffd1d74179323e2e58e053cbacff744b",
-        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.0.2/storage_ui-3.0.2.lgx",
-        "sha256": "3adbed3020e0ab8a9daaad902928141f2a3c680ebd171319c9bb686ef01b15b2",
-        "size": 23493235,
+        "releasedAt": "2026-11-27T11:08:13Z",
+        "publisherRef": "storage_ui-v3.1.0-rc1",
+        "catalogCommit": "7ab0214e653d8340206cf10dccc585fb6ee9f073",
+        "lgx": "https://github.com/logos-co/logos-modules-release/releases/download/storage_ui-v3.1.0-rc1/storage_ui-3.1.0-rc1.lgx",
+        "sha256": "91dd7bd853f35a2e6a80b4158179609ea0eea49983c3afec77bebd0ef13e5721",
+        "size": 23671225,
         "variants": [
           "darwin-arm64",
           "linux-amd64",
@@ -11626,10 +11679,10 @@
       },
       "source": {
         "repo": "logos-co/logos-storage-ui",
-        "commit": "7b89afee451b6ee7b2efb6c7f48002e1752e4a3b",
+        "commit": "aa82e918277a7e9f0541e28ca71d052288f4ebdc",
         "subdir": "",
-        "pinnedBy": "logos-co/logos-modules-release@39d24c75ffd1 submodules/logos-storage-ui (tag storage_ui-v3.0.2)",
-        "url": "https://github.com/logos-co/logos-storage-ui/tree/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b"
+        "pinnedBy": "logos-co/logos-modules-release@7ab0214e653d submodules/logos-storage-ui (tag storage_ui-v3.1.0-rc1)",
+        "url": "https://github.com/logos-co/logos-storage-ui/tree/aa82e918277a7e9f0541e28ca71d052288f4ebdc"
       },
       "dependencies": [
         {
@@ -11646,21 +11699,21 @@
       "interfaceSource": {
         "file": "interface.rep",
         "from": "src/StorageBackend.rep",
-        "url": "https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/src/StorageBackend.rep",
+        "url": "https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/src/StorageBackend.rep",
         "lang": "rep"
       },
       "docs": [
         {
           "path": "CLAUDE.md",
-          "url": "https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/CLAUDE.md"
+          "url": "https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/CLAUDE.md"
         },
         {
           "path": "README.md",
-          "url": "https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/README.md"
+          "url": "https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/README.md"
         },
         {
           "path": "docs/ui-guide.md",
-          "url": "https://github.com/logos-co/logos-storage-ui/blob/7b89afee451b6ee7b2efb6c7f48002e1752e4a3b/docs/ui-guide.md"
+          "url": "https://github.com/logos-co/logos-storage-ui/blob/aa82e918277a7e9f0541e28ca71d052288f4ebdc/docs/ui-guide.md"
         }
       ],
       "qmlView": null,
@@ -11732,6 +11785,11 @@
             "summary": "slot"
           },
           {
+            "name": "cancelDownload",
+            "signature": "cancelDownload(QString cid)",
+            "summary": "slot"
+          },
+          {
             "name": "downloadManifest",
             "signature": "downloadManifest(QString cid, bool isPrivate)",
             "summary": "slot"
@@ -11757,6 +11815,21 @@
             "summary": "slot"
           },
           {
+            "name": "publishName",
+            "signature": "publishName(QString label, QString cid)",
+            "summary": "slot"
+          },
+          {
+            "name": "unpublishName",
+            "signature": "unpublishName(QString label)",
+            "summary": "slot"
+          },
+          {
+            "name": "fetchManifestOrName",
+            "signature": "fetchManifestOrName(QString key, bool isPrivate)",
+            "summary": "slot"
+          },
+          {
             "name": "refreshSpace",
             "signature": "refreshSpace()",
             "summary": "slot"
@@ -11769,6 +11842,11 @@
           {
             "name": "getUserConfig",
             "signature": "getUserConfig() -> QString",
+            "summary": "slot"
+          },
+          {
+            "name": "getNodeConfig",
+            "signature": "getNodeConfig() -> QString",
             "summary": "slot"
           },
           {
@@ -11869,6 +11947,16 @@
             "summary": "signal"
           },
           {
+            "name": "downloadCancelled",
+            "signature": "downloadCancelled(QString cid)",
+            "summary": "signal"
+          },
+          {
+            "name": "downloadFailed",
+            "signature": "downloadFailed(QString cid, QString error)",
+            "summary": "signal"
+          },
+          {
             "name": "manifestsUpdated",
             "signature": "manifestsUpdated(QVariantList manifests)",
             "summary": "signal"
@@ -11891,6 +11979,41 @@
           {
             "name": "removeFailed",
             "signature": "removeFailed(QString cid, QString error)",
+            "summary": "signal"
+          },
+          {
+            "name": "namePublishStarted",
+            "signature": "namePublishStarted(QString label, QString cid)",
+            "summary": "signal"
+          },
+          {
+            "name": "namePublished",
+            "signature": "namePublished(QString label, QString cid, QString nameKey)",
+            "summary": "signal"
+          },
+          {
+            "name": "namePublishFailed",
+            "signature": "namePublishFailed(QString label, QString cid, QString error)",
+            "summary": "signal"
+          },
+          {
+            "name": "nameUnpublished",
+            "signature": "nameUnpublished(QString label)",
+            "summary": "signal"
+          },
+          {
+            "name": "nameResolveStarted",
+            "signature": "nameResolveStarted(QString nameKey)",
+            "summary": "signal"
+          },
+          {
+            "name": "nameResolved",
+            "signature": "nameResolved(QString nameKey, QString cid)",
+            "summary": "signal"
+          },
+          {
+            "name": "nameResolveFailed",
+            "signature": "nameResolveFailed(QString nameKey, QString error)",
             "summary": "signal"
           },
           {
